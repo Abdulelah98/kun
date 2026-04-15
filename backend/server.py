@@ -211,8 +211,6 @@ async def book_meeting_room(booking: MeetingRoomBooking):
     await db.bookings.insert_one({**doc})
     return BookingResponse(id=doc["id"], status="pending", message="تم استلام طلب حجز قاعة الاجتماعات بنجاح")
 
-app.include_router(api_router)
-
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
@@ -220,6 +218,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(api_router)
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
