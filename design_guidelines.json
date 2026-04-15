@@ -1,0 +1,158 @@
+{
+  "project_name": "KUN Workspace Solutions",
+  "theme": "light",
+  "archetype": "4 (Swiss & High-Contrast with Warmth)",
+  "design_philosophy": "A modern, highly professional, Arabic-first (RTL) platform emphasizing clarity, authority, and frictionless user experience. The design uses a Swiss structural grid with generous whitespace, grounded by strict geometric typography (Cairo) and elevated by precise, minimal interactions. The primary color (#f47424) is used with extreme restraint—only for primary conversion actions—preventing visual fatigue and highlighting critical user flows.",
+  "global_rules": {
+    "direction": "rtl",
+    "language": "ar",
+    "accessibility": "WCAG AA compliant, high contrast for text, strictly managed focus states",
+    "spacing": "Generous (Tailwind p-6 to p-24 scale), utilizing internal padding heavily to prevent border collisions.",
+    "corners": "Slightly rounded (rounded-md to rounded-xl) to maintain professional sharpness while feeling approachable."
+  },
+  "colors": {
+    "primary": {
+      "DEFAULT": "#f47424",
+      "hover": "#d9641d",
+      "active": "#bf5719",
+      "foreground": "#ffffff"
+    },
+    "background": {
+      "default": "#ffffff",
+      "subtle": "#F9FAFB",
+      "muted": "#F3F4F6",
+      "overlay": "rgba(0,0,0,0.5)"
+    },
+    "text": {
+      "primary": "#111827",
+      "secondary": "#4B5563",
+      "muted": "#9CA3AF",
+      "inverse": "#ffffff"
+    },
+    "border": {
+      "default": "#E5E7EB",
+      "focus": "#f47424",
+      "subtle": "#F3F4F6"
+    },
+    "status": {
+      "success": "#10B981",
+      "warning": "#F59E0B",
+      "error": "#EF4444"
+    }
+  },
+  "typography": {
+    "font_families": {
+      "primary": "Cairo, sans-serif",
+      "secondary": "Tajawal, sans-serif"
+    },
+    "scales": {
+      "h1": "text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight",
+      "h2": "text-3xl md:text-4xl font-bold tracking-tight leading-tight",
+      "h3": "text-2xl md:text-3xl font-bold",
+      "h4": "text-xl font-semibold",
+      "body": "text-base md:text-lg font-medium leading-relaxed",
+      "small": "text-sm font-medium",
+      "overline": "text-xs font-bold uppercase tracking-widest text-primary"
+    },
+    "alignment": "Right-aligned (text-right) by default due to RTL. Center-aligned for hero and specific short-copy sections.",
+    "import_command": "@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Tajawal:wght@400;500;700&display=swap');"
+  },
+  "layout_and_spacing": {
+    "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+    "section_padding": "py-16 md:py-24",
+    "bento_grid": "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6",
+    "rtl_considerations": "Always use logical Tailwind properties: start/end instead of left/right (e.g., ms-4 instead of ml-4, pe-6 instead of pr-6, rounded-s-md, border-s-2)."
+  },
+  "components": {
+    "navigation": {
+      "style": "Glassmorphism header (backdrop-blur-xl bg-white/80) sticky top-0 z-50 border-b border-gray-100",
+      "links": "text-gray-600 hover:text-primary transition-colors font-semibold",
+      "active_state": "text-primary relative after:absolute after:bottom-[-4px] after:right-0 after:w-full after:h-0.5 after:bg-primary"
+    },
+    "buttons": {
+      "primary": "bg-[#f47424] text-white hover:bg-[#d9641d] px-6 py-3 rounded-md font-bold transition-all shadow-sm hover:shadow-md active:translate-y-0",
+      "secondary": "bg-white text-gray-900 border border-gray-200 hover:border-gray-300 hover:bg-gray-50 px-6 py-3 rounded-md font-bold transition-all",
+      "ghost": "text-gray-600 hover:text-primary hover:bg-orange-50 px-4 py-2 rounded-md font-semibold transition-colors"
+    },
+    "cards": {
+      "default": "bg-white border border-gray-100 rounded-xl p-6 transition-all duration-300 hover:border-gray-200 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 relative overflow-hidden",
+      "interactive_indicator": "absolute bottom-0 right-0 w-0 h-1 bg-primary transition-all duration-300 group-hover:w-full"
+    },
+    "inputs": {
+      "default": "bg-gray-50 border border-gray-200 rounded-md px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all dir-rtl"
+    },
+    "calendar": {
+      "usage": "Use Shadcn Calendar component for meeting room bookings. Ensure day text is clearly visible. Active/Selected day MUST use primary color."
+    }
+  },
+  "motion": {
+    "hover": "transition-all duration-300 ease-out",
+    "page_load": "Fade in with subtle slide-up (translate-y-4 to 0 over 0.6s) using Framer Motion.",
+    "stagger": "Lists and grid items should stagger in at 0.1s intervals."
+  },
+  "pages_and_sections": {
+    "homepage": {
+      "hero": {
+        "background": "Full-screen video background (use workspace_lounge image as fallback poster).",
+        "overlay": "bg-black/50 (Do not go darker than 60%).",
+        "typography": "text-white text-center. Headline: 'تجربة عمل مختلفة… تبدأ من هنا' (A different work experience... starts here).",
+        "ctas": "Two buttons: Primary 'احجز مساحتك الآن' (Book your space now), Secondary 'تواصل معنا' (Contact Us, styled as glass/white-border)."
+      },
+      "services_overview": "Grid of cards highlighting Shared Desks, Private Offices, Meeting Rooms, Smart Pods. Clean icons (use Lucide-react or Phosphor).",
+      "target_audience": "Section titled 'من هم عملاؤنا' (Who are our clients). Bento grid showcasing Freelancers, Startups, Corporate Teams.",
+      "why_kun": "Section titled 'لماذا كُن' (Why KUN). Minimalist feature list (e.g., 24/7 access, High-speed internet, Premium locations).",
+      "image_gallery": "Horizontal scrolling gallery of high-quality workspace imagery (Framer motion carousel).",
+      "final_cta": "Bold section with light gray background, strong H2, and Primary CTA button."
+    },
+    "spaces_page": {
+      "layout": "Grid layout showing different workspace types.",
+      "booking_flow": "Integration of Shadcn Calendar for meeting room availability. Price tags prominently displayed."
+    },
+    "pods_page": {
+      "layout": "Hero image highlighting the soundproof pod. Feature list outlining privacy, acoustics, ventilation. Simple booking CTA."
+    }
+  },
+  "media": {
+    "image_urls": [
+      {
+        "category": "hero_fallback",
+        "url": "https://static.prod-images.emergentagent.com/jobs/5a4c12ca-bf7c-43dd-b928-467b4172e275/images/76af9fc8d16e1c9d906e9279b800de6f60c589b2bfd340b6c56981e341f3cdd3.png",
+        "description": "Premium modern minimalist workspace lounge for hero section fallback."
+      },
+      {
+        "category": "smart_pod",
+        "url": "https://static.prod-images.emergentagent.com/jobs/5a4c12ca-bf7c-43dd-b928-467b4172e275/images/8bd54b2ba1b5f87de79c099636bfb4d644c3a7e5c60f7bb9ac0579b12f6dd2e1.png",
+        "description": "Sleek, modern minimalist soundproof office pod."
+      },
+      {
+        "category": "coworking_bright",
+        "url": "https://images.unsplash.com/photo-1765366417046-f46361a7f26f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBjb3dvcmtpbmclMjBzcGFjZSUyMGJyaWdodHxlbnwwfHx8fDE3NzYyNTc2Nzl8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Bright modern coworking seating area."
+      },
+      {
+        "category": "coworking_minimal",
+        "url": "https://images.unsplash.com/photo-1772751541531-e084e8f56630?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBjb3dvcmtpbmclMjBzcGFjZSUyMGJyaWdodHxlbnwwfHx8fDE3NzYyNTc2Nzl8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Minimalist seating area with wood furniture."
+      },
+      {
+        "category": "meeting_room_glass",
+        "url": "https://images.unsplash.com/photo-1770993151375-0dee97eda931?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBtZWV0aW5nJTIwcm9vbSUyMGdsYXNzJTIwb2ZmaWNlfGVufDB8fHx8MTc3NjI1NzY4OHww&ixlib=rb-4.1.0&q=85",
+        "description": "Modern glass meeting room."
+      },
+      {
+        "category": "conference_room",
+        "url": "https://images.unsplash.com/photo-1637665662134-db459c1bbb46?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBvZmZpY2UlMjBtZWV0aW5nJTIwcm9vbXxlbnwwfHx8fDE3NzYyNTc2OTV8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Modern conference room with white table and black chairs."
+      }
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Strictly wrap the main App or layout in a container with 'dir=\"rtl\"' and set the HTML lang to 'ar'. All alignments should follow RTL logical rules natively (e.g., text-start, ms-4, pe-4).",
+    "Install and use 'lucide-react' for all iconography.",
+    "Do NOT use raw HTML forms; use Shadcn UI Form, Input, and Textarea components heavily customized to match the light theme.",
+    "Use Shadcn's Calendar component for the meeting room booking feature.",
+    "Restrict the use of the primary orange (#f47424) strictly to buttons, active tab indicators, and subtle hover borders. DO NOT use it as a large background or text color for body paragraphs.",
+    "Do NOT use heavy box-shadows. Use subtle borders (border-gray-100/200) and very soft, large-spread shadows only on hover (e.g., shadow-[0_8px_30px_rgb(0,0,0,0.04)]).",
+    "All navigation links and action items must include standard 'data-testid' attributes (e.g., data-testid='nav-home-link')."
+  ]
+}
