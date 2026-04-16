@@ -104,18 +104,18 @@ export default function HomePage() {
               <div className="hero-text-entrance">
                 <h1
                   data-testid="hero-headline"
-                  className="text-[2rem] sm:text-[2.2rem] md:text-[2.75rem] lg:text-[3.45rem] font-black text-white leading-[1.22] tracking-tight mb-4"
+                  className="text-[2.2rem] sm:text-[2.4rem] md:text-[3rem] lg:text-[3.8rem] font-black text-white leading-[1.28] tracking-tight mb-5"
                   style={{ letterSpacing: "-0.02em" }}
                 >
                   مساحتك <span className="text-[#f47424]">الاحترافية</span>
                   <br />
                   تبدأ من هنا
                 </h1>
-                <div className="w-12 h-[3px] bg-[#f47424] mx-auto rounded-full mb-6 hero-line-reveal" />
+                <div className="w-12 h-[3px] bg-[#f47424] mx-auto rounded-full mb-7 hero-line-reveal" />
               </div>
               <p
                 data-testid="hero-subtext"
-                className="text-sm sm:text-[0.9375rem] md:text-base text-white/75 max-w-2xl mx-auto mb-8 hero-text-entrance hero-delay-1 font-medium leading-[1.75]"
+                className="text-[0.9375rem] sm:text-base md:text-[1.0625rem] text-white/75 max-w-2xl mx-auto mb-10 hero-text-entrance hero-delay-1 font-medium leading-[1.8]"
               >
                 وفّر وقتك وركّز على نمو أعمالك — مكاتب جاهزة، قاعات اجتماعات،
                 <br className="hidden sm:block" />
