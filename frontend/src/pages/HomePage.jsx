@@ -146,15 +146,17 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Section Header */}
           <div className="text-center mb-20 md:mb-24">
-            <div className="inline-flex items-center gap-2.5 mb-5">
-              <span className="block w-8 h-[2px] bg-[#f47424] rounded-full" />
-              <span className="services-eyebrow text-[0.7rem] font-bold uppercase tracking-[0.3em] text-[#f47424] bg-[#f47424]/[0.06] px-4 py-1.5 rounded-full border border-[#f47424]/10">
+            <div className="inline-block mb-6">
+              <span className="services-eyebrow relative inline-block text-[0.8rem] font-extrabold tracking-[0.22em] text-white bg-[#f47424] px-6 py-2 rounded-md shadow-[0_4px_16px_rgba(244,116,36,0.25)]">
                 خدماتنا
               </span>
-              <span className="block w-8 h-[2px] bg-[#f47424] rounded-full" />
             </div>
-            <h2 className="text-[2.2rem] md:text-[2.8rem] lg:text-[3.2rem] font-black text-gray-900 tracking-tight leading-[1.15] mb-0">
-              كل ما تحتاجه لبيئة عمل متكاملة
+            <h2 className="text-[2.2rem] md:text-[2.8rem] lg:text-[3.2rem] font-black text-gray-900 tracking-tight leading-[1.15]">
+              كل ما تحتاجه لبيئة عمل
+              <span className="relative inline-block mx-2">
+                <span className="relative z-10">متكاملة</span>
+                <span className="absolute bottom-1 right-0 w-full h-[10px] bg-[#f47424]/15 rounded-sm -z-0" />
+              </span>
             </h2>
           </div>
 
