@@ -4,13 +4,13 @@
 .hero-video-container {
     position: relative;
     width: 100%;
-    height: 70vh;
+    height: 88vh;
     overflow: hidden;
 }
 
 @media (max-width: 768px) {
     .hero-video-container {
-        height: 75vh;
+        height: 90vh;
     }
 }
 
