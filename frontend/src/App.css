@@ -4,13 +4,13 @@
 .hero-video-container {
     position: relative;
     width: 100%;
-    height: 88vh;
+    height: 100vh;
     overflow: hidden;
 }
 
 @media (max-width: 768px) {
     .hero-video-container {
-        height: 90vh;
+        height: 100vh;
     }
 }
 
@@ -46,13 +46,13 @@
     justify-content: center;
     height: 100%;
     text-align: center;
-    padding: 2rem 4rem 3rem 4rem;
+    padding: 18vh 4rem 3rem 4rem;
 }
 
 @media (max-width: 768px) {
     .hero-content {
         align-items: center;
-        padding: 2rem 1rem;
+        padding: 15vh 1rem 2rem 1rem;
     }
 }
 
