@@ -48,7 +48,10 @@ Build a modern, high-conversion bilingual (Arabic-first) website for KUN workspa
 - [x] Added glassmorphism with blur(18px), saturate, brightness backdrop filters
 - [x] Subtle top-highlight pseudo-element for premium glass edge effect
 - [x] Improved internal padding and soft shadow
-- [x] Compact hero box (max-w-3xl) with proportionally scaled text, buttons, and spacing (~12-14% reduction)
+- [x] Compact hero box (max-w-3xl) with proportionally scaled text, buttons, and spacing
+- [x] Light hero box: blur(3px), rgba(0,0,0,0.18→0.01) gradient, soft border/shadow
+- [x] Hero height reduced to 70vh (75vh mobile) — next section visible without scrolling
+- [x] Brand SVG opacity reduced to 0.06, lighter hero overlay gradient
 
 ## Prioritized Backlog
 ### P0 (Critical)
