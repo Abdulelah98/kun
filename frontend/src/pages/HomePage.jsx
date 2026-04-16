@@ -146,30 +146,48 @@ export default function HomePage() {
       </section>
 
       {/* Services Overview */}
-      <section data-testid="services-section" className="py-20 md:py-28 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#f47424] mb-3">خدماتنا</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">كل ما تحتاجه لبيئة عمل متكاملة</h2>
+      <section data-testid="services-section" className="services-section py-24 md:py-32 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Section Header */}
+          <div className="text-center mb-20">
+            <p className="text-[0.7rem] font-bold uppercase tracking-[0.25em] text-[#f47424] mb-4">خدماتنا</p>
+            <h2 className="text-[2rem] md:text-[2.5rem] lg:text-[3rem] font-black text-gray-900 tracking-tight leading-[1.2] mb-5">
+              كل ما تحتاجه لبيئة عمل متكاملة
+            </h2>
+            <div className="w-14 h-[3px] bg-[#f47424] mx-auto rounded-full" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {services.map((s, i) => (
               <Link
                 key={s.path}
                 to={s.path}
                 data-testid={`service-card-${i}`}
-                className="group bg-white border border-gray-100 rounded-xl p-8 transition-all duration-300 hover:border-gray-200 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 relative overflow-hidden"
+                className="service-card group relative overflow-hidden rounded-[18px] p-10 transition-all duration-[400ms] ease-out bg-white border border-gray-100/80 shadow-[0_2px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:-translate-y-2 hover:scale-[1.02]"
               >
-                <div className="w-14 h-14 rounded-lg bg-orange-50 flex items-center justify-center mb-6">
-                  <s.icon className="w-7 h-7 text-[#f47424]" />
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-gray-900/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-[400ms] rounded-[18px]" />
+
+                {/* Logo container */}
+                <div className="service-logo-wrap relative z-10 w-[72px] h-[72px] rounded-2xl bg-gradient-to-br from-orange-50 to-orange-100/60 flex items-center justify-center mb-8 transition-all duration-[400ms] group-hover:scale-110 group-hover:shadow-[0_0_24px_rgba(244,116,36,0.15)]">
+                  <s.icon className="w-8 h-8 text-[#f47424]" strokeWidth={1.8} />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{s.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed mb-4">{s.desc}</p>
-                <span className="inline-flex items-center gap-1 text-[#f47424] font-semibold text-sm">
+
+                {/* Text content */}
+                <div className="relative z-10 transition-opacity duration-[400ms] group-hover:opacity-90">
+                  <h3 className="text-[1.35rem] font-bold text-gray-900 mb-3 tracking-tight">{s.title}</h3>
+                  <p className="text-gray-400 text-[0.9rem] leading-[1.75] mb-6">{s.desc}</p>
+                </div>
+
+                {/* CTA */}
+                <span className="relative z-10 inline-flex items-center gap-1.5 text-[#f47424] font-semibold text-[0.85rem] transition-all duration-300 group-hover:gap-3">
                   اكتشف المزيد
-                  <ArrowLeft size={16} />
+                  <ArrowLeft size={15} className="transition-transform duration-300 group-hover:-translate-x-1" />
                 </span>
-                <div className="card-hover-line" />
+
+                {/* Bottom accent line */}
+                <div className="absolute bottom-0 right-0 h-[3px] bg-gradient-to-l from-[#f47424] to-[#f4942f] w-0 group-hover:w-full transition-all duration-500 ease-out" />
               </Link>
             ))}
           </div>

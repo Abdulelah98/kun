@@ -178,6 +178,23 @@
     width: 100%;
 }
 
+/* Services section subtle background */
+.services-section {
+    background: linear-gradient(180deg, #ffffff 0%, #fafafa 50%, #ffffff 100%);
+}
+
+.services-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.015) 1px, transparent 0);
+    background-size: 40px 40px;
+    pointer-events: none;
+}
+
 /* Smooth scroll */
 html {
     scroll-behavior: smooth;
