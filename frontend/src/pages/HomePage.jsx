@@ -85,7 +85,7 @@ export default function HomePage() {
         </video>
         <div className="hero-gradient-overlay" />
         <div className="hero-content">
-          <div className="hero-glass-box relative overflow-hidden rounded-2xl px-12 sm:px-16 md:px-24 py-14 md:py-24 max-w-[52rem]">
+          <div className="hero-glass-box relative overflow-hidden rounded-2xl px-10 sm:px-12 md:px-16 py-10 md:py-16 max-w-[52rem]">
             {/* Brand shape - bottom left decorative element */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -104,18 +104,18 @@ export default function HomePage() {
               <div className="hero-text-entrance">
                 <h1
                   data-testid="hero-headline"
-                  className="text-[1.7rem] sm:text-[1.85rem] md:text-[2.4rem] lg:text-[3rem] font-black text-white leading-[1.15] tracking-tight mb-3"
+                  className="text-[1.7rem] sm:text-[1.85rem] md:text-[2.4rem] lg:text-[3rem] font-black text-white leading-[1.2] tracking-tight mb-2"
                   style={{ letterSpacing: "-0.02em" }}
                 >
                   مساحتك <span className="text-[#f47424]">الاحترافية</span>
                   <br />
                   تبدأ من هنا
                 </h1>
-                <div className="w-10 h-[3px] bg-[#f47424] mx-auto rounded-full mb-5 hero-line-reveal" />
+                <div className="w-10 h-[3px] bg-[#f47424] mx-auto rounded-full mb-4 hero-line-reveal" />
               </div>
               <p
                 data-testid="hero-subtext"
-                className="text-xs sm:text-[0.8125rem] md:text-sm text-white/75 max-w-lg mx-auto mb-7 hero-text-entrance hero-delay-1 font-medium leading-relaxed"
+                className="text-xs sm:text-[0.8125rem] md:text-sm text-white/75 max-w-2xl mx-auto mb-5 hero-text-entrance hero-delay-1 font-medium leading-[1.7]"
               >
                 وفّر وقتك وركّز على نمو أعمالك — مكاتب جاهزة، قاعات اجتماعات،
                 <br className="hidden sm:block" />
