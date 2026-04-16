@@ -85,7 +85,7 @@ export default function HomePage() {
         </video>
         <div className="hero-gradient-overlay" />
         <div className="hero-content">
-          <div className="hero-glass-box relative overflow-hidden rounded-2xl px-8 sm:px-12 md:px-16 py-10 md:py-16 max-w-3xl">
+          <div className="hero-glass-box relative overflow-hidden rounded-2xl px-10 sm:px-14 md:px-20 py-12 md:py-20 max-w-4xl">
             {/* Brand shape - bottom left decorative element */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
