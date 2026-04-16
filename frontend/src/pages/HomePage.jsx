@@ -85,44 +85,62 @@ export default function HomePage() {
         </video>
         <div className="hero-gradient-overlay" />
         <div className="hero-content">
-          <div className="hero-text-entrance">
-            <h1
-              data-testid="hero-headline"
-              className="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.15] tracking-tight mb-5"
-              style={{ letterSpacing: "-0.02em" }}
+          <div className="relative bg-white/[0.06] backdrop-blur-md border border-white/[0.12] rounded-3xl px-8 sm:px-14 md:px-20 py-14 md:py-20 max-w-4xl mx-auto shadow-[0_8px_40px_rgba(0,0,0,0.15)]">
+            {/* Brand shape - bottom left decorative element */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 654.02 1091.59"
+              className="absolute -bottom-10 -left-8 w-[240px] md:w-[320px] h-auto pointer-events-none select-none"
+              style={{ opacity: 0.08 }}
+              aria-hidden="true"
             >
-              مساحتك <span className="text-[#f47424]">الاحترافية</span>
-              <br />
-              تبدأ من هنا
-            </h1>
-            <div className="w-16 h-1 bg-[#f47424] mx-auto rounded-full mb-8 hero-line-reveal" />
-          </div>
-          <p
-            data-testid="hero-subtext"
-            className="text-base sm:text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-12 hero-text-entrance hero-delay-1 font-medium leading-relaxed"
-          >
-            وفّر وقتك وركّز على نمو أعمالك — مكاتب جاهزة، قاعات اجتماعات،
-            <br className="hidden sm:block" />
-            وخدمات أعمال متكاملة في قلب الرياض
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 hero-text-entrance hero-delay-2">
-            <Link to="/spaces">
-              <Button
-                data-testid="hero-cta-book"
-                className="bg-[#f47424] text-white hover:bg-[#d9641d] px-10 py-3 rounded-full font-bold text-base shadow-[0_6px_24px_rgba(244,116,36,0.35)] hover:shadow-[0_8px_32px_rgba(244,116,36,0.45)] transition-all duration-300 hover:-translate-y-[2px] h-13"
+              <path
+                fill="white"
+                d="m1.73,1074.21l413.96-204.63c13.95-6.97,28.76-10.51,44.01-10.51,54.27,0,98.42,44.17,98.42,98.46,0,37.43-20.8,71.13-54.28,87.93l-216.75,107.77h342.39c5.2-26.14,7.86-52.85,7.86-79.76,0-112.2-44.03-216.43-123.97-293.48-76.4-73.64-180.29-115.88-285.03-115.88-39.42,0-78.17,5.73-115.83,17.09l524.82-260.68V73.25L1.72,389v347.24h0s0,337.98,0,337.98Z"
+              />
+            </svg>
+
+            <div className="relative z-10">
+              <div className="hero-text-entrance">
+                <h1
+                  data-testid="hero-headline"
+                  className="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.15] tracking-tight mb-5"
+                  style={{ letterSpacing: "-0.02em" }}
+                >
+                  مساحتك <span className="text-[#f47424]">الاحترافية</span>
+                  <br />
+                  تبدأ من هنا
+                </h1>
+                <div className="w-16 h-1 bg-[#f47424] mx-auto rounded-full mb-8 hero-line-reveal" />
+              </div>
+              <p
+                data-testid="hero-subtext"
+                className="text-base sm:text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-12 hero-text-entrance hero-delay-1 font-medium leading-relaxed"
               >
-                احجز مساحتك الآن
-              </Button>
-            </Link>
-            <Link to="/services">
-              <Button
-                data-testid="hero-cta-explore"
-                variant="outline"
-                className="border-white/30 text-white hover:bg-white/10 hover:border-white/50 backdrop-blur-sm px-10 py-3 rounded-full font-bold text-base h-13 transition-all duration-300"
-              >
-                استكشف الخدمات
-              </Button>
-            </Link>
+                وفّر وقتك وركّز على نمو أعمالك — مكاتب جاهزة، قاعات اجتماعات،
+                <br className="hidden sm:block" />
+                وخدمات أعمال متكاملة في قلب الرياض
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center hero-text-entrance hero-delay-2">
+                <Link to="/spaces">
+                  <Button
+                    data-testid="hero-cta-book"
+                    className="bg-[#f47424] text-white hover:bg-[#d9641d] px-10 py-3 rounded-full font-bold text-base shadow-[0_6px_24px_rgba(244,116,36,0.35)] hover:shadow-[0_8px_32px_rgba(244,116,36,0.45)] transition-all duration-300 hover:-translate-y-[2px] h-13"
+                  >
+                    احجز مساحتك الآن
+                  </Button>
+                </Link>
+                <Link to="/services">
+                  <Button
+                    data-testid="hero-cta-explore"
+                    variant="outline"
+                    className="border-white/30 text-white hover:bg-white/10 hover:border-white/50 backdrop-blur-sm px-10 py-3 rounded-full font-bold text-base h-13 transition-all duration-300"
+                  >
+                    استكشف الخدمات
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
