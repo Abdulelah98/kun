@@ -39,6 +39,12 @@ Build a modern, high-conversion bilingual (Arabic-first) website for KUN workspa
 - [x] Backend: All booking & contact endpoints
 - [x] All data-testid attributes
 
+## What's Been Implemented (Feb 2026)
+- [x] Hero content box repositioned to LEFT side of screen (centered on mobile)
+- [x] Brand SVG shape fully contained inside hero box with overflow-hidden
+- [x] Shape resized (160px/220px) and positioned with proper padding (bottom-5 left-5)
+- [x] Shape opacity set to 0.1 for clean, balanced look
+
 ## Prioritized Backlog
 ### P0 (Critical)
 - None remaining
