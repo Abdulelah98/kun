@@ -165,10 +165,20 @@ export default function HomePage() {
                 key={s.path}
                 to={s.path}
                 data-testid={`service-card-${i}`}
-                className="service-card group relative overflow-hidden rounded-[20px] p-9 md:p-10 bg-white border border-gray-100/80 transition-all duration-[450ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)]"
+                className="service-card group relative overflow-hidden rounded-[20px] p-9 md:p-10 bg-white border border-gray-100/80"
               >
-                {/* Logo container */}
-                <div className="service-logo-wrap relative z-10 w-[80px] h-[80px] rounded-[16px] bg-[#f9f9f9] border border-gray-100/60 flex items-center justify-center mb-8 transition-all duration-[450ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.15]">
+                {/* Full-card hover logo background */}
+                <div className="service-hover-bg absolute inset-0 z-[1] flex items-center justify-center pointer-events-none">
+                  <img
+                    src={s.logo}
+                    alt=""
+                    className="w-[70%] h-[70%] object-contain"
+                    draggable={false}
+                  />
+                </div>
+
+                {/* Default small logo */}
+                <div className="service-logo-wrap relative z-10 w-[80px] h-[80px] rounded-[16px] bg-[#f9f9f9] border border-gray-100/60 flex items-center justify-center mb-8">
                   <img
                     src={s.logo}
                     alt={s.title}
@@ -178,7 +188,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Text content */}
-                <div className="relative z-10 transition-opacity duration-[400ms] group-hover:opacity-80">
+                <div className="service-card-text relative z-10">
                   <h3 className="text-[1.4rem] font-bold text-gray-900 mb-3.5 tracking-tight leading-tight">{s.title}</h3>
                   <p className="text-gray-400 text-[0.9rem] leading-[1.8] mb-7">{s.desc}</p>
                 </div>
@@ -190,7 +200,7 @@ export default function HomePage() {
                 </span>
 
                 {/* Bottom accent line */}
-                <div className="absolute bottom-0 right-0 h-[3px] bg-gradient-to-l from-[#f47424] to-[#f4942f] w-0 group-hover:w-full transition-all duration-500 ease-out" />
+                <div className="service-accent-line absolute bottom-0 right-0 h-[3px] bg-gradient-to-l from-[#f47424] to-[#f4942f] w-0 z-10" />
               </Link>
             ))}
           </div>
