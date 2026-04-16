@@ -46,13 +46,13 @@
     justify-content: center;
     height: 100%;
     text-align: center;
-    padding: 18vh 4rem 3rem 4rem;
+    padding: 10vh 10% 4rem 4rem;
 }
 
 @media (max-width: 768px) {
     .hero-content {
         align-items: center;
-        padding: 15vh 1rem 2rem 1rem;
+        padding: 12vh 1rem 2rem 1rem;
     }
 }
 
