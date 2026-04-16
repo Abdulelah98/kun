@@ -180,7 +180,7 @@
 
 /* Services section subtle background */
 .services-section {
-    background: linear-gradient(180deg, #ffffff 0%, #fafafa 50%, #ffffff 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #fafbfc 40%, #f8f8f9 60%, #ffffff 100%);
 }
 
 .services-section::before {
@@ -190,9 +190,66 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.015) 1px, transparent 0);
-    background-size: 40px 40px;
+    background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.012) 1px, transparent 0);
+    background-size: 48px 48px;
     pointer-events: none;
+}
+
+/* Service card base */
+.service-card {
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.02),
+        0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+.service-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.06),
+        0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+/* Logo glow on hover */
+.service-card:hover .service-logo-wrap {
+    box-shadow: 0 0 28px rgba(244, 116, 36, 0.12);
+    border-color: rgba(244, 116, 36, 0.08);
+}
+
+/* CTA arrow hover */
+.service-cta {
+    transition: gap 0.35s ease;
+}
+
+.service-cta-arrow {
+    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.service-card:hover .service-cta {
+    gap: 0.65rem;
+}
+
+.service-card:hover .service-cta-arrow {
+    transform: translateX(-4px);
+}
+
+.service-cta-text {
+    position: relative;
+}
+
+.service-cta-text::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    right: 0;
+    width: 0;
+    height: 1.5px;
+    background: #f47424;
+    border-radius: 2px;
+    transition: width 0.35s ease;
+}
+
+.service-card:hover .service-cta-text::after {
+    width: 100%;
 }
 
 /* Smooth scroll */
