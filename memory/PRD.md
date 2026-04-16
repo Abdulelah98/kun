@@ -42,8 +42,13 @@ Build a modern, high-conversion bilingual (Arabic-first) website for KUN workspa
 ## What's Been Implemented (Feb 2026)
 - [x] Hero content box repositioned to LEFT side of screen (centered on mobile)
 - [x] Brand SVG shape fully contained inside hero box with overflow-hidden
-- [x] Shape resized (160px/220px) and positioned with proper padding (bottom-5 left-5)
+- [x] Shape resized (160px/220px) and positioned with proper padding (bottom-6 left-6)
 - [x] Shape opacity set to 0.1 for clean, balanced look
+- [x] Refined hero glass box with adaptive left-to-right gradient (dark→transparent)
+- [x] Added glassmorphism with blur(18px), saturate, brightness backdrop filters
+- [x] Subtle top-highlight pseudo-element for premium glass edge effect
+- [x] Improved internal padding (px-10/16/24, py-16/24) for better readability
+- [x] Ultra-subtle border (0.07 opacity) and soft shadow
 
 ## Prioritized Backlog
 ### P0 (Critical)
