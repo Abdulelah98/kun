@@ -146,17 +146,14 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Section Header */}
           <div className="text-center mb-20 md:mb-24">
-            <div className="inline-block mb-6">
-              <span className="services-eyebrow relative inline-block text-[0.8rem] font-extrabold tracking-[0.22em] text-white bg-[#f47424] px-6 py-2 rounded-md shadow-[0_4px_16px_rgba(244,116,36,0.25)]">
-                خدماتنا
-              </span>
+            <div className="inline-flex items-center gap-3 mb-7">
+              <span className="block w-10 h-[1.5px] bg-gradient-to-l from-[#f47424] to-transparent rounded-full" />
+              <span className="text-[0.75rem] font-bold tracking-[0.35em] text-[#f47424] uppercase">خدماتنا</span>
+              <span className="block w-10 h-[1.5px] bg-gradient-to-r from-[#f47424] to-transparent rounded-full" />
             </div>
-            <h2 className="text-[2.2rem] md:text-[2.8rem] lg:text-[3.2rem] font-black text-gray-900 tracking-tight leading-[1.15]">
-              كل ما تحتاجه لبيئة عمل
-              <span className="relative inline-block mx-2">
-                <span className="relative z-10">متكاملة</span>
-                <span className="absolute bottom-1 right-0 w-full h-[10px] bg-[#f47424]/15 rounded-sm -z-0" />
-              </span>
+            <h2 className="text-[2.2rem] md:text-[2.8rem] lg:text-[3.2rem] font-black tracking-tight leading-[1.15]">
+              <span className="text-gray-900">كل ما تحتاجه لبيئة عمل </span>
+              <span className="text-[#f47424]">متكاملة</span>
             </h2>
           </div>
 
