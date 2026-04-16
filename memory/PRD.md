@@ -47,8 +47,8 @@ Build a modern, high-conversion bilingual (Arabic-first) website for KUN workspa
 - [x] Refined hero glass box with adaptive left-to-right gradient (dark→transparent)
 - [x] Added glassmorphism with blur(18px), saturate, brightness backdrop filters
 - [x] Subtle top-highlight pseudo-element for premium glass edge effect
-- [x] Improved internal padding (px-10/16/24, py-16/24) for better readability
-- [x] Ultra-subtle border (0.07 opacity) and soft shadow
+- [x] Improved internal padding and soft shadow
+- [x] Compact hero box (max-w-3xl) with proportionally scaled text, buttons, and spacing (~12-14% reduction)
 
 ## Prioritized Backlog
 ### P0 (Critical)

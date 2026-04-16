@@ -85,12 +85,12 @@ export default function HomePage() {
         </video>
         <div className="hero-gradient-overlay" />
         <div className="hero-content">
-          <div className="hero-glass-box relative overflow-hidden rounded-3xl px-10 sm:px-16 md:px-24 py-16 md:py-24 max-w-4xl">
+          <div className="hero-glass-box relative overflow-hidden rounded-2xl px-8 sm:px-14 md:px-20 py-12 md:py-20 max-w-3xl">
             {/* Brand shape - bottom left decorative element */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 654.02 1091.59"
-              className="absolute bottom-6 left-6 w-[160px] md:w-[220px] h-auto pointer-events-none select-none"
+              className="absolute bottom-5 left-5 w-[130px] md:w-[180px] h-auto pointer-events-none select-none"
               style={{ opacity: 0.1 }}
               aria-hidden="true"
             >
@@ -104,28 +104,28 @@ export default function HomePage() {
               <div className="hero-text-entrance">
                 <h1
                   data-testid="hero-headline"
-                  className="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.15] tracking-tight mb-5"
+                  className="text-[2.1rem] sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.15] tracking-tight mb-4"
                   style={{ letterSpacing: "-0.02em" }}
                 >
                   مساحتك <span className="text-[#f47424]">الاحترافية</span>
                   <br />
                   تبدأ من هنا
                 </h1>
-                <div className="w-16 h-1 bg-[#f47424] mx-auto rounded-full mb-8 hero-line-reveal" />
+                <div className="w-12 h-1 bg-[#f47424] mx-auto rounded-full mb-6 hero-line-reveal" />
               </div>
               <p
                 data-testid="hero-subtext"
-                className="text-base sm:text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-12 hero-text-entrance hero-delay-1 font-medium leading-relaxed"
+                className="text-sm sm:text-base md:text-lg text-white/80 max-w-xl mx-auto mb-9 hero-text-entrance hero-delay-1 font-medium leading-relaxed"
               >
                 وفّر وقتك وركّز على نمو أعمالك — مكاتب جاهزة، قاعات اجتماعات،
                 <br className="hidden sm:block" />
                 وخدمات أعمال متكاملة في قلب الرياض
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center hero-text-entrance hero-delay-2">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center hero-text-entrance hero-delay-2">
                 <Link to="/spaces">
                   <Button
                     data-testid="hero-cta-book"
-                    className="bg-[#f47424] text-white hover:bg-[#d9641d] px-10 py-3 rounded-full font-bold text-base shadow-[0_6px_24px_rgba(244,116,36,0.35)] hover:shadow-[0_8px_32px_rgba(244,116,36,0.45)] transition-all duration-300 hover:-translate-y-[2px] h-13"
+                    className="bg-[#f47424] text-white hover:bg-[#d9641d] px-8 py-2.5 rounded-full font-bold text-sm shadow-[0_6px_24px_rgba(244,116,36,0.35)] hover:shadow-[0_8px_32px_rgba(244,116,36,0.45)] transition-all duration-300 hover:-translate-y-[2px] h-11"
                   >
                     احجز مساحتك الآن
                   </Button>
@@ -134,7 +134,7 @@ export default function HomePage() {
                   <Button
                     data-testid="hero-cta-explore"
                     variant="outline"
-                    className="border-white/30 text-white hover:bg-white/10 hover:border-white/50 backdrop-blur-sm px-10 py-3 rounded-full font-bold text-base h-13 transition-all duration-300"
+                    className="border-white/30 text-white hover:bg-white/10 hover:border-white/50 backdrop-blur-sm px-8 py-2.5 rounded-full font-bold text-sm h-11 transition-all duration-300"
                   >
                     استكشف الخدمات
                   </Button>
