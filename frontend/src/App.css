@@ -316,24 +316,32 @@ html {
     transition: transform 0.08s ease-out;
 }
 
-/* Visual LEFT — fully visible with margin from edge */
+/* Visual LEFT side of screen */
 .section-bg-word--left {
-    right: 10%;
-    left: auto;
+    left: 5%;
+    right: auto;
 }
 
-/* Visual RIGHT — beginning near right edge, flowing left */
+/* Visual RIGHT side of screen */
 .section-bg-word--right {
     right: 5%;
     left: auto;
+}
+
+/* Visual CENTER — centered horizontally */
+.section-bg-word--center {
+    left: 0;
+    right: 0;
+    text-align: center;
 }
 
 @media (max-width: 768px) {
     .section-bg-word {
         font-size: clamp(3rem, 18vw, 6rem);
     }
-    .section-bg-word--left { right: 35%; }
-    .section-bg-word--right { right: -20%; }
+    .section-bg-word--left { left: -5%; right: auto; }
+    .section-bg-word--right { right: -20%; left: auto; }
+    .section-bg-word--center { left: 0; right: 0; text-align: center; }
 }
 
 /* Mobile hero fallback */
