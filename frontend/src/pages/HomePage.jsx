@@ -179,7 +179,7 @@ export default function HomePage() {
         <span ref={setBgRef(0)} className="section-bg-word section-bg-word--right" aria-hidden="true">خدماتنا</span>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 mt-16 md:mt-20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 mt-24 md:mt-28">
             {services.map((s, i) => (
               <Link
                 key={s.path}
