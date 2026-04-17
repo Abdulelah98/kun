@@ -299,11 +299,11 @@ html {
    ======================================== */
 .section-bg-word {
     position: absolute;
-    top: 50%;
-    margin-top: -0.55em;
+    top: 10%;
+    margin-top: 0;
     font-size: clamp(5rem, 14vw, 14rem);
     font-weight: 900;
-    color: rgba(244, 116, 36, 0.065);
+    color: rgba(244, 116, 36, 0.08);
     white-space: nowrap;
     pointer-events: none;
     user-select: none;
@@ -313,20 +313,24 @@ html {
     transition: transform 0.08s ease-out;
 }
 
-/* Aligned LEFT within the container */
+/* Visual LEFT — Arabic text beginning at center, flowing left */
 .section-bg-word--left {
-    left: 0;
+    right: 50%;
+    left: auto;
 }
 
-/* Aligned RIGHT within the container */
+/* Visual RIGHT — beginning near right edge, flowing left */
 .section-bg-word--right {
-    right: 0;
+    right: 5%;
+    left: auto;
 }
 
 @media (max-width: 768px) {
     .section-bg-word {
         font-size: clamp(3rem, 18vw, 6rem);
     }
+    .section-bg-word--left { right: 35%; }
+    .section-bg-word--right { right: -20%; }
 }
 
 /* Mobile hero fallback */

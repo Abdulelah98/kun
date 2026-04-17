@@ -176,7 +176,7 @@ export default function HomePage() {
 
       {/* Services Overview */}
       <section data-testid="services-section" className="services-section py-28 md:py-36 relative overflow-hidden">
-        <span ref={setBgRef(0)} data-dir="ltr" className="section-bg-word section-bg-word--right" aria-hidden="true">خدماتنا</span>
+        <span ref={setBgRef(0)} className="section-bg-word section-bg-word--left" aria-hidden="true">خدماتنا</span>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
@@ -229,14 +229,14 @@ export default function HomePage() {
 
       {/* Target Audience */}
       <section data-testid="audience-section" className="py-20 md:py-28 bg-[#F9FAFB] relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <span ref={setBgRef(1)} className="section-bg-word section-bg-word--right" aria-hidden="true">عملاؤنا</span>
-          <div className="text-center mb-16 relative z-10">
+        <span ref={setBgRef(1)} className="section-bg-word section-bg-word--right" aria-hidden="true">عملاؤنا</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-16">
             <p className="text-xs font-bold uppercase tracking-widest text-[#f47424] mb-3">عملاؤنا</p>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">لمن صُممت هذه المساحات؟</h2>
             <p className="text-gray-500 text-base md:text-lg">مساحات مرنة تناسب مختلف أساليب العمل</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
             {audiences.map((a, i) => (
               <div
                 key={i}
@@ -255,8 +255,8 @@ export default function HomePage() {
 
       {/* Why KUN */}
       <section data-testid="why-kun-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <span ref={setBgRef(2)} className="section-bg-word section-bg-word--left" aria-hidden="true">لماذا كن</span>
+        <span ref={setBgRef(2)} className="section-bg-word section-bg-word--left" aria-hidden="true">لماذا كن</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center relative z-10">
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-[#f47424] mb-3">لماذا نحن</p>
@@ -289,8 +289,8 @@ export default function HomePage() {
 
       {/* Image Gallery */}
       <section data-testid="gallery-section" className="py-20 md:py-28 bg-[#F9FAFB] relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <span ref={setBgRef(3)} className="section-bg-word section-bg-word--right" aria-hidden="true">مساحاتنا</span>
+        <span ref={setBgRef(3)} className="section-bg-word section-bg-word--right" aria-hidden="true">مساحاتنا</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center justify-between mb-10 relative z-10">
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-[#f47424] mb-3">معرض الصور</p>
@@ -333,8 +333,8 @@ export default function HomePage() {
 
       {/* Final CTA */}
       <section data-testid="final-cta-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
-        <div className="max-w-3xl mx-auto px-4 relative">
-          <span ref={setBgRef(4)} className="section-bg-word section-bg-word--left" aria-hidden="true">تواصل</span>
+        <span ref={setBgRef(4)} className="section-bg-word section-bg-word--left" aria-hidden="true">تواصل</span>
+        <div className="max-w-3xl mx-auto px-4 relative z-10">
           <div className="text-center relative z-10">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-6">
               ابدأ اليوم وارتقِ بطريقة عملك
