@@ -232,7 +232,6 @@ export default function HomePage() {
         <span ref={setBgRef(1)} className="section-bg-word section-bg-word--left" aria-hidden="true">عملاؤنا</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#f47424] mb-3">عملاؤنا</p>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">لمن صُممت هذه المساحات؟</h2>
             <p className="text-gray-500 text-base md:text-lg">مساحات مرنة تناسب مختلف أساليب العمل</p>
           </div>
@@ -259,7 +258,6 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center relative z-10">
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-[#f47424] mb-3">لماذا نحن</p>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-8">لماذا تختار كن؟</h2>
               <div className="space-y-6">
                 {whyItems.map((item, i) => (
@@ -293,7 +291,6 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center justify-between mb-10 relative z-10">
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-[#f47424] mb-3">معرض الصور</p>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">اكتشف مساحاتنا</h2>
             </div>
             <div className="hidden md:flex gap-2">
