@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useRef } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import {
   Rocket,
   Users,
@@ -65,12 +65,34 @@ const whyItems = [
 
 export default function HomePage() {
   const galleryRef = useRef(null);
+  const bgWordsRef = useRef([]);
 
   const scrollGallery = (dir) => {
     if (galleryRef.current) {
       galleryRef.current.scrollBy({ left: dir * 340, behavior: "smooth" });
     }
   };
+
+  const handleScroll = useCallback(() => {
+    bgWordsRef.current.forEach((el) => {
+      if (!el) return;
+      const rect = el.parentElement.getBoundingClientRect();
+      const viewH = window.innerHeight;
+      const center = rect.top + rect.height / 2 - viewH / 2;
+      const ratio = center / viewH;
+      const dir = el.dataset.dir === "rtl" ? -1 : 1;
+      const shift = ratio * 60 * dir;
+      el.style.transform = `translateX(${shift}px)`;
+    });
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  const setBgRef = (idx) => (el) => { bgWordsRef.current[idx] = el; };
 
   return (
     <main data-testid="home-page">
@@ -143,7 +165,7 @@ export default function HomePage() {
 
       {/* Services Overview */}
       <section data-testid="services-section" className="services-section py-28 md:py-36 relative overflow-hidden">
-        <span className="section-bg-word section-bg-word--drift" aria-hidden="true">SERVICES</span>
+        <span ref={setBgRef(0)} data-dir="ltr" className="section-bg-word section-bg-word--right" aria-hidden="true">خدماتنا</span>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
@@ -196,7 +218,7 @@ export default function HomePage() {
 
       {/* Target Audience */}
       <section data-testid="audience-section" className="py-20 md:py-28 bg-[#F9FAFB] relative overflow-hidden">
-        <span className="section-bg-word section-bg-word--drift-reverse" aria-hidden="true">CLIENTS</span>
+        <span ref={setBgRef(1)} data-dir="rtl" className="section-bg-word section-bg-word--left" aria-hidden="true">عملاؤنا</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
             <p className="text-xs font-bold uppercase tracking-widest text-[#f47424] mb-3">عملاؤنا</p>
@@ -222,7 +244,7 @@ export default function HomePage() {
 
       {/* Why KUN */}
       <section data-testid="why-kun-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
-        <span className="section-bg-word section-bg-word--drift" aria-hidden="true">ABOUT</span>
+        <span ref={setBgRef(2)} data-dir="ltr" className="section-bg-word section-bg-word--right" aria-hidden="true">لماذا كن</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div>
@@ -256,7 +278,7 @@ export default function HomePage() {
 
       {/* Image Gallery */}
       <section data-testid="gallery-section" className="py-20 md:py-28 bg-[#F9FAFB] relative overflow-hidden">
-        <span className="section-bg-word section-bg-word--drift-reverse" aria-hidden="true">SPACES</span>
+        <span ref={setBgRef(3)} data-dir="rtl" className="section-bg-word section-bg-word--left" aria-hidden="true">مساحاتنا</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center justify-between mb-10">
             <div>
@@ -300,7 +322,7 @@ export default function HomePage() {
 
       {/* Final CTA */}
       <section data-testid="final-cta-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
-        <span className="section-bg-word section-bg-word--drift" aria-hidden="true">START</span>
+        <span ref={setBgRef(4)} data-dir="ltr" className="section-bg-word section-bg-word--right" aria-hidden="true">تواصل</span>
         <div className="max-w-3xl mx-auto px-4 text-center relative z-10">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-6">
             ابدأ اليوم وارتقِ بطريقة عملك
