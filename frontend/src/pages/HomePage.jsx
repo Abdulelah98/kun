@@ -66,6 +66,7 @@ const whyItems = [
 export default function HomePage() {
   const galleryRef = useRef(null);
   const bgWordsRef = useRef([]);
+  const scrollPosRef = useRef({ last: 0, offsets: {} });
 
   const scrollGallery = (dir) => {
     if (galleryRef.current) {
@@ -74,21 +75,31 @@ export default function HomePage() {
   };
 
   const handleScroll = useCallback(() => {
-    bgWordsRef.current.forEach((el) => {
+    const currentY = window.scrollY;
+    const delta = currentY - scrollPosRef.current.last;
+    scrollPosRef.current.last = currentY;
+
+    bgWordsRef.current.forEach((el, i) => {
       if (!el) return;
-      const rect = el.parentElement.getBoundingClientRect();
+      const section = el.closest("section");
+      if (!section) return;
+      const rect = section.getBoundingClientRect();
       const viewH = window.innerHeight;
-      const center = rect.top + rect.height / 2 - viewH / 2;
-      const ratio = center / viewH;
-      const dir = el.dataset.dir === "rtl" ? -1 : 1;
-      const shift = ratio * 60 * dir;
-      el.style.transform = `translateX(${shift}px)`;
+      if (rect.bottom < -100 || rect.top > viewH + 100) return;
+
+      const key = `w${i}`;
+      const prev = scrollPosRef.current.offsets[key] || 0;
+      const maxShift = 50;
+      const speed = 0.12;
+      const next = Math.max(-maxShift, Math.min(maxShift, prev + delta * speed));
+      scrollPosRef.current.offsets[key] = next;
+      el.style.transform = `translateX(${next}px)`;
     });
   }, []);
 
   useEffect(() => {
+    scrollPosRef.current.last = window.scrollY;
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
@@ -218,14 +229,14 @@ export default function HomePage() {
 
       {/* Target Audience */}
       <section data-testid="audience-section" className="py-20 md:py-28 bg-[#F9FAFB] relative overflow-hidden">
-        <span ref={setBgRef(1)} data-dir="rtl" className="section-bg-word section-bg-word--left" aria-hidden="true">عملاؤنا</span>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <span ref={setBgRef(1)} className="section-bg-word section-bg-word--right" aria-hidden="true">عملاؤنا</span>
+          <div className="text-center mb-16 relative z-10">
             <p className="text-xs font-bold uppercase tracking-widest text-[#f47424] mb-3">عملاؤنا</p>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">لمن صُممت هذه المساحات؟</h2>
             <p className="text-gray-500 text-base md:text-lg">مساحات مرنة تناسب مختلف أساليب العمل</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 relative z-10">
             {audiences.map((a, i) => (
               <div
                 key={i}
@@ -244,9 +255,9 @@ export default function HomePage() {
 
       {/* Why KUN */}
       <section data-testid="why-kun-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
-        <span ref={setBgRef(2)} data-dir="ltr" className="section-bg-word section-bg-word--right" aria-hidden="true">لماذا كن</span>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <span ref={setBgRef(2)} className="section-bg-word section-bg-word--left" aria-hidden="true">لماذا كن</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center relative z-10">
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-[#f47424] mb-3">لماذا نحن</p>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-8">لماذا تختار كن؟</h2>
@@ -278,9 +289,9 @@ export default function HomePage() {
 
       {/* Image Gallery */}
       <section data-testid="gallery-section" className="py-20 md:py-28 bg-[#F9FAFB] relative overflow-hidden">
-        <span ref={setBgRef(3)} data-dir="rtl" className="section-bg-word section-bg-word--left" aria-hidden="true">مساحاتنا</span>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="flex items-center justify-between mb-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <span ref={setBgRef(3)} className="section-bg-word section-bg-word--right" aria-hidden="true">مساحاتنا</span>
+          <div className="flex items-center justify-between mb-10 relative z-10">
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-[#f47424] mb-3">معرض الصور</p>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">اكتشف مساحاتنا</h2>
@@ -302,7 +313,7 @@ export default function HomePage() {
               </button>
             </div>
           </div>
-          <div ref={galleryRef} className="gallery-scroll">
+          <div ref={galleryRef} className="gallery-scroll relative z-10">
             {galleryImages.map((img, i) => (
               <div
                 key={i}
@@ -322,22 +333,24 @@ export default function HomePage() {
 
       {/* Final CTA */}
       <section data-testid="final-cta-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
-        <span ref={setBgRef(4)} data-dir="ltr" className="section-bg-word section-bg-word--right" aria-hidden="true">تواصل</span>
-        <div className="max-w-3xl mx-auto px-4 text-center relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-6">
-            ابدأ اليوم وارتقِ بطريقة عملك
-          </h2>
-          <p className="text-gray-500 text-base md:text-lg mb-10">
-            انضم إلى مجتمع كن واحصل على بيئة عمل احترافية تدعم نمو أعمالك
-          </p>
-          <Link to="/contact">
-            <Button
-              data-testid="final-cta-button"
-              className="bg-[#f47424] text-white hover:bg-[#d9641d] px-10 py-3 rounded-md font-bold text-base shadow-md hover:shadow-lg transition-all h-12"
-            >
-              تواصل معنا
-            </Button>
-          </Link>
+        <div className="max-w-3xl mx-auto px-4 relative">
+          <span ref={setBgRef(4)} className="section-bg-word section-bg-word--left" aria-hidden="true">تواصل</span>
+          <div className="text-center relative z-10">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-6">
+              ابدأ اليوم وارتقِ بطريقة عملك
+            </h2>
+            <p className="text-gray-500 text-base md:text-lg mb-10">
+              انضم إلى مجتمع كن واحصل على بيئة عمل احترافية تدعم نمو أعمالك
+            </p>
+            <Link to="/contact">
+              <Button
+                data-testid="final-cta-button"
+                className="bg-[#f47424] text-white hover:bg-[#d9641d] px-10 py-3 rounded-md font-bold text-base shadow-md hover:shadow-lg transition-all h-12"
+              >
+                تواصل معنا
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
     </main>

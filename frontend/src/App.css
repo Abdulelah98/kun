@@ -300,39 +300,33 @@ html {
 .section-bg-word {
     position: absolute;
     top: 50%;
-    font-size: clamp(5rem, 16vw, 16rem);
+    margin-top: -0.55em;
+    font-size: clamp(5rem, 14vw, 14rem);
     font-weight: 900;
-    letter-spacing: 0.02em;
-    color: rgba(244, 116, 36, 0.045);
+    color: rgba(244, 116, 36, 0.065);
     white-space: nowrap;
     pointer-events: none;
     user-select: none;
     z-index: 0;
     line-height: 1;
-    transition: transform 0.05s linear;
     will-change: transform;
+    transition: transform 0.08s ease-out;
 }
 
-/* Positioned on the RIGHT side (for RTL — visually left in Arabic) */
-.section-bg-word--right {
-    right: -2%;
-    transform-origin: right center;
-    margin-top: -0.5em;
-}
-
-/* Positioned on the LEFT side */
+/* Aligned LEFT within the container */
 .section-bg-word--left {
-    left: -2%;
-    transform-origin: left center;
-    margin-top: -0.5em;
+    left: 0;
+}
+
+/* Aligned RIGHT within the container */
+.section-bg-word--right {
+    right: 0;
 }
 
 @media (max-width: 768px) {
     .section-bg-word {
-        font-size: clamp(3.5rem, 20vw, 7rem);
+        font-size: clamp(3rem, 18vw, 6rem);
     }
-    .section-bg-word--right { right: -4%; }
-    .section-bg-word--left { left: -4%; }
 }
 
 /* Mobile hero fallback */
