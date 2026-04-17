@@ -256,7 +256,7 @@ export default function HomePage() {
       <section data-testid="why-kun-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
         <span ref={setBgRef(2)} className="section-bg-word section-bg-word--right" aria-hidden="true">لماذا كن</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center relative z-10 mt-16 md:mt-20">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-8">لماذا تختار كن؟</h2>
               <div className="space-y-6">
@@ -289,7 +289,7 @@ export default function HomePage() {
       <section data-testid="gallery-section" className="py-20 md:py-28 bg-[#F9FAFB] relative overflow-hidden">
         <span ref={setBgRef(3)} className="section-bg-word section-bg-word--left" aria-hidden="true">مساحاتنا</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="flex items-center justify-between mb-10 relative z-10">
+          <div className="flex items-center justify-between mb-10 mt-16 md:mt-20 relative z-10">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">اكتشف مساحاتنا</h2>
             </div>
@@ -329,10 +329,10 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section data-testid="final-cta-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
-        <span ref={setBgRef(4)} className="section-bg-word section-bg-word--right" aria-hidden="true">تواصل</span>
+      <section data-testid="final-cta-section" className="py-28 md:py-36 bg-white relative overflow-hidden">
+        <span ref={setBgRef(4)} className="section-bg-word section-bg-word--right" style={{ top: '15%' }} aria-hidden="true">تواصل</span>
         <div className="max-w-3xl mx-auto px-4 relative z-10">
-          <div className="text-center relative z-10">
+          <div className="text-center relative z-10 mt-16 md:mt-20">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-6">
               ابدأ اليوم وارتقِ بطريقة عملك
             </h2>

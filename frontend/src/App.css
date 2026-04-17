@@ -152,6 +152,9 @@
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     padding-bottom: 1rem;
+    padding-right: 2rem;
+    mask-image: linear-gradient(to left, transparent 0%, black 3%, black 97%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to left, transparent 0%, black 3%, black 97%, transparent 100%);
 }
 
 .gallery-scroll::-webkit-scrollbar {
@@ -313,9 +316,9 @@ html {
     transition: transform 0.08s ease-out;
 }
 
-/* Visual LEFT — Arabic text beginning at center, flowing left */
+/* Visual LEFT — fully visible with margin from edge */
 .section-bg-word--left {
-    right: 50%;
+    right: 10%;
     left: auto;
 }
 
