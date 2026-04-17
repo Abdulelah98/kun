@@ -146,10 +146,10 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Section Header */}
           <div className="text-center mb-20 md:mb-24">
-            <div className="inline-flex items-center gap-3 mb-7">
-              <span className="block w-10 h-[1.5px] bg-gradient-to-l from-[#f47424] to-transparent rounded-full" />
-              <span className="text-[0.75rem] font-bold tracking-[0.35em] text-[#f47424] uppercase">خدماتنا</span>
-              <span className="block w-10 h-[1.5px] bg-gradient-to-r from-[#f47424] to-transparent rounded-full" />
+            <div className="mb-6">
+              <span className="inline-block text-sm md:text-base font-extrabold tracking-[0.2em] text-[#f47424] border-b-[3px] border-[#f47424] pb-1.5">
+                خدماتنا
+              </span>
             </div>
             <h2 className="text-[2.2rem] md:text-[2.8rem] lg:text-[3.2rem] font-black tracking-tight leading-[1.15]">
               <span className="text-gray-900">كل ما تحتاجه لبيئة عمل </span>
