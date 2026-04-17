@@ -146,7 +146,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Section Header - Large watermark text */}
           <div className="services-watermark-wrap relative mb-0">
-            <span className="services-watermark block text-center text-[6rem] sm:text-[8rem] md:text-[10rem] lg:text-[13rem] font-black leading-none text-gray-900/[0.04] select-none pointer-events-none mb-[-2rem] md:mb-[-3.5rem] lg:mb-[-4.5rem]">
+            <span className="services-watermark block text-center text-[6rem] sm:text-[8rem] md:text-[10rem] lg:text-[13rem] font-black leading-none select-none pointer-events-none mb-[-2rem] md:mb-[-3.5rem] lg:mb-[-4.5rem]" style={{ color: 'rgba(244, 116, 36, 0.07)' }}>
               خدماتنا
             </span>
           </div>
