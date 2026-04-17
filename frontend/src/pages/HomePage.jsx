@@ -144,17 +144,11 @@ export default function HomePage() {
       {/* Services Overview */}
       <section data-testid="services-section" className="services-section py-28 md:py-36 relative overflow-hidden">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Section Header */}
-          <div className="text-center mb-20 md:mb-24">
-            <div className="mb-6">
-              <span className="inline-block text-sm md:text-base font-extrabold tracking-[0.2em] text-[#f47424] border-b-[3px] border-[#f47424] pb-1.5">
-                خدماتنا
-              </span>
-            </div>
-            <h2 className="text-[2.2rem] md:text-[2.8rem] lg:text-[3.2rem] font-black tracking-tight leading-[1.15]">
-              <span className="text-gray-900">كل ما تحتاجه لبيئة عمل </span>
-              <span className="text-[#f47424]">متكاملة</span>
-            </h2>
+          {/* Section Header - Large watermark text */}
+          <div className="services-watermark-wrap relative mb-0">
+            <span className="services-watermark block text-center text-[6rem] sm:text-[8rem] md:text-[10rem] lg:text-[13rem] font-black leading-none text-gray-900/[0.04] select-none pointer-events-none mb-[-2rem] md:mb-[-3.5rem] lg:mb-[-4.5rem]">
+              خدماتنا
+            </span>
           </div>
 
           {/* Cards Grid */}
