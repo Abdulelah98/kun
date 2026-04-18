@@ -62,6 +62,24 @@ class BookingResponse(BaseModel):
     status: str
     message: str
 
+OFFICE_IMAGES = {
+    "set_a": [
+        "https://images.unsplash.com/photo-1746021451691-4385f318ec13?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1637665662134-db459c1bbb46?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBvZmZpY2UlMjBtZWV0aW5nJTIwcm9vbXxlbnwwfHx8fDE3NzYyNTc2OTV8MA&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1770993151375-0dee97eda931?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBtZWV0aW5nJTIwcm9vbSUyMGdsYXNzJTIwb2ZmaWNlfGVufDB8fHx8MTc3NjI1NzY4OHww&ixlib=rb-4.1.0&q=85",
+    ],
+    "set_b": [
+        "https://images.unsplash.com/photo-1746021375246-7dc8ab0583f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwzfHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1772751541531-e084e8f56630?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBjb3dvcmtpbmclMjBzcGFjZSUyMGJyaWdodHxlbnwwfHx8fDE3NzYyNTc2Nzl8MA&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1765366417046-f46361a7f26f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBjb3dvcmtpbmclMjBzcGFjZSUyMGJyaWdodHxlbnwwfHx8fDE3NzYyNTc2Nzl8MA&ixlib=rb-4.1.0&q=85",
+    ],
+    "set_c": [
+        "https://images.unsplash.com/photo-1765366417077-dc1a6fbd5e34?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1746021451691-4385f318ec13?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1746021375246-7dc8ab0583f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwzfHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85",
+    ],
+}
+
 # --- Mock Data ---
 OFFICES_DATA = [
     {
@@ -72,7 +90,8 @@ OFFICES_DATA = [
         "currency": "ريال/شهر",
         "available": True,
         "reserved_until": None,
-        "image": "https://images.unsplash.com/photo-1746021451691-4385f318ec13?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85"
+        "image": OFFICE_IMAGES["set_a"][0],
+        "images": OFFICE_IMAGES["set_a"],
     },
     {
         "id": "office-2",
@@ -82,7 +101,8 @@ OFFICES_DATA = [
         "currency": "ريال/شهر",
         "available": True,
         "reserved_until": None,
-        "image": "https://images.unsplash.com/photo-1746021375246-7dc8ab0583f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwzfHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85"
+        "image": OFFICE_IMAGES["set_b"][0],
+        "images": OFFICE_IMAGES["set_b"],
     },
     {
         "id": "office-3",
@@ -92,7 +112,8 @@ OFFICES_DATA = [
         "currency": "ريال/شهر",
         "available": False,
         "reserved_until": "2025-03-15",
-        "image": "https://images.unsplash.com/photo-1765366417077-dc1a6fbd5e34?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85"
+        "image": OFFICE_IMAGES["set_c"][0],
+        "images": OFFICE_IMAGES["set_c"],
     },
     {
         "id": "office-4",
@@ -102,7 +123,8 @@ OFFICES_DATA = [
         "currency": "ريال/شهر",
         "available": True,
         "reserved_until": None,
-        "image": "https://images.unsplash.com/photo-1746021451691-4385f318ec13?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85"
+        "image": OFFICE_IMAGES["set_a"][1],
+        "images": [OFFICE_IMAGES["set_a"][1], OFFICE_IMAGES["set_b"][1], OFFICE_IMAGES["set_c"][1]],
     },
     {
         "id": "office-5",
@@ -112,7 +134,8 @@ OFFICES_DATA = [
         "currency": "ريال/شهر",
         "available": False,
         "reserved_until": "2025-02-28",
-        "image": "https://images.unsplash.com/photo-1746021375246-7dc8ab0583f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwzfHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85"
+        "image": OFFICE_IMAGES["set_b"][1],
+        "images": [OFFICE_IMAGES["set_b"][1], OFFICE_IMAGES["set_c"][1], OFFICE_IMAGES["set_a"][1]],
     },
     {
         "id": "office-6",
@@ -122,7 +145,8 @@ OFFICES_DATA = [
         "currency": "ريال/شهر",
         "available": True,
         "reserved_until": None,
-        "image": "https://images.unsplash.com/photo-1765366417077-dc1a6fbd5e34?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85"
+        "image": OFFICE_IMAGES["set_c"][2],
+        "images": [OFFICE_IMAGES["set_c"][2], OFFICE_IMAGES["set_a"][2], OFFICE_IMAGES["set_b"][2]],
     }
 ]
 

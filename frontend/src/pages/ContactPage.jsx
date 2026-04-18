@@ -48,14 +48,14 @@ export default function ContactPage() {
 
   return (
     <main data-testid="contact-page" className="pt-16">
-      {/* Header */}
-      <section className="bg-[#F9FAFB] py-20 md:py-28">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-xs font-bold uppercase tracking-widest text-[#f47424] mb-3">تواصل معنا</p>
-          <h1 data-testid="contact-title" className="text-4xl md:text-5xl font-black text-gray-900 tracking-tight mb-4">
+      {/* Header - Dark navy */}
+      <section className="bg-[#0A1128] py-24 md:py-32 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-4">تواصل معنا</p>
+          <h1 data-testid="contact-title" className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-5 leading-[1.2]">
             نسعد بتواصلك معنا
           </h1>
-          <p className="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
+          <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">
             فريقنا جاهز لمساعدتك في اختيار المساحة المثالية لأعمالك
           </p>
         </div>
