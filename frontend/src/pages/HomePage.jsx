@@ -238,10 +238,10 @@ export default function HomePage() {
           {/* Text block - all on the right side */}
           <div className="flex justify-start mt-12 md:mt-16">
             <div className="w-full md:max-w-2xl text-right">
-              <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-gray-900 tracking-tight leading-[1.3] mb-6">
+              <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-gray-900 tracking-tight leading-[1.55] mb-6">
                 بيئة عمل متكاملة
                 <br />
-                صُنعت لتدعم <span className="text-[#f47424]">نجاحك</span>
+                <span className="inline-block mt-2">صُنعت لتدعم <span className="text-[#f47424]">نجاحك</span></span>
               </h2>
               <p className="text-gray-600 text-base md:text-[1.05rem] leading-[2]">
                 <span className="font-bold text-gray-900">كن</span> علامة سعودية رائدة في تقديم مساحات العمل الذكية وخدمات الأعمال المتكاملة. نُوفّر لرواد الأعمال والشركات بيئة احترافية ومرنة تُواكب تطلعاتهم وتُسهّل رحلة نموّهم.
@@ -326,34 +326,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Target Audience */}
-      <section data-testid="audience-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
-        <span ref={setBgRef(2)} className="section-bg-word section-bg-word--left" aria-hidden="true">عملاؤنا</span>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">لمن صُممت هذه المساحات؟</h2>
-            <p className="text-gray-500 text-base md:text-lg">مساحات مرنة تناسب مختلف أساليب العمل</p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-            {audiences.map((a, i) => (
-              <div
-                key={i}
-                data-testid={`audience-item-${i}`}
-                className="flex flex-col items-center text-center p-6 bg-white rounded-xl border border-gray-100 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1"
-              >
-                <div className="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center mb-3">
-                  <a.icon className="w-6 h-6 text-[#f47424]" />
-                </div>
-                <span className="text-sm font-semibold text-gray-800">{a.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Why KUN */}
-      <section data-testid="why-kun-section" className="py-20 md:py-28 bg-[#FAFAF7] relative overflow-hidden">
-        <span ref={setBgRef(3)} className="section-bg-word section-bg-word--right" aria-hidden="true">لماذا كن</span>
+      <section data-testid="why-kun-section" className="py-20 md:py-28 bg-[#F9FAFB] relative overflow-hidden">
+        <span ref={setBgRef(2)} className="section-bg-word section-bg-word--right" aria-hidden="true">لماذا كن</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10 mt-16 md:mt-20">
             <div>
@@ -399,8 +374,33 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Target Audience */}
+      <section data-testid="audience-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
+        <span ref={setBgRef(3)} className="section-bg-word section-bg-word--left" aria-hidden="true">عملاؤنا</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">لمن صُممت هذه المساحات؟</h2>
+            <p className="text-gray-500 text-base md:text-lg">مساحات مرنة تناسب مختلف أساليب العمل</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+            {audiences.map((a, i) => (
+              <div
+                key={i}
+                data-testid={`audience-item-${i}`}
+                className="flex flex-col items-center text-center p-6 bg-white rounded-xl border border-gray-100 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1"
+              >
+                <div className="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center mb-3">
+                  <a.icon className="w-6 h-6 text-[#f47424]" />
+                </div>
+                <span className="text-sm font-semibold text-gray-800">{a.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Image Gallery */}
-      <section data-testid="gallery-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
+      <section data-testid="gallery-section" className="py-20 md:py-28 bg-[#F9FAFB] relative overflow-hidden">
         <span ref={setBgRef(4)} className="section-bg-word section-bg-word--left" aria-hidden="true">مساحاتنا</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center justify-between mb-10 mt-16 md:mt-20 relative z-10">
@@ -443,7 +443,7 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section data-testid="final-cta-section" className="py-28 md:py-36 bg-[#FAFAF7] relative overflow-hidden">
+      <section data-testid="final-cta-section" className="py-28 md:py-36 bg-white relative overflow-hidden">
         <span ref={setBgRef(5)} className="section-bg-word section-bg-word--center" style={{ top: '15%' }} aria-hidden="true">تواصل</span>
         <div className="max-w-3xl mx-auto px-4 relative z-10">
           <div className="text-center relative z-10 mt-16 md:mt-20">
