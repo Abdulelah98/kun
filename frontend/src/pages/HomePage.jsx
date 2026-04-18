@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect, useCallback, useState } from "react";
 import {
   Rocket,
   Users,
@@ -78,6 +78,47 @@ const whyItems = [
     desc: "صُممت بعناية لتعزيز الإنتاجية والتركيز على نمو أعمالك.",
   },
 ];
+
+// Animated counter that runs once when scrolled into view
+function CountUp({ end, prefix = "", suffix = "", duration = 1200, testId }) {
+  const [value, setValue] = useState(0);
+  const nodeRef = useRef(null);
+  const startedRef = useRef(false);
+
+  useEffect(() => {
+    const node = nodeRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !startedRef.current) {
+            startedRef.current = true;
+            const startTime = performance.now();
+            const tick = (now) => {
+              const progress = Math.min((now - startTime) / duration, 1);
+              // easeOutCubic for a snappy feel
+              const eased = 1 - Math.pow(1 - progress, 3);
+              setValue(Math.round(end * eased));
+              if (progress < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [end, duration]);
+
+  return (
+    <span ref={nodeRef} data-testid={testId}>
+      {prefix}
+      {value}
+      {suffix}
+    </span>
+  );
+}
 
 export default function HomePage() {
   const galleryRef = useRef(null);
@@ -194,39 +235,39 @@ export default function HomePage() {
       <section data-testid="about-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
         <span ref={setBgRef(0)} className="section-bg-word section-bg-word--left" aria-hidden="true">من نحن</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-center mt-12 md:mt-16">
-            {/* Content - appears first in RTL = right side */}
-            <div className="md:col-span-7 md:order-1 text-right">
-              <p className="text-gray-600 text-base md:text-[1.05rem] leading-[2] mb-8">
-                <span className="font-bold text-gray-900">كن</span> علامة سعودية رائدة في تقديم مساحات العمل الذكية وخدمات الأعمال المتكاملة. نُوفّر لرواد الأعمال والشركات بيئة احترافية ومرنة تُواكب تطلعاتهم وتُسهّل رحلة نموّهم.
-              </p>
-              <div className="grid grid-cols-3 gap-4 md:gap-6 pt-6 border-t border-gray-100">
-                <div data-testid="about-stat-0">
-                  <div className="text-2xl md:text-3xl font-bold text-[#f47424] mb-1 tracking-tight">+500</div>
-                  <div className="text-xs md:text-sm text-gray-500">عميل يثق بنا</div>
-                </div>
-                <div data-testid="about-stat-1">
-                  <div className="text-2xl md:text-3xl font-bold text-[#f47424] mb-1 tracking-tight">+20</div>
-                  <div className="text-xs md:text-sm text-gray-500">خدمة متكاملة</div>
-                </div>
-                <div data-testid="about-stat-2">
-                  <div className="text-2xl md:text-3xl font-bold text-[#f47424] mb-1 tracking-tight">24/7</div>
-                  <div className="text-xs md:text-sm text-gray-500">دعم مستمر</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Title - appears second in RTL = left side */}
-            <div className="md:col-span-5 md:order-2 text-left">
-              <span className="inline-flex items-center gap-3 text-[#f47424] font-semibold text-xs md:text-sm mb-5 tracking-[0.15em] uppercase">
-                <span className="w-8 h-[2px] bg-[#f47424]" />
-                من نحن
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-gray-900 tracking-tight leading-[1.3]">
+          {/* Text block - all on the right side */}
+          <div className="flex justify-start mt-12 md:mt-16">
+            <div className="w-full md:max-w-2xl text-right">
+              <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-gray-900 tracking-tight leading-[1.3] mb-6">
                 بيئة عمل متكاملة
                 <br />
                 صُنعت لتدعم <span className="text-[#f47424]">نجاحك</span>
               </h2>
+              <p className="text-gray-600 text-base md:text-[1.05rem] leading-[2]">
+                <span className="font-bold text-gray-900">كن</span> علامة سعودية رائدة في تقديم مساحات العمل الذكية وخدمات الأعمال المتكاملة. نُوفّر لرواد الأعمال والشركات بيئة احترافية ومرنة تُواكب تطلعاتهم وتُسهّل رحلة نموّهم.
+              </p>
+            </div>
+          </div>
+
+          {/* Stats row - centered in the page */}
+          <div className="mt-14 md:mt-16 pt-10 border-t border-gray-100">
+            <div className="grid grid-cols-3 gap-4 md:gap-10 max-w-3xl mx-auto text-center">
+              <div data-testid="about-stat-0">
+                <div className="text-3xl md:text-5xl font-bold text-[#f47424] mb-2 tracking-tight">
+                  <CountUp end={500} prefix="+" duration={1200} testId="about-stat-0-value" />
+                </div>
+                <div className="text-xs md:text-sm text-gray-500">عميل يثق بنا</div>
+              </div>
+              <div data-testid="about-stat-1">
+                <div className="text-3xl md:text-5xl font-bold text-[#f47424] mb-2 tracking-tight">
+                  <CountUp end={20} prefix="+" duration={1000} testId="about-stat-1-value" />
+                </div>
+                <div className="text-xs md:text-sm text-gray-500">خدمة متكاملة</div>
+              </div>
+              <div data-testid="about-stat-2">
+                <div className="text-3xl md:text-5xl font-bold text-[#f47424] mb-2 tracking-tight" data-testid="about-stat-2-value">24/7</div>
+                <div className="text-xs md:text-sm text-gray-500">دعم مستمر</div>
+              </div>
             </div>
           </div>
         </div>
@@ -286,7 +327,7 @@ export default function HomePage() {
       </section>
 
       {/* Target Audience */}
-      <section data-testid="audience-section" className="py-20 md:py-28 bg-[#F9FAFB] relative overflow-hidden">
+      <section data-testid="audience-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
         <span ref={setBgRef(2)} className="section-bg-word section-bg-word--left" aria-hidden="true">عملاؤنا</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
@@ -311,7 +352,7 @@ export default function HomePage() {
       </section>
 
       {/* Why KUN */}
-      <section data-testid="why-kun-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
+      <section data-testid="why-kun-section" className="py-20 md:py-28 bg-[#FAFAF7] relative overflow-hidden">
         <span ref={setBgRef(3)} className="section-bg-word section-bg-word--right" aria-hidden="true">لماذا كن</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10 mt-16 md:mt-20">
@@ -359,7 +400,7 @@ export default function HomePage() {
       </section>
 
       {/* Image Gallery */}
-      <section data-testid="gallery-section" className="py-20 md:py-28 bg-[#F9FAFB] relative overflow-hidden">
+      <section data-testid="gallery-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
         <span ref={setBgRef(4)} className="section-bg-word section-bg-word--left" aria-hidden="true">مساحاتنا</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center justify-between mb-10 mt-16 md:mt-20 relative z-10">
@@ -402,7 +443,7 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section data-testid="final-cta-section" className="py-28 md:py-36 bg-white relative overflow-hidden">
+      <section data-testid="final-cta-section" className="py-28 md:py-36 bg-[#FAFAF7] relative overflow-hidden">
         <span ref={setBgRef(5)} className="section-bg-word section-bg-word--center" style={{ top: '15%' }} aria-hidden="true">تواصل</span>
         <div className="max-w-3xl mx-auto px-4 relative z-10">
           <div className="text-center relative z-10 mt-16 md:mt-20">
