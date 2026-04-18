@@ -57,10 +57,26 @@ const audiences = [
 ];
 
 const whyItems = [
-  { icon: Zap, text: "مرونة عالية في التوسع" },
-  { icon: TrendingDown, text: "تقليل التكاليف التشغيلية" },
-  { icon: CheckCircle2, text: "جاهزية فورية" },
-  { icon: Shield, text: "بيئة احترافية" },
+  {
+    icon: Zap,
+    title: "مرونة عالية في التوسع",
+    desc: "نمِّ فريقك أو قلّصه بسهولة دون التزامات طويلة الأجل.",
+  },
+  {
+    icon: TrendingDown,
+    title: "تقليل التكاليف التشغيلية",
+    desc: "ادفع فقط مقابل ما تحتاجه، بلا مصاريف ثابتة مرهقة.",
+  },
+  {
+    icon: CheckCircle2,
+    title: "جاهزية فورية",
+    desc: "ابدأ العمل من اليوم الأول بمساحات مجهزة بالكامل.",
+  },
+  {
+    icon: Shield,
+    title: "بيئة احترافية",
+    desc: "صُممت بعناية لتعزيز الإنتاجية والتركيز على نمو أعمالك.",
+  },
 ];
 
 export default function HomePage() {
@@ -256,20 +272,35 @@ export default function HomePage() {
       <section data-testid="why-kun-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
         <span ref={setBgRef(2)} className="section-bg-word section-bg-word--right" aria-hidden="true">لماذا كن</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center relative z-10 mt-16 md:mt-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10 mt-16 md:mt-20">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-8">لماذا تختار كن؟</h2>
-              <div className="space-y-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">لماذا تختار كن؟</h2>
+              <p className="text-gray-500 text-base md:text-lg mb-10">مزايا حقيقية تصنع فرقاً ملموساً في تجربة عملك اليومية</p>
+              <div className="space-y-5">
                 {whyItems.map((item, i) => (
                   <div
                     key={i}
                     data-testid={`why-item-${i}`}
-                    className="flex items-start gap-4"
+                    className="why-card group relative flex items-center gap-5 bg-white rounded-[20px] border border-gray-100 py-5 pr-6 pl-5 md:pr-7 md:pl-6 shadow-[0_1px_2px_rgba(16,24,40,0.04)] hover:shadow-[0_12px_32px_rgba(244,116,36,0.12)] hover:-translate-y-[3px] transition-all duration-300 ease-out overflow-hidden"
+                    style={{ animation: `whyCardFadeIn 0.6s ${0.1 + i * 0.08}s both ease-out` }}
                   >
-                    <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <item.icon className="w-5 h-5 text-[#f47424]" />
+                    {/* Right orange accent line */}
+                    <span className="absolute right-0 top-4 bottom-4 w-[3px] rounded-full bg-[#f47424] opacity-80 group-hover:opacity-100 group-hover:top-3 group-hover:bottom-3 transition-all duration-300" />
+
+                    {/* Text content (right-aligned, appears first in RTL) */}
+                    <div className="flex-1 text-right order-1 min-w-0">
+                      <h3 className="text-[1.05rem] md:text-[1.1rem] font-bold text-gray-900 leading-tight mb-1.5 tracking-tight">
+                        {item.title}
+                      </h3>
+                      <p className="text-gray-500 text-[0.85rem] md:text-[0.9rem] leading-[1.7]">
+                        {item.desc}
+                      </p>
                     </div>
-                    <span className="text-lg font-semibold text-gray-800">{item.text}</span>
+
+                    {/* Icon (on far right in RTL visually, rendered after text) */}
+                    <div className="why-icon-box order-2 flex-shrink-0 w-[54px] h-[54px] md:w-[58px] md:h-[58px] rounded-[14px] bg-[#f47424]/10 flex items-center justify-center transition-all duration-300 group-hover:bg-[#f47424]/15 group-hover:scale-[1.05]">
+                      <item.icon className="w-6 h-6 md:w-[26px] md:h-[26px] text-[#f47424]" strokeWidth={2} />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -278,7 +309,7 @@ export default function HomePage() {
               <img
                 src="https://images.unsplash.com/photo-1772751541531-e084e8f56630?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBjb3dvcmtpbmclMjBzcGFjZSUyMGJyaWdodHxlbnwwfHx8fDE3NzYyNTc2Nzl8MA&ixlib=rb-4.1.0&q=85"
                 alt="مساحة عمل كن"
-                className="w-full h-80 md:h-[400px] object-cover"
+                className="w-full h-80 md:h-[460px] object-cover"
               />
             </div>
           </div>

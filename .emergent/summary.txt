@@ -3,10 +3,10 @@
 **User's preferred language**: Arabic (The user is communicating in Arabic. You MUST respond in Arabic only).
 
 **what currently exists?** 
-A fully functional, responsive, Arabic-first (RTL) frontend built with React, Tailwind CSS, and Shadcn UI, paired with a FastAPI backend. The  features scroll-linked parallax background texts across multiple sections (Hero, Services, Audience, Why KUN, Gallery, CTA) which have just undergone detailed UI polish based on the user's explicit design feedback.
+A fully functional, responsive, Arabic-first (RTL) frontend built with React, Tailwind CSS, and Shadcn UI, paired with a FastAPI backend. The  features scroll-linked parallax background texts across multiple sections. The UI has undergone intense visual polish based on user feedback.
 
 **Last working item**: 
-    - Last item agent was working: Adjusting the layout and spacing across the Why KUN, Gallery (Our Spaces), and CTA (Contact) sections. This involved lowering section content, fully exposing the background parallax words so they don't touch the screen edge, fixing a cut-off image in the gallery scroll, and centering the CTA text. 
+    - Last item agent was working: Adjusting the parallax background title alignments for all sections on the Homepage. The user requested an alternating Right/Left pattern (Services: Right, Audience: Left, Why KUN: Right, Gallery: Left) and keeping the Contact (CTA) section title strictly in the center.
     - Status: USER VERIFICATION PENDING
     - Agent Testing Done: Y
     - Which testing method agent to use? screenshot tool
@@ -27,12 +27,8 @@ None.
 - Task 6: Real data integration (replace mock data) and reCAPTCHA on forms. (Priority: P3)
 
 **Completed work in this session**
-- Increased top margin for the Services section cards to make the background word خدماتنا clearly visible above them (DONE).
-- Removed all small orange sub-headings (e.g., عملاؤنا, لماذا نحن, معرض الصور) from the top of the main sections in  (DONE).
-- Lowered the content in the Why KUN section to improve layout clarity (DONE).
-- Adjusted the positioning of the مساحاتنا background word in the Gallery section so it displays fully without touching the page edge (DONE).
-- Fixed the image gallery scroll overflow in  and  so images don't appear sharply cut off at the edge (DONE).
-- Centered the text and added appropriate bottom spacing in the Contact/CTA section (DONE).
+- Updated , , and  classes in  (DONE).
+- Applied alternating Right/Left CSS classes to the background parallax words in  to perfectly match user's explicit map: Services(Right), Audience(Left), Why KUN(Right), Spaces/Gallery(Left), Contact(Center) (DONE).
 
 **Earlier issues found/mentioned but not fixed**
 None.
@@ -55,8 +51,8 @@ React (Frontend), FastAPI (Backend), MongoDB (Database), Tailwind CSS, Shadcn UI
 - None.
 
 **All files of reference** 
--  (Updated to remove small headings, adjust margins, and apply layout fixes requested by the user).
--  (Adjusted to accommodate gallery fade/padding).
+-  (Updated with alternating right/left background words).
+-  (Adjusted CSS coordinates for  classes).
 
 **Areas that need refactoring**: 
 None currently.
@@ -65,19 +61,17 @@ None currently.
 - Standard FastAPI backend structure running on port 8001 with  prefix.
 
 **Critical Info for New Agent** 
-- The application is **Arabic-first (RTL)**. Ensure all UI additions respect the RTL layout.
-- The user is extremely detail-oriented regarding the UI design. **Continue to use the user-requested approach: دايما اسالني اعجبك؟ الين اقول ايه (Always ask me 'do you like it?' until I say yes).**
-- You MUST wait for the user to approve the latest screenshots showcasing the fixes to the Why KUN, Gallery, and CTA sections before making any further changes.
-- If the user approves, summarize the completion of the UI polishing phase and transition them to the next major feature (e.g., P0: Bilingual Support) using the  tool to confirm the plan.
+- The application is **Arabic-first (RTL)**.
+- **DO NOT PROCEED with any new task until the user responds to the pending أعجبك كذا؟ (Do you like it?) question.** The user is extremely detail-oriented regarding the UI design.
+- If the user approves the current alignments, summarize the completion of the UI polishing phase and immediately transition them to the next major feature (Priority P0: Bilingual Support) using the  tool to confirm the plan.
 
 **documents and test reports created in this job** 
 - 
 
 **Last 10 User Messages and any pending HUMAN messages** 
-1. (Latest) *User*: Uploaded 3 images asking to lower content in two sections, ensure the word مساحاتنا is fully visible with space from the edge, remove the cut-off part of the image in the gallery, and center the text in the contact section with spacing below it. (Completed - Pending user verification via أعجبك كذا؟)
-2. *User*: احذف العنوانين اللي مكتوبه بخط صغير زي عملاؤنا اللي مكتوبه بخط صغير (Delete the small titles like Our Clients). (Completed)
-3. *User*: نزل الكارد شوي زياده كمان (Lower the cards a little more). (Completed)
-4. *User*: Please use ask_human tool and confirm your plan now. (Completed)
+1. (Latest) *User*: ما رتبتها زين جاي كلها يمين حاليا مفروض كذا خدماتنا ← يمين✅ عملاؤنا ← يسار✅ لماذا كن ← يمين✅ مساحاتنا ← يسار✅ تواصل ← بالنص ✅ (You didn't arrange it well, currently all are right. It should be: Services -> Right, Audience -> Left, Why -> Right, Spaces -> Left, Contact -> Center). (Completed - Agent corrected the classes and asked أعجبك كذا؟ / User Verification Pending).
+2. *User*: فقط الترتيب حق العناوين رجعه زي اول يعني الاول يبدأ باليسار بعدين اليمين الين اخر شي التواصل فقط خليه بالنص (Just return the titles arrangement like before. The first starts on the left, then right, alternating, until the last one 'Contact' is in the center). (Completed).
+3. *User*: Please use ask_human tool and confirm your plan now. (Completed).
 
 **Project Health Check:**
 - Mocked (Frontend relies on static/mocked data arrays).
@@ -95,8 +89,8 @@ None currently.
 - None needed at this stage.
 
 **What agent forgot to execute**
-- Nothing. The agent successfully executed all granular UI feedback and is awaiting final approval.
+- Nothing. The agent successfully corrected the alignment logic per the user's explicit instructions and is awaiting final approval.
 
 **Debugging checklist for current issue**
-    Issue: Awaiting user verification on the latest UI adjustments (margin, padding, image cut-offs, centering text).
-    Frontend files to check:  and . (Ready for further tweaks if the user is still not satisfied with the spacing).</analysis>
+    Issue: Awaiting user verification on the alternating alignment of the parallax background section titles.
+    Frontend files to check:  and .</analysis>
