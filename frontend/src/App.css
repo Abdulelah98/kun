@@ -1,5 +1,26 @@
 /* KUN Custom Styles */
 
+/* Orange brand scrollbar */
+html {
+    scrollbar-color: #f47424 #f4f4f5;
+    scrollbar-width: thin;
+}
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #f4f4f5;
+}
+::-webkit-scrollbar-thumb {
+    background: #f47424;
+    border-radius: 10px;
+    border: 2px solid #f4f4f5;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #d9641d;
+}
+
 /* Hero Video */
 .hero-video-container {
     position: relative;
