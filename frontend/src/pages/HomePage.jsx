@@ -328,7 +328,7 @@ export default function HomePage() {
 
       {/* Why KUN */}
       <section data-testid="why-kun-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
-        <span ref={setBgRef(2)} className="section-bg-word section-bg-word--left" style={{ top: '62%' }} aria-hidden="true">لماذا كن</span>
+        <span ref={setBgRef(2)} className="section-bg-word section-bg-word--left" aria-hidden="true">لماذا كن</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10 mt-16 md:mt-20">
             <div>
@@ -363,7 +363,7 @@ export default function HomePage() {
                 ))}
               </div>
             </div>
-            <div className="rounded-2xl overflow-hidden">
+            <div className="rounded-2xl overflow-hidden md:mt-24 lg:mt-32">
               <img
                 src="https://images.unsplash.com/photo-1772751541531-e084e8f56630?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBjb3dvcmtpbmclMjBzcGFjZSUyMGJyaWdodHxlbnwwfHx8fDE3NzYyNTc2Nzl8MA&ixlib=rb-4.1.0&q=85"
                 alt="مساحة عمل كن"
