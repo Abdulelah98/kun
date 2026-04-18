@@ -183,7 +183,7 @@
 
 /* Services section subtle background */
 .services-section {
-    background: linear-gradient(180deg, #ffffff 0%, #fafbfc 40%, #f8f8f9 60%, #ffffff 100%);
+    background: #F9FAFB;
 }
 
 .services-section::before {
@@ -193,7 +193,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.012) 1px, transparent 0);
+    background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.015) 1px, transparent 0);
     background-size: 48px 48px;
     pointer-events: none;
 }
@@ -333,6 +333,11 @@ html {
     left: 0;
     right: 0;
     text-align: center;
+}
+
+/* Dark variant (for use on dark navy bg) */
+.section-bg-word--dark {
+    color: rgba(244, 116, 36, 0.06);
 }
 
 @media (max-width: 768px) {

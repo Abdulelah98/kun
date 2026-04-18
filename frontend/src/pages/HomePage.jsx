@@ -49,11 +49,11 @@ const services = [
 ];
 
 const audiences = [
-  { icon: Rocket, label: "رواد الأعمال" },
-  { icon: Zap, label: "الشركات الناشئة" },
-  { icon: Users, label: "الفرق الصغيرة والمتوسطة" },
-  { icon: UserCheck, label: "المستقلين" },
-  { icon: Building2, label: "الشركات الكبيرة" },
+  { icon: Rocket, label: "رواد الأعمال", desc: "مساحات تمنحك الحرية لبناء فكرتك" },
+  { icon: Zap, label: "الشركات الناشئة", desc: "انطلق أسرع وبتجربة أكثر احترافية" },
+  { icon: Users, label: "الفرق الصغيرة والمتوسطة", desc: "حلول مرنة تكبر مع فريقك" },
+  { icon: UserCheck, label: "المستقلين", desc: "بيئة احترافية تساعدك على التركيز والإنجاز" },
+  { icon: Building2, label: "الشركات الكبيرة", desc: "بنية تقنية تدعم التوسع وإدارة الفرق بكفاءة" },
 ];
 
 const whyItems = [
@@ -327,7 +327,7 @@ export default function HomePage() {
       </section>
 
       {/* Why KUN */}
-      <section data-testid="why-kun-section" className="py-20 md:py-28 bg-[#F9FAFB] relative overflow-hidden">
+      <section data-testid="why-kun-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
         <span ref={setBgRef(2)} className="section-bg-word section-bg-word--right" aria-hidden="true">لماذا كن</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10 mt-16 md:mt-20">
@@ -374,33 +374,51 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Target Audience */}
-      <section data-testid="audience-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
-        <span ref={setBgRef(3)} className="section-bg-word section-bg-word--left" aria-hidden="true">عملاؤنا</span>
+      {/* Target Audience - Dark themed */}
+      <section data-testid="audience-section" className="py-24 md:py-32 bg-[#0A1128] relative overflow-hidden">
+        <span ref={setBgRef(3)} className="section-bg-word section-bg-word--left section-bg-word--dark" aria-hidden="true">عملاؤنا</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">لمن صُممت هذه المساحات؟</h2>
-            <p className="text-gray-500 text-base md:text-lg">مساحات مرنة تناسب مختلف أساليب العمل</p>
+          <div className="text-center mb-16 md:mb-20">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5">لمن صُممت هذه المساحات؟</h2>
+            <p className="text-gray-400 text-base md:text-lg">مساحات مرنة تناسب مختلف أساليب العمل</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-            {audiences.map((a, i) => (
-              <div
-                key={i}
-                data-testid={`audience-item-${i}`}
-                className="flex flex-col items-center text-center p-6 bg-white rounded-xl border border-gray-100 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1"
-              >
-                <div className="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center mb-3">
-                  <a.icon className="w-6 h-6 text-[#f47424]" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-5 md:gap-6 max-w-6xl mx-auto">
+            {audiences.map((a, i) => {
+              // Place 3 cards on top row, 2 cards centered on bottom row (md+)
+              const layoutClass =
+                i < 3
+                  ? "md:col-span-2"
+                  : i === 3
+                  ? "md:col-span-2 md:col-start-2"
+                  : "md:col-span-2";
+              return (
+                <div
+                  key={i}
+                  data-testid={`audience-item-${i}`}
+                  className={`audience-card group relative ${layoutClass} rounded-2xl p-6 md:p-7 bg-[#0F1A33] border border-white/[0.06] overflow-hidden transition-all duration-300 hover:border-[#f47424]/30 hover:-translate-y-1`}
+                >
+                  <div className="flex items-center gap-5">
+                    {/* Icon on left (visually) - rendered first in RTL = appears left */}
+                    <div className="order-2 flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-xl flex items-center justify-center bg-[#f47424]/5 border border-[#f47424]/20 transition-all duration-300 group-hover:bg-[#f47424]/10 group-hover:scale-105">
+                      <a.icon className="w-7 h-7 md:w-8 md:h-8 text-[#f47424]" strokeWidth={1.8} />
+                    </div>
+                    {/* Text on right */}
+                    <div className="order-1 flex-1 text-right min-w-0">
+                      <h3 className="text-white font-bold text-[1.05rem] md:text-[1.15rem] mb-1.5 tracking-tight leading-tight">{a.label}</h3>
+                      <p className="text-gray-400 text-[0.8rem] md:text-[0.85rem] leading-[1.6]">{a.desc}</p>
+                    </div>
+                  </div>
+                  {/* Subtle orange glow on hover */}
+                  <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#f47424]/[0.04] to-transparent" />
                 </div>
-                <span className="text-sm font-semibold text-gray-800">{a.label}</span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* Image Gallery */}
-      <section data-testid="gallery-section" className="py-20 md:py-28 bg-[#F9FAFB] relative overflow-hidden">
+      <section data-testid="gallery-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
         <span ref={setBgRef(4)} className="section-bg-word section-bg-word--left" aria-hidden="true">مساحاتنا</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center justify-between mb-10 mt-16 md:mt-20 relative z-10">
@@ -443,7 +461,7 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section data-testid="final-cta-section" className="py-28 md:py-36 bg-white relative overflow-hidden">
+      <section data-testid="final-cta-section" className="py-28 md:py-36 bg-[#F9FAFB] relative overflow-hidden">
         <span ref={setBgRef(5)} className="section-bg-word section-bg-word--center" style={{ top: '15%' }} aria-hidden="true">تواصل</span>
         <div className="max-w-3xl mx-auto px-4 relative z-10">
           <div className="text-center relative z-10 mt-16 md:mt-20">
