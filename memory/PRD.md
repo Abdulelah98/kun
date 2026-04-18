@@ -27,7 +27,7 @@ Build a modern, high-conversion bilingual (Arabic-first) website for KUN workspa
 - Google Map embed
 
 ## What's Been Implemented (Dec 2025)
-- [x] Homepage: Hero video, services cards, target audience, why KUN, image gallery, final CTA
+- [x] Homepage: Hero video, About Us, services cards, target audience, why KUN, image gallery, final CTA
 - [x] Services overview page
 - [x] Spaces page: Shared desks (quantity selector), private offices (grid with availability), meeting rooms (calendar + time slots)
 - [x] Business services page (legal, HR, workspace solutions)

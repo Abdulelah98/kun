@@ -190,9 +190,51 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* About Us Section */}
+      <section data-testid="about-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
+        <span ref={setBgRef(0)} className="section-bg-word section-bg-word--left" aria-hidden="true">من نحن</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-center mt-12 md:mt-16">
+            {/* Content - appears first in RTL = right side */}
+            <div className="md:col-span-7 md:order-1 text-right">
+              <p className="text-gray-600 text-base md:text-[1.05rem] leading-[2] mb-8">
+                <span className="font-bold text-gray-900">كن</span> علامة سعودية رائدة في تقديم مساحات العمل الذكية وخدمات الأعمال المتكاملة. نُوفّر لرواد الأعمال والشركات بيئة احترافية ومرنة تُواكب تطلعاتهم وتُسهّل رحلة نموّهم.
+              </p>
+              <div className="grid grid-cols-3 gap-4 md:gap-6 pt-6 border-t border-gray-100">
+                <div data-testid="about-stat-0">
+                  <div className="text-2xl md:text-3xl font-bold text-[#f47424] mb-1 tracking-tight">+500</div>
+                  <div className="text-xs md:text-sm text-gray-500">عميل يثق بنا</div>
+                </div>
+                <div data-testid="about-stat-1">
+                  <div className="text-2xl md:text-3xl font-bold text-[#f47424] mb-1 tracking-tight">+20</div>
+                  <div className="text-xs md:text-sm text-gray-500">خدمة متكاملة</div>
+                </div>
+                <div data-testid="about-stat-2">
+                  <div className="text-2xl md:text-3xl font-bold text-[#f47424] mb-1 tracking-tight">24/7</div>
+                  <div className="text-xs md:text-sm text-gray-500">دعم مستمر</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Title - appears second in RTL = left side */}
+            <div className="md:col-span-5 md:order-2 text-left">
+              <span className="inline-flex items-center gap-3 text-[#f47424] font-semibold text-xs md:text-sm mb-5 tracking-[0.15em] uppercase">
+                <span className="w-8 h-[2px] bg-[#f47424]" />
+                من نحن
+              </span>
+              <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-gray-900 tracking-tight leading-[1.3]">
+                بيئة عمل متكاملة
+                <br />
+                صُنعت لتدعم <span className="text-[#f47424]">نجاحك</span>
+              </h2>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Services Overview */}
       <section data-testid="services-section" className="services-section py-28 md:py-36 relative overflow-hidden">
-        <span ref={setBgRef(0)} className="section-bg-word section-bg-word--right" aria-hidden="true">خدماتنا</span>
+        <span ref={setBgRef(1)} className="section-bg-word section-bg-word--right" aria-hidden="true">خدماتنا</span>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 mt-24 md:mt-28">
@@ -245,7 +287,7 @@ export default function HomePage() {
 
       {/* Target Audience */}
       <section data-testid="audience-section" className="py-20 md:py-28 bg-[#F9FAFB] relative overflow-hidden">
-        <span ref={setBgRef(1)} className="section-bg-word section-bg-word--left" aria-hidden="true">عملاؤنا</span>
+        <span ref={setBgRef(2)} className="section-bg-word section-bg-word--left" aria-hidden="true">عملاؤنا</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">لمن صُممت هذه المساحات؟</h2>
@@ -270,7 +312,7 @@ export default function HomePage() {
 
       {/* Why KUN */}
       <section data-testid="why-kun-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
-        <span ref={setBgRef(2)} className="section-bg-word section-bg-word--right" aria-hidden="true">لماذا كن</span>
+        <span ref={setBgRef(3)} className="section-bg-word section-bg-word--right" aria-hidden="true">لماذا كن</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10 mt-16 md:mt-20">
             <div>
@@ -318,7 +360,7 @@ export default function HomePage() {
 
       {/* Image Gallery */}
       <section data-testid="gallery-section" className="py-20 md:py-28 bg-[#F9FAFB] relative overflow-hidden">
-        <span ref={setBgRef(3)} className="section-bg-word section-bg-word--left" aria-hidden="true">مساحاتنا</span>
+        <span ref={setBgRef(4)} className="section-bg-word section-bg-word--left" aria-hidden="true">مساحاتنا</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center justify-between mb-10 mt-16 md:mt-20 relative z-10">
             <div>
@@ -361,7 +403,7 @@ export default function HomePage() {
 
       {/* Final CTA */}
       <section data-testid="final-cta-section" className="py-28 md:py-36 bg-white relative overflow-hidden">
-        <span ref={setBgRef(4)} className="section-bg-word section-bg-word--center" style={{ top: '15%' }} aria-hidden="true">تواصل</span>
+        <span ref={setBgRef(5)} className="section-bg-word section-bg-word--center" style={{ top: '15%' }} aria-hidden="true">تواصل</span>
         <div className="max-w-3xl mx-auto px-4 relative z-10">
           <div className="text-center relative z-10 mt-16 md:mt-20">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-6">
