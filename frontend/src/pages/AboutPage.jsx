@@ -64,14 +64,14 @@ export default function AboutPage() {
               <div
                 key={i}
                 data-testid={`about-value-${i}`}
-                className="group p-8 bg-white rounded-xl border border-gray-100 transition-all duration-300 hover:border-gray-200 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 relative overflow-hidden"
+                className="group p-8 bg-[#0F1A33] rounded-xl border border-white/[0.06] transition-all duration-300 hover:border-[#f47424]/30 hover:-translate-y-1 relative overflow-hidden"
               >
-                <div className="w-12 h-12 rounded-lg bg-orange-50 flex items-center justify-center mb-5">
+                <div className="w-12 h-12 rounded-lg bg-[#f47424]/10 border border-[#f47424]/20 flex items-center justify-center mb-5 transition-all duration-300 group-hover:bg-[#f47424]/15">
                   <v.icon className="w-6 h-6 text-[#f47424]" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{v.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{v.desc}</p>
-                <div className="card-hover-line" />
+                <h3 className="text-xl font-bold text-white mb-3">{v.title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{v.desc}</p>
+                <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#f47424]/[0.04] to-transparent" />
               </div>
             ))}
           </div>
