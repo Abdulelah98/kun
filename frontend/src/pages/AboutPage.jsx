@@ -59,19 +59,20 @@ export default function AboutPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">قيمنا</h2>
             <p className="text-gray-500 text-base md:text-lg">المبادئ التي نؤمن بها ونعمل وفقها</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((v, i) => (
               <div
                 key={i}
                 data-testid={`about-value-${i}`}
-                className="group p-8 bg-[#0F1A33] rounded-xl border border-white/[0.06] transition-all duration-300 hover:border-[#f47424]/30 hover:-translate-y-1 relative overflow-hidden"
+                className="group relative p-8 bg-white rounded-xl border border-gray-100 transition-all duration-500 ease-out hover:-translate-y-3 hover:shadow-[0_20px_50px_-15px_rgba(244,116,36,0.25)] overflow-hidden"
               >
-                <div className="w-12 h-12 rounded-lg bg-[#f47424]/10 border border-[#f47424]/20 flex items-center justify-center mb-5 transition-all duration-300 group-hover:bg-[#f47424]/15">
+                <div className="w-12 h-12 rounded-lg bg-[#f47424]/10 flex items-center justify-center mb-5 transition-all duration-300 group-hover:bg-[#f47424]/15">
                   <v.icon className="w-6 h-6 text-[#f47424]" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">{v.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{v.desc}</p>
-                <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#f47424]/[0.04] to-transparent" />
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{v.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{v.desc}</p>
+                {/* Orange bottom bar on hover */}
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-[#f47424] rounded-t transition-all duration-500 ease-out group-hover:w-full" />
               </div>
             ))}
           </div>
