@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import axios from "axios";
-import { Users, Clock, CheckCircle, XCircle, Minus, Plus, ChevronLeft, ChevronRight, Expand } from "lucide-react";
+import { Users, Clock, CheckCircle, XCircle, Minus, Plus, ChevronLeft, ChevronRight, Expand, Wifi, Coffee, Printer, CalendarClock, LayoutGrid, Briefcase } from "lucide-react";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -236,50 +236,103 @@ export default function SpacesPage() {
         <section data-testid="shared-desks-section" className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10">المكاتب المشتركة</h2>
-            <div className="relative rounded-2xl overflow-hidden">
-              <img
-                src={sharedDesks.image}
-                alt="المكاتب المشتركة"
-                className="w-full h-[300px] md:h-[420px] object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-              <div className="absolute bottom-0 right-0 left-0 p-6 md:p-10 text-white">
-                <div className="flex flex-wrap gap-6 mb-6">
-                  <div className="bg-white/10 backdrop-blur-md rounded-lg px-5 py-3 border border-white/20">
-                    <p className="text-xs text-gray-300">المقاعد المتاحة</p>
-                    <p className="text-xl font-bold text-green-400">{sharedDesks.available_seats}</p>
+
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+              {/* Hero image + availability + booking */}
+              <div className="lg:col-span-3 relative rounded-2xl overflow-hidden min-h-[380px] md:min-h-[480px]">
+                <img
+                  src={sharedDesks.image}
+                  alt="المكاتب المشتركة"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                <div className="absolute bottom-0 right-0 left-0 p-6 md:p-8 text-white">
+                  <div className="flex flex-wrap gap-3 mb-5">
+                    <div className="bg-white/10 backdrop-blur-md rounded-lg px-4 py-2.5 border border-white/20">
+                      <p className="text-[11px] text-gray-300">المقاعد المتاحة</p>
+                      <p className="text-lg font-bold text-green-400">{sharedDesks.available_seats}</p>
+                    </div>
+                    <div className="bg-white/10 backdrop-blur-md rounded-lg px-4 py-2.5 border border-white/20">
+                      <p className="text-[11px] text-gray-300">المقاعد المحجوزة</p>
+                      <p className="text-lg font-bold text-red-400">{sharedDesks.occupied_seats}</p>
+                    </div>
                   </div>
-                  <div className="bg-white/10 backdrop-blur-md rounded-lg px-5 py-3 border border-white/20">
-                    <p className="text-xs text-gray-300">المقاعد المحجوزة</p>
-                    <p className="text-xl font-bold text-red-400">{sharedDesks.occupied_seats}</p>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                    <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-lg border border-white/20">
+                      <button
+                        data-testid="desk-decrease"
+                        onClick={() => setDeskCount(Math.max(1, deskCount - 1))}
+                        className="p-2 hover:text-[#f47424] transition-colors"
+                      >
+                        <Minus size={18} />
+                      </button>
+                      <span data-testid="desk-count" className="text-lg font-bold min-w-[2rem] text-center">{deskCount}</span>
+                      <button
+                        data-testid="desk-increase"
+                        onClick={() => setDeskCount(Math.min(sharedDesks.available_seats, deskCount + 1))}
+                        className="p-2 hover:text-[#f47424] transition-colors"
+                      >
+                        <Plus size={18} />
+                      </button>
+                    </div>
+                    <Button
+                      data-testid="desk-book-button"
+                      onClick={() => openBooking("desk", sharedDesks)}
+                      className="bg-[#f47424] text-white hover:bg-[#d9641d] font-bold px-8 py-3 rounded-md"
+                    >
+                      احجز مكتبك المشترك
+                    </Button>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                  <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-lg border border-white/20">
-                    <button
-                      data-testid="desk-decrease"
-                      onClick={() => setDeskCount(Math.max(1, deskCount - 1))}
-                      className="p-2 hover:text-[#f47424] transition-colors"
-                    >
-                      <Minus size={18} />
-                    </button>
-                    <span data-testid="desk-count" className="text-lg font-bold min-w-[2rem] text-center">{deskCount}</span>
-                    <button
-                      data-testid="desk-increase"
-                      onClick={() => setDeskCount(Math.min(sharedDesks.available_seats, deskCount + 1))}
-                      className="p-2 hover:text-[#f47424] transition-colors"
-                    >
-                      <Plus size={18} />
-                    </button>
-                  </div>
-                  <Button
-                    data-testid="desk-book-button"
-                    onClick={() => openBooking("desk", sharedDesks)}
-                    className="bg-[#f47424] text-white hover:bg-[#d9641d] font-bold px-8 py-3 rounded-md"
-                  >
-                    احجز مكتبك المشترك
-                  </Button>
+              </div>
+
+              {/* Pricing + Features panel */}
+              <div
+                data-testid="shared-desks-features-panel"
+                className="lg:col-span-2 relative rounded-2xl overflow-hidden bg-[#0A1128] p-7 md:p-8 text-white flex flex-col"
+              >
+                {/* Decorative glow */}
+                <div className="pointer-events-none absolute -top-24 -left-24 w-64 h-64 rounded-full bg-[#f47424]/15 blur-3xl" />
+                <div className="pointer-events-none absolute -bottom-20 -right-20 w-56 h-56 rounded-full bg-[#f47424]/10 blur-3xl" />
+
+                {/* Price badge */}
+                <div
+                  data-testid="shared-desks-price-badge"
+                  className="inline-flex items-center self-start gap-2 bg-[#f47424] text-white px-4 py-2 rounded-lg shadow-lg shadow-[#f47424]/30 mb-6"
+                >
+                  <span className="text-xs font-semibold tracking-wider opacity-90">يبدأ من</span>
+                  <span className="text-xl md:text-2xl font-black leading-none">1,500 ريال</span>
+                  <span className="text-xs font-semibold opacity-90">/ شهرياً</span>
                 </div>
+
+                <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-2">ما الذي تحصل عليه</p>
+                <h3 className="text-xl md:text-2xl font-bold mb-5">كل ما تحتاجه لإنتاجية بلا حدود</h3>
+
+                <ul className="space-y-3.5 relative z-10">
+                  {[
+                    { icon: Briefcase, text: "مكتب مشترك (Hot Desk)" },
+                    { icon: Wifi, text: "إنترنت فائق السرعة غير محدود" },
+                    { icon: Coffee, text: "ضيافة غير محدودة (قهوة، شاي، مياه)" },
+                    { icon: Printer, text: "طباعة غير محدودة" },
+                    { icon: CalendarClock, text: "وصول مرن بالساعة أو اليوم" },
+                    { icon: LayoutGrid, text: "استخدام المناطق المشتركة" },
+                  ].map((item, i) => {
+                    const Icon = item.icon;
+                    return (
+                      <li
+                        key={i}
+                        data-testid={`shared-desks-feature-${i}`}
+                        className="flex items-center gap-3 group/item"
+                      >
+                        <span className="flex-shrink-0 w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[#f47424] group-hover/item:bg-[#f47424] group-hover/item:text-white group-hover/item:border-[#f47424] transition-all duration-300">
+                          <Icon size={16} />
+                        </span>
+                        <span className="text-sm md:text-[15px] text-gray-100 leading-snug">{item.text}</span>
+                        <CheckCircle size={14} className="ml-auto text-[#f47424]/70" />
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
             </div>
           </div>
