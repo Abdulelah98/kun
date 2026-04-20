@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import axios from "axios";
-import { Users, Clock, CheckCircle, XCircle, Minus, Plus, ChevronLeft, ChevronRight, Expand, Wifi, Coffee, Printer, CalendarClock, LayoutGrid, Briefcase } from "lucide-react";
+import { Users, Clock, CheckCircle, XCircle, Minus, Plus, ChevronLeft, ChevronRight, Expand, Wifi, Coffee, Printer, CalendarClock, LayoutGrid, Briefcase, Building2, MapPin, ConciergeBell, Presentation, Headset } from "lucide-react";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -343,6 +343,64 @@ export default function SpacesPage() {
       <section data-testid="offices-section" className="py-20 bg-[#F9FAFB]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10">المكاتب الخاصة</h2>
+
+          {/* Pricing + Features banner */}
+          <div
+            data-testid="offices-features-panel"
+            className="relative rounded-2xl overflow-hidden bg-[#0A1128] p-7 md:p-10 text-white mb-10"
+          >
+            {/* Decorative glows */}
+            <div className="pointer-events-none absolute -top-28 -right-28 w-80 h-80 rounded-full bg-[#f47424]/15 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-28 -left-28 w-72 h-72 rounded-full bg-[#f47424]/10 blur-3xl" />
+
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+              {/* Heading + Price */}
+              <div className="lg:col-span-1">
+                <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-3">باقة المكاتب الخاصة</p>
+                <h3 className="text-2xl md:text-3xl font-bold mb-5 leading-tight">
+                  مكتبك الخاص بهوية احترافية متكاملة
+                </h3>
+                <div
+                  data-testid="offices-price-badge"
+                  className="inline-flex items-center gap-2 bg-[#f47424] text-white px-5 py-3 rounded-lg shadow-lg shadow-[#f47424]/30"
+                >
+                  <span className="text-xs font-semibold tracking-wider opacity-90">يبدأ من</span>
+                  <span className="text-2xl md:text-3xl font-black leading-none">3,500 ريال</span>
+                  <span className="text-xs font-semibold opacity-90">/ شهرياً</span>
+                </div>
+              </div>
+
+              {/* Features grid */}
+              <ul className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-3">
+                {[
+                  { icon: Building2, text: "مكتب خاص مجهز بالكامل" },
+                  { icon: Wifi, text: "إنترنت فائق السرعة غير محدود" },
+                  { icon: Coffee, text: "ضيافة غير محدودة (قهوة، شاي، مياه)" },
+                  { icon: Printer, text: "طباعة غير محدودة" },
+                  { icon: MapPin, text: "عنوان تجاري رسمي" },
+                  { icon: ConciergeBell, text: "خدمة استقبال وسكرتارية" },
+                  { icon: Presentation, text: "قاعات اجتماعات (ساعات شهرية)" },
+                  { icon: Headset, text: "دعم إداري وتشغيلي متكامل" },
+                ].map((item, i) => {
+                  const Icon = item.icon;
+                  return (
+                    <li
+                      key={i}
+                      data-testid={`offices-feature-${i}`}
+                      className="flex items-center gap-3 group/item py-1.5"
+                    >
+                      <span className="flex-shrink-0 w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[#f47424] group-hover/item:bg-[#f47424] group-hover/item:text-white group-hover/item:border-[#f47424] transition-all duration-300">
+                        <Icon size={16} />
+                      </span>
+                      <span className="text-sm md:text-[15px] text-gray-100 leading-snug">{item.text}</span>
+                      <CheckCircle size={14} className="ml-auto text-[#f47424]/70" />
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {offices.map((office) => {
               const imgs = office.images && office.images.length ? office.images : [office.image];
