@@ -73,7 +73,7 @@ export default function PodPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-[#F9FAFB]">
+      <section className="py-20 bg-[#EDF0F4]">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-6">
             جرّب البود الذكي اليوم

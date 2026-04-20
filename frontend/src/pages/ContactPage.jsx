@@ -148,7 +148,7 @@ export default function ContactPage() {
 
             {/* Contact Info */}
             <div className="lg:col-span-2 space-y-6">
-              <div className="bg-[#F9FAFB] rounded-xl p-6 border border-gray-100">
+              <div className="bg-[#EDF0F4] rounded-xl p-6 border border-gray-100">
                 <h3 className="font-bold text-gray-900 mb-5">معلومات التواصل</h3>
                 <div className="space-y-4">
                   <a href="mailto:info@kunws.com" className="flex items-center gap-3 text-gray-600 hover:text-[#f47424] transition-colors">
@@ -190,7 +190,7 @@ export default function ContactPage() {
               </a>
 
               {/* Social */}
-              <div className="bg-[#F9FAFB] rounded-xl p-6 border border-gray-100">
+              <div className="bg-[#EDF0F4] rounded-xl p-6 border border-gray-100">
                 <h3 className="font-bold text-gray-900 mb-4">تابعنا</h3>
                 <div className="flex gap-3">
                   <a

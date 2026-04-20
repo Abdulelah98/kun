@@ -461,7 +461,7 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section data-testid="final-cta-section" className="py-28 md:py-36 bg-[#F9FAFB] relative overflow-hidden">
+      <section data-testid="final-cta-section" className="py-28 md:py-36 bg-[#EDF0F4] relative overflow-hidden">
         <span ref={setBgRef(5)} className="section-bg-word section-bg-word--center" style={{ top: '15%' }} aria-hidden="true">تواصل</span>
         <div className="max-w-3xl mx-auto px-4 relative z-10">
           <div className="text-center relative z-10 mt-16 md:mt-20">

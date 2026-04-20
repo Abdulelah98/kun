@@ -53,7 +53,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values Grid */}
-      <section className="py-20 md:py-28 bg-[#F9FAFB]">
+      <section className="py-20 md:py-28 bg-[#EDF0F4]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">قيمنا</h2>

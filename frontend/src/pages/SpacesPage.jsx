@@ -340,7 +340,7 @@ export default function SpacesPage() {
       )}
 
       {/* Private Offices */}
-      <section data-testid="offices-section" className="py-20 bg-[#F9FAFB]">
+      <section data-testid="offices-section" className="py-20 bg-[#EDF0F4]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10">المكاتب الخاصة</h2>
 
@@ -477,7 +477,7 @@ export default function SpacesPage() {
             </div>
 
             {/* Calendar & Time Selection */}
-            <div className="bg-[#F9FAFB] rounded-xl border border-gray-100 p-6">
+            <div className="bg-[#EDF0F4] rounded-xl border border-gray-100 p-6">
               {selectedRoom ? (
                 <>
                   <h3 className="font-bold text-gray-900 mb-4">اختر التاريخ والوقت</h3>
