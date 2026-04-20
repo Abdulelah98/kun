@@ -237,9 +237,9 @@ export default function SpacesPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10">المكاتب المشتركة</h2>
 
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Hero image + availability + booking */}
-              <div className="lg:col-span-3 relative rounded-2xl overflow-hidden min-h-[380px] md:min-h-[480px]">
+              <div className="lg:col-span-8 relative rounded-2xl overflow-hidden min-h-[380px] md:min-h-[520px]">
                 <img
                   src={sharedDesks.image}
                   alt="المكاتب المشتركة"
@@ -289,7 +289,7 @@ export default function SpacesPage() {
               {/* Pricing + Features panel */}
               <div
                 data-testid="shared-desks-features-panel"
-                className="lg:col-span-2 relative rounded-2xl overflow-hidden bg-[#0A1128] p-7 md:p-8 text-white flex flex-col"
+                className="lg:col-span-4 relative rounded-2xl overflow-hidden bg-[#0A1128] p-6 md:p-7 text-white flex flex-col"
               >
                 {/* Decorative glow */}
                 <div className="pointer-events-none absolute -top-24 -left-24 w-64 h-64 rounded-full bg-[#f47424]/15 blur-3xl" />
