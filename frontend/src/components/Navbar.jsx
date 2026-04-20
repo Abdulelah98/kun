@@ -94,7 +94,7 @@ export default function Navbar() {
               data-testid="nav-cta-button"
               className="bg-[#f47424] text-white hover:bg-[#d9641d] font-bold px-6 py-2.5 rounded-full text-sm shadow-[0_4px_16px_rgba(244,116,36,0.3)] hover:shadow-[0_6px_24px_rgba(244,116,36,0.4)] transition-all duration-300 hover:-translate-y-[1px]"
             >
-              احجز الآن
+              احجز جولتك المجانية
             </Button>
           </Link>
         </nav>
@@ -151,7 +151,7 @@ export default function Navbar() {
               data-testid="mobile-nav-cta"
               className="w-full bg-[#f47424] text-white hover:bg-[#d9641d] font-bold mt-2 rounded-full shadow-[0_4px_16px_rgba(244,116,36,0.3)]"
             >
-              احجز الآن
+              احجز جولتك المجانية
             </Button>
           </Link>
         </nav>

@@ -221,14 +221,14 @@ export default function ContactPage() {
       {/* Google Map */}
       <section data-testid="map-section" className="h-[400px] w-full">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3621.9741!2d46.6753!3d24.7136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjTCsDQyJzQ5LjAiTiA0NsKwNDAnMzEuMCJF!5e0!3m2!1sar!2ssa!4v1700000000000!5m2!1sar!2ssa"
+          src="https://maps.google.com/maps?q=24.8478721,46.6660527&hl=ar&z=17&t=m&output=embed"
           width="100%"
           height="100%"
           style={{ border: 0 }}
           allowFullScreen=""
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
-          title="موقع كن - الرياض"
+          title="موقع كن - KUN Coworking space"
         />
       </section>
     </main>
