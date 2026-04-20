@@ -340,26 +340,22 @@ export default function SpacesPage() {
       )}
 
       {/* Private Offices */}
-      <section data-testid="offices-section" className="py-20 bg-[#F9FAFB]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10">المكاتب الخاصة</h2>
+      <section data-testid="offices-section" className="relative py-20 bg-[#0A1128] overflow-hidden">
+        {/* Decorative glows for the whole section */}
+        <div className="pointer-events-none absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full bg-[#f47424]/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-32 -left-32 w-[26rem] h-[26rem] rounded-full bg-[#f47424]/10 blur-3xl" />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-10">المكاتب الخاصة</h2>
 
           {/* Pricing + Features banner */}
           <div
             data-testid="offices-features-panel"
-            className="relative rounded-2xl overflow-hidden bg-[#0A1128] p-7 md:p-10 text-white mb-10"
+            className="relative rounded-2xl overflow-hidden bg-white/[0.03] border border-white/10 backdrop-blur-sm p-7 md:p-10 text-white mb-10"
           >
-            {/* Decorative glows */}
-            <div className="pointer-events-none absolute -top-28 -right-28 w-80 h-80 rounded-full bg-[#f47424]/15 blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-28 -left-28 w-72 h-72 rounded-full bg-[#f47424]/10 blur-3xl" />
-
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-              {/* Heading + Price */}
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+              {/* Price */}
               <div className="lg:col-span-1">
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-3">باقة المكاتب الخاصة</p>
-                <h3 className="text-2xl md:text-3xl font-bold mb-5 leading-tight">
-                  مكتبك الخاص بهوية احترافية متكاملة
-                </h3>
                 <div
                   data-testid="offices-price-badge"
                   className="inline-flex items-center gap-2 bg-[#f47424] text-white px-5 py-3 rounded-lg shadow-lg shadow-[#f47424]/30"
@@ -408,7 +404,7 @@ export default function SpacesPage() {
                 <div
                   key={office.id}
                   data-testid={`office-card-${office.id}`}
-                  className="group bg-white rounded-xl border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-1"
+                  className="group bg-white/[0.04] rounded-xl border border-white/10 overflow-hidden transition-all duration-300 hover:bg-white/[0.07] hover:border-white/20 hover:shadow-[0_8px_30px_rgba(244,116,36,0.15)] hover:-translate-y-1"
                 >
                   <div className="relative">
                     <HoverGallery
@@ -416,20 +412,20 @@ export default function SpacesPage() {
                       alt={office.name}
                       onOpen={(i) => openGallery(imgs, office.name, i)}
                     />
-                    <div className={`absolute top-3 left-3 z-10 px-3 py-1 rounded-full text-xs font-bold ${office.available ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+                    <div className={`absolute top-3 left-3 z-10 px-3 py-1 rounded-full text-xs font-bold ${office.available ? "bg-green-500/20 text-green-300 border border-green-400/30" : "bg-red-500/20 text-red-300 border border-red-400/30"}`}>
                       {office.available ? "متاح الآن" : `محجوز حتى ${office.reserved_until}`}
                     </div>
                   </div>
                   <div className="p-5">
-                    <h3 className="text-lg font-bold text-gray-900 mb-2">{office.name}</h3>
-                    <div className="flex items-center gap-4 text-sm text-gray-500 mb-5">
+                    <h3 className="text-lg font-bold text-white mb-2">{office.name}</h3>
+                    <div className="flex items-center gap-4 text-sm text-gray-400 mb-5">
                       <span className="flex items-center gap-1"><Users size={14} /> {office.capacity} أشخاص</span>
                     </div>
                     <Button
                       data-testid={`office-book-${office.id}`}
                       onClick={() => office.available && openBooking("office", office)}
                       disabled={!office.available}
-                      className={`w-full text-sm font-bold rounded-md py-2.5 ${office.available ? "bg-[#f47424] text-white hover:bg-[#d9641d]" : "bg-gray-100 text-gray-400 cursor-not-allowed"}`}
+                      className={`w-full text-sm font-bold rounded-md py-2.5 ${office.available ? "bg-[#f47424] text-white hover:bg-[#d9641d]" : "bg-white/10 text-gray-500 cursor-not-allowed"}`}
                     >
                       {office.available ? "احجز هذا المكتب" : "محجوز"}
                     </Button>
