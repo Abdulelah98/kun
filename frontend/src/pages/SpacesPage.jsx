@@ -535,43 +535,57 @@ export default function SpacesPage() {
 
       {/* Booking Dialog */}
       <Dialog open={bookingDialog.open} onOpenChange={(open) => setBookingDialog({ ...bookingDialog, open })}>
-        <DialogContent className="max-w-md" dir="rtl">
-          <DialogHeader>
-            <DialogTitle className="text-right">تأكيد الحجز</DialogTitle>
-            <DialogDescription className="text-right">
-              يرجى تعبئة بياناتك لإتمام الحجز
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 mt-4">
-            <Input
-              data-testid="booking-name"
-              placeholder="الاسم الكامل"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="bg-gray-50 border-gray-200 text-right"
-            />
-            <Input
-              data-testid="booking-phone"
-              placeholder="رقم الهاتف"
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="bg-gray-50 border-gray-200 text-right"
-            />
-            <Input
-              data-testid="booking-email"
-              placeholder="البريد الإلكتروني"
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="bg-gray-50 border-gray-200 text-right"
-            />
+        <DialogContent
+          dir="rtl"
+          className="max-w-md p-0 overflow-hidden rounded-2xl border border-gray-100 [&>button]:left-4 [&>button]:right-auto [&>button]:top-4"
+        >
+          <div className="p-6 md:p-7">
+            <DialogHeader className="pl-8 text-right">
+              <DialogTitle className="text-right text-xl font-bold text-gray-900">طلب حجز</DialogTitle>
+              <DialogDescription className="text-right text-sm text-gray-500 mt-1">
+                يرجى تعبئة بياناتك وسنقوم بالتواصل معكم قريباً
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-3 mt-6">
+              <Input
+                data-testid="booking-name"
+                placeholder="الاسم الكامل"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className="bg-gray-50 border-gray-200 text-right h-11"
+              />
+              <Input
+                data-testid="booking-phone"
+                placeholder="رقم الهاتف"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                className="bg-gray-50 border-gray-200 text-right h-11"
+              />
+              <Input
+                data-testid="booking-email"
+                placeholder="البريد الإلكتروني"
+                type="email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="bg-gray-50 border-gray-200 text-right h-11"
+              />
+            </div>
+
+            <p
+              data-testid="booking-helper-text"
+              className="text-xs text-gray-500 text-right mt-3 leading-relaxed"
+            >
+              سيتم التواصل معكم لتأكيد الحجز
+            </p>
+
             <Button
               data-testid="booking-submit"
               onClick={handleSubmit}
               disabled={submitting}
-              className="w-full bg-[#f47424] text-white hover:bg-[#d9641d] font-bold py-3 rounded-md"
+              className="w-full mt-5 bg-[#f47424] text-white hover:bg-[#d9641d] font-bold py-3 rounded-md h-12"
             >
-              {submitting ? "جاري الإرسال..." : "تأكيد الحجز"}
+              {submitting ? "جاري الإرسال..." : "إرسال طلب"}
             </Button>
           </div>
         </DialogContent>
