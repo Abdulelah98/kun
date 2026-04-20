@@ -369,7 +369,7 @@ export default function SpacesPage() {
               </div>
 
               {/* Features grid */}
-              <ul className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <ul className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3.5">
                 {[
                   { icon: Building2, text: "مكتب خاص مجهز بالكامل" },
                   { icon: Wifi, text: "إنترنت فائق السرعة غير محدود" },
@@ -385,13 +385,13 @@ export default function SpacesPage() {
                     <li
                       key={i}
                       data-testid={`offices-feature-${i}`}
-                      className="flex items-center gap-3 group/item bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 hover:border-white/20 rounded-xl px-4 py-3 transition-all duration-300"
+                      className="flex items-center gap-3 group/item"
                     >
-                      <span className="flex-shrink-0 w-9 h-9 rounded-lg bg-white/10 border border-white/15 flex items-center justify-center text-[#f47424] group-hover/item:bg-[#f47424] group-hover/item:text-white group-hover/item:border-[#f47424] transition-all duration-300">
+                      <span className="flex-shrink-0 w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[#f47424] group-hover/item:bg-[#f47424] group-hover/item:text-white group-hover/item:border-[#f47424] transition-all duration-300">
                         <Icon size={16} />
                       </span>
                       <span className="text-sm md:text-[15px] text-gray-100 leading-snug">{item.text}</span>
-                      <CheckCircle size={14} className="ml-auto text-[#f47424]/80" />
+                      <CheckCircle size={14} className="ml-auto text-[#f47424]/70" />
                     </li>
                   );
                 })}
