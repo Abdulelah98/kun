@@ -48,19 +48,19 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-[72px]">
-        <Link to="/" data-testid="nav-logo-link" className="relative block h-10 md:h-12">
+        <Link to="/" data-testid="nav-logo-link" className="relative block h-10 md:h-12 w-10 md:w-12">
           {/* White logo (transparent hero) */}
           <img
             src={LOGO_URL}
             alt="KUN"
-            className={`h-full w-auto brightness-0 invert transition-opacity duration-300 ${useDarkLogo ? "opacity-0" : "opacity-100"}`}
+            className={`absolute inset-0 h-full w-full object-contain brightness-0 invert transition-opacity duration-300 ${useDarkLogo ? "opacity-0" : "opacity-100"}`}
           />
           {/* Dark logo (white navbar / hover) */}
           <img
             src={LOGO_DARK_URL}
             alt="KUN"
             aria-hidden={!useDarkLogo}
-            className={`absolute inset-0 h-full w-auto transition-opacity duration-300 ${useDarkLogo ? "opacity-100" : "opacity-0"}`}
+            className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-300 ${useDarkLogo ? "opacity-100" : "opacity-0"}`}
           />
         </Link>
 

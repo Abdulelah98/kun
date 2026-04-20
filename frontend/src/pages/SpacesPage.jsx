@@ -406,7 +406,7 @@ export default function SpacesPage() {
                 <div
                   key={office.id}
                   data-testid={`office-card-${office.id}`}
-                  className="group bg-white rounded-xl border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-1"
+                  className="group bg-[#0A1128] rounded-xl border border-white/10 overflow-hidden transition-all duration-300 hover:border-[#f47424]/40 hover:shadow-[0_10px_40px_rgba(10,17,40,0.25)] hover:-translate-y-1"
                 >
                   <div className="relative">
                     <HoverGallery
@@ -414,20 +414,27 @@ export default function SpacesPage() {
                       alt={office.name}
                       onOpen={(i) => openGallery(imgs, office.name, i)}
                     />
-                    <div className={`absolute top-3 left-3 z-10 px-3 py-1 rounded-full text-xs font-bold ${office.available ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+                    <div
+                      className={`absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold shadow-sm ${
+                        office.available
+                          ? "bg-green-500 text-white"
+                          : "bg-red-500 text-white"
+                      }`}
+                    >
+                      <span className={`inline-block w-1.5 h-1.5 rounded-full bg-white ${office.available ? "animate-pulse" : ""}`} />
                       {office.available ? "متاح الآن" : `محجوز حتى ${office.reserved_until}`}
                     </div>
                   </div>
                   <div className="p-5">
-                    <h3 className="text-lg font-bold text-gray-900 mb-2">{office.name}</h3>
-                    <div className="flex items-center gap-4 text-sm text-gray-500 mb-5">
+                    <h3 className="text-lg font-bold text-white mb-2">{office.name}</h3>
+                    <div className="flex items-center gap-4 text-sm text-gray-400 mb-5">
                       <span className="flex items-center gap-1"><Users size={14} /> {office.capacity} أشخاص</span>
                     </div>
                     <Button
                       data-testid={`office-book-${office.id}`}
                       onClick={() => office.available && openBooking("office", office)}
                       disabled={!office.available}
-                      className={`w-full text-sm font-bold rounded-md py-2.5 ${office.available ? "bg-[#f47424] text-white hover:bg-[#d9641d]" : "bg-gray-100 text-gray-400 cursor-not-allowed"}`}
+                      className={`w-full text-sm font-bold rounded-md py-2.5 ${office.available ? "bg-[#f47424] text-white hover:bg-[#d9641d]" : "bg-white/10 text-gray-500 cursor-not-allowed"}`}
                     >
                       {office.available ? "احجز هذا المكتب" : "محجوز"}
                     </Button>
