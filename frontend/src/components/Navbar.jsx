@@ -4,6 +4,7 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const LOGO_URL = "https://customer-assets.emergentagent.com/job_kun-conversion-site/artifacts/lox96qjv_KUN-LOGO.svg";
+const LOGO_DARK_URL = "/assets/kun-logo-dark.png";
 
 const navLinks = [
   { label: "الرئيسية", path: "/" },
@@ -19,6 +20,7 @@ const navLinks = [
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === "/";
 
@@ -29,22 +31,36 @@ export default function Navbar() {
   }, []);
 
   const transparent = isHome && !scrolled && !mobileOpen;
+  // Navbar surface acts "light" when not transparent OR hovered
+  const lightSurface = !transparent || hovered;
+  // Show dark logo whenever the navbar surface is light
+  const useDarkLogo = lightSurface;
 
   return (
     <header
       data-testid="main-navbar"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       className={`fixed top-0 right-0 left-0 z-50 transition-all duration-500 ${
-        transparent
+        transparent && !hovered
           ? "bg-transparent border-b border-transparent"
           : "backdrop-blur-2xl bg-white/85 border-b border-gray-100 shadow-[0_1px_20px_rgba(0,0,0,0.04)]"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-[72px]">
-        <Link to="/" data-testid="nav-logo-link">
+        <Link to="/" data-testid="nav-logo-link" className="relative block h-10 md:h-12">
+          {/* White logo (transparent hero) */}
           <img
             src={LOGO_URL}
             alt="KUN"
-            className={`h-10 md:h-12 transition-all duration-300 ${transparent ? "brightness-0 invert" : ""}`}
+            className={`h-full w-auto brightness-0 invert transition-opacity duration-300 ${useDarkLogo ? "opacity-0" : "opacity-100"}`}
+          />
+          {/* Dark logo (white navbar / hover) */}
+          <img
+            src={LOGO_DARK_URL}
+            alt="KUN"
+            aria-hidden={!useDarkLogo}
+            className={`absolute inset-0 h-full w-auto transition-opacity duration-300 ${useDarkLogo ? "opacity-100" : "opacity-0"}`}
           />
         </Link>
 
@@ -57,8 +73,8 @@ export default function Navbar() {
                 data-testid={`nav-link-${link.path.replace("/", "") || "home"}`}
                 className={`text-[15px] font-semibold transition-colors duration-300 relative pb-1.5 flex items-center gap-1 nav-link-hover ${
                   location.pathname === link.path || (link.children && link.children.some(c => location.pathname === c.path))
-                    ? transparent ? "text-white" : "text-[#f47424]"
-                    : transparent ? "text-white/80 hover:text-white" : "text-gray-600 hover:text-[#f47424]"
+                    ? lightSurface ? "text-[#f47424]" : "text-white"
+                    : lightSurface ? "text-gray-600 hover:text-[#f47424]" : "text-white/80 hover:text-white"
                 }`}
               >
                 {link.label}
@@ -102,7 +118,7 @@ export default function Navbar() {
         {/* Mobile toggle */}
         <button
           data-testid="mobile-menu-toggle"
-          className={`md:hidden transition-colors ${transparent ? "text-white" : "text-gray-700"}`}
+          className={`md:hidden transition-colors ${lightSurface ? "text-gray-700" : "text-white"}`}
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
