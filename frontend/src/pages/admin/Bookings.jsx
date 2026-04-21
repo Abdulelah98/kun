@@ -83,10 +83,19 @@ export default function Bookings() {
     setBusyId(id);
     try {
       const { data } = await api.patch(`/admin/bookings/${id}`, { status });
+      // Backend returns {success, message, data: booking}. Keep backward-compat if older shape.
+      const updated = data && data.data ? data.data : data;
+      const msg = (data && data.message) ||
+        (status === "confirmed" ? "تم تأكيد الحجز" :
+         status === "rejected" ? "تم رفض الحجز" :
+         "تم تحديث الحالة");
       // Optimistic inline update without full refetch
-      setItems((prev) => prev.map((b) => (b.id === id ? { ...b, ...data } : b)));
-      toast.success(status === "confirmed" ? "تم تأكيد الحجز" : status === "rejected" ? "تم رفض الحجز" : "تم تحديث الحالة");
+      setItems((prev) => prev.map((b) => (b.id === id ? { ...b, ...updated } : b)));
+      toast.success(msg);
     } catch (e) {
+      // Only log real errors, don't swallow successes
+      // eslint-disable-next-line no-console
+      console.error("Booking status update failed", e);
       toast.error(formatApiError(e));
     } finally {
       setBusyId(null);

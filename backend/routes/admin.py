@@ -1,4 +1,5 @@
 import uuid
+import logging
 from datetime import datetime, timezone
 from typing import Optional, List
 
@@ -23,6 +24,8 @@ from models.schemas import (
     MessageStatusUpdate,
     AvailabilityDoc,
 )
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -250,28 +253,50 @@ async def list_bookings(
     return await _enrich_bookings(normalized, db)
 
 
-@router.patch("/bookings/{booking_id}", response_model=BookingOut)
+@router.patch("/bookings/{booking_id}")
 async def update_booking_status(
     booking_id: str,
     payload: BookingStatusUpdate,
     _user: dict = Depends(require_staff_or_admin),
 ):
+    """Approve/reject/cancel a booking. Always returns:
+    {"success": true, "message": "...", "data": <booking>} on success (200).
+    Only raises HTTP errors for validation/not-found/auth problems.
+    """
     db = get_db()
     valid = {"pending", "confirmed", "rejected", "cancelled"}
     if payload.status not in valid:
         raise HTTPException(status_code=400, detail="Invalid status")
-    update = {"status": payload.status, "updated_at": _now_iso()}
-    if payload.notes is not None:
-        update["notes"] = payload.notes
-    result = await db.bookings.find_one_and_update(
-        {"id": booking_id},
-        {"$set": update},
-        return_document=True,
-        projection={"_id": 0},
-    )
-    if not result:
-        raise HTTPException(status_code=404, detail="Booking not found")
-    return BookingOut(**_normalize_booking(result))
+
+    try:
+        update = {"status": payload.status, "updated_at": _now_iso()}
+        if payload.notes is not None:
+            update["notes"] = payload.notes
+        result = await db.bookings.find_one_and_update(
+            {"id": booking_id},
+            {"$set": update},
+            return_document=True,
+            projection={"_id": 0},
+        )
+        if not result:
+            raise HTTPException(status_code=404, detail="Booking not found")
+
+        normalized = _normalize_booking(result)
+        enriched = await _enrich_bookings([normalized], db)
+        booking = BookingOut(**enriched[0]).model_dump()
+
+        status_label = {
+            "confirmed": "تم تأكيد الحجز",
+            "rejected": "تم رفض الحجز",
+            "cancelled": "تم إلغاء الحجز",
+            "pending": "تم إعادة الحجز إلى قيد المراجعة",
+        }[payload.status]
+        return {"success": True, "message": status_label, "data": booking}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.exception("Failed to update booking %s: %s", booking_id, e)
+        raise HTTPException(status_code=500, detail=f"حدث خطأ أثناء تحديث الحجز: {e}")
 
 
 @router.delete("/bookings/{booking_id}")
