@@ -143,7 +143,8 @@ class MessageStatusUpdate(BaseModel):
 
 # ---- CMS CONTENT BLOCKS ----
 class ContentBlockIn(BaseModel):
-    key: str  # e.g. "home_hero", "about_values", "services_overview"
+    # key comes from URL path on PUT /admin/content/{key}; accepted here for convenience
+    key: Optional[str] = None
     ar: Dict[str, Any] = Field(default_factory=dict)
     en: Dict[str, Any] = Field(default_factory=dict)
     active: bool = True
