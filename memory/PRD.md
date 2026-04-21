@@ -13,15 +13,16 @@ Build a modern, high-conversion bilingual (Arabic-first) website for KUN workspa
 ### Backend Structure
 ```
 /app/backend/
-├── server.py                (thin app, wires routers + CORS + startup seed)
+├── server.py                (thin app, wires routers + CORS + startup seed + storage init)
 ├── database.py              (motor client)
 ├── auth_utils.py            (bcrypt, jwt, get_current_user, require_admin/staff, cookies)
+├── storage.py               (Emergent Object Storage helper)
 ├── seed.py                  (admin + offices + rooms + shared desks + settings + content blocks)
-├── models/schemas.py        (pydantic models)
+├── models/schemas.py        (pydantic models incl. AvailabilityDoc, MediaItem)
 └── routes/
     ├── auth.py              (/api/auth/login|me|logout)
-    ├── public.py            (/api/offices|shared-desks|meeting-rooms|content|settings|contact|bookings/*)
-    └── admin.py             (/api/admin/* full CRUD)
+    ├── public.py            (/api/offices|shared-desks|meeting-rooms|content|settings|contact|bookings/*|availability|booked-slots|media/file/*)
+    └── admin.py             (/api/admin/* full CRUD incl. availability + media)
 ```
 
 ### Frontend Structure (admin)
@@ -82,16 +83,25 @@ Build a modern, high-conversion bilingual (Arabic-first) website for KUN workspa
 - [x] Meeting room duplicate slot detection (409)
 - [x] Admin React dashboard (dark theme, RTL): Login, Layout with sidebar, Dashboard stats, Bookings with filters + status actions, Messages with dialog viewer, full CRUD UIs for Offices/MeetingRooms/SharedDesks/Content/Settings/Users
 - [x] Content CMS with bilingual JSON editor (AR/EN tabs)
-- [x] Tested end-to-end: 28/28 backend pytest pass, 9/9 frontend flows pass
+- [x] Tested end-to-end: 51/51 backend pytest pass (Feb 2026)
+
+### Added in Feb 2026 session
+- [x] **Fixed critical 500 error on PATCH /admin/bookings/{id}**: normalized bookings with flat fields into `details` dict before schema validation
+- [x] **Bookings admin UI**: resolves office/room names instead of raw UUIDs; inline status updates without full reload
+- [x] **Media Library + uploads**: integrated Emergent Object Storage (`/app/backend/storage.py`), new endpoints `/api/admin/media*` and public `/api/media/file/{path}`; replaced all URL image inputs in Offices/MeetingRooms/SharedDesks with `MediaPicker` dialog
+- [x] **Availability admin page** (`/admin/availability`): working days, hours, blocked dates, blocked slots with full enforcement on `POST /api/bookings/meeting-room` (400 outside working hours/days, 409 duplicate)
+- [x] **Booked-slots public endpoint** `/api/booked-slots?room_id=X&date=Y` for client to disable unavailable slots on SpacesPage calendar
+- [x] **Dark/Light Theme**: new `ThemeContext` with navy #0B1E2D dark mode + off-white light mode, localStorage persisted, toggle in admin sidebar, smooth transitions. Black replaced with navy across admin
+- [x] **CMS grouping**: Content blocks grouped by page in sidebar (Home/Services/About/Contact)
 
 ## Prioritized Backlog
 
 ### P0 — None remaining
 
 ### P1 (Important)
-- Wire public website pages to read from new CMS endpoints (currently SpacesPage already uses /api/offices; Home + About + Services need to hydrate from /api/content)
-- English language toggle for public site (data model already bilingual)
-- Richer media uploader for admin images (currently URL-based)
+- Wire public homepage, About, Services, Contact to read from `/api/content/{key}` (still hardcoded)
+- English language toggle on public site (data already bilingual)
+- Resend email notifications on new contact/booking
 
 ### P2 (Nice to have)
 - Resend email notifications on new contact/booking (user opted to skip for now)
