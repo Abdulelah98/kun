@@ -2,11 +2,12 @@ import uuid
 from datetime import datetime, timezone
 from typing import Optional, List
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File
 from pydantic import BaseModel
 
 from database import get_db
 from auth_utils import require_admin, require_staff_or_admin, hash_password
+from storage import put_object, APP_NAME
 from models.schemas import (
     OfficeIn,
     OfficeOut,
@@ -20,6 +21,7 @@ from models.schemas import (
     BookingOut,
     ContactOut,
     MessageStatusUpdate,
+    AvailabilityDoc,
 )
 
 router = APIRouter(prefix="/admin", tags=["admin"])
@@ -184,6 +186,52 @@ async def update_settings(payload: SiteSettings, _user: dict = Depends(require_a
 
 
 # ================= BOOKINGS =================
+_DETAIL_FIELDS = {"num_desks", "office_id", "room_id", "date", "time_slot", "slot"}
+
+
+def _normalize_booking(doc: dict) -> dict:
+    """Ensure booking has a `details` sub-dict and flat resource fields are folded in."""
+    d = dict(doc)
+    details = d.get("details") or {}
+    if not isinstance(details, dict):
+        details = {}
+    for f in _DETAIL_FIELDS:
+        if f in d and d[f] is not None:
+            details.setdefault(f, d.pop(f))
+        else:
+            d.pop(f, None)
+    d["details"] = details
+    d.setdefault("notes", "")
+    d.setdefault("updated_at", None)
+    return d
+
+
+async def _enrich_bookings(docs: list, db) -> list:
+    office_ids = {d["details"].get("office_id") for d in docs if d["type"] == "office"}
+    room_ids = {d["details"].get("room_id") for d in docs if d["type"] == "meeting_room"}
+    office_map = {}
+    room_map = {}
+    if office_ids:
+        async for off in db.offices.find({"id": {"$in": list(office_ids)}}, {"_id": 0, "id": 1, "name": 1, "name_en": 1}):
+            office_map[off["id"]] = off
+    if room_ids:
+        async for rm in db.meeting_rooms.find({"id": {"$in": list(room_ids)}}, {"_id": 0, "id": 1, "name": 1, "name_en": 1}):
+            room_map[rm["id"]] = rm
+    for d in docs:
+        det = d.get("details", {})
+        if d["type"] == "office":
+            oid = det.get("office_id")
+            if oid and oid in office_map:
+                det["office_name"] = office_map[oid]["name"]
+                det["office_name_en"] = office_map[oid].get("name_en", "")
+        elif d["type"] == "meeting_room":
+            rid = det.get("room_id")
+            if rid and rid in room_map:
+                det["room_name"] = room_map[rid]["name"]
+                det["room_name_en"] = room_map[rid].get("name_en", "")
+    return docs
+
+
 @router.get("/bookings")
 async def list_bookings(
     status: Optional[str] = None,
@@ -197,7 +245,9 @@ async def list_bookings(
     if type:
         q["type"] = type
     cursor = db.bookings.find(q, {"_id": 0}).sort("created_at", -1)
-    return await cursor.to_list(length=1000)
+    raw = await cursor.to_list(length=1000)
+    normalized = [_normalize_booking(d) for d in raw]
+    return await _enrich_bookings(normalized, db)
 
 
 @router.patch("/bookings/{booking_id}", response_model=BookingOut)
@@ -221,7 +271,7 @@ async def update_booking_status(
     )
     if not result:
         raise HTTPException(status_code=404, detail="Booking not found")
-    return BookingOut(**result)
+    return BookingOut(**_normalize_booking(result))
 
 
 @router.delete("/bookings/{booking_id}")
@@ -376,3 +426,80 @@ async def dashboard_stats(_user: dict = Depends(require_staff_or_admin)):
         "messages": {"total": total_messages, "new": new_messages},
         "offices": {"total": total_offices, "available": available_offices},
     }
+
+
+
+# ================= AVAILABILITY (working hours / blocked slots) =================
+@router.get("/availability")
+async def get_availability_admin(_user: dict = Depends(require_staff_or_admin)):
+    db = get_db()
+    doc = await db.availability.find_one({"key": "singleton"}, {"_id": 0, "key": 0})
+    return doc or AvailabilityDoc().model_dump()
+
+
+@router.put("/availability")
+async def update_availability(payload: AvailabilityDoc, _user: dict = Depends(require_admin)):
+    db = get_db()
+    doc = payload.model_dump()
+    await db.availability.update_one({"key": "singleton"}, {"$set": doc}, upsert=True)
+    return doc
+
+
+# ================= MEDIA LIBRARY =================
+_ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
+
+
+@router.get("/media")
+async def list_media(_user: dict = Depends(require_staff_or_admin)):
+    db = get_db()
+    cursor = db.media.find({"is_deleted": {"$ne": True}}, {"_id": 0}).sort("created_at", -1)
+    return await cursor.to_list(length=500)
+
+
+@router.post("/media/upload")
+async def upload_media(
+    file: UploadFile = File(...),
+    current: dict = Depends(require_staff_or_admin),
+):
+    ctype = (file.content_type or "application/octet-stream").lower()
+    if ctype not in _ALLOWED_IMAGE_TYPES:
+        raise HTTPException(status_code=400, detail="صيغة الصورة غير مدعومة")
+    data = await file.read()
+    if len(data) > 10 * 1024 * 1024:
+        raise HTTPException(status_code=413, detail="حجم الصورة أكبر من 10 ميجابايت")
+    ext = (file.filename or "").rsplit(".", 1)[-1].lower() if "." in (file.filename or "") else "bin"
+    file_id = str(uuid.uuid4())
+    path = f"{APP_NAME}/media/{file_id}.{ext}"
+    try:
+        result = put_object(path, data, ctype)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Storage error: {e}")
+    stored_path = result.get("path", path)
+    doc = {
+        "id": file_id,
+        "storage_path": stored_path,
+        "url": f"/api/media/file/{stored_path}",
+        "original_filename": file.filename or "",
+        "content_type": ctype,
+        "size": int(result.get("size") or len(data)),
+        "tag": "",
+        "uploaded_by": current["id"],
+        "is_deleted": False,
+        "created_at": _now_iso(),
+    }
+    await db_insert_media(doc)
+    return {k: v for k, v in doc.items() if k != "is_deleted"}
+
+
+async def db_insert_media(doc: dict):
+    db = get_db()
+    await db.media.insert_one({**doc})
+
+
+@router.delete("/media/{media_id}")
+async def delete_media(media_id: str, _user: dict = Depends(require_admin)):
+    db = get_db()
+    result = await db.media.update_one({"id": media_id}, {"$set": {"is_deleted": True}})
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Media not found")
+    return {"ok": True}

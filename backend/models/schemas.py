@@ -166,3 +166,30 @@ class SiteSettings(BaseModel):
     map_lng: float = 46.6753
     social: Dict[str, str] = Field(default_factory=dict)  # {twitter, instagram, linkedin, ...}
     admin_notify_email: str = "aalnhari@ilogic.com.sa"
+
+
+# ---- AVAILABILITY (singleton doc with key="availability") ----
+class AvailabilityDoc(BaseModel):
+    # days of week 0..6 (0=Sunday) that are working
+    working_days: List[int] = Field(default_factory=lambda: [0, 1, 2, 3, 4, 5, 6])
+    # working hours in 24h "HH:MM" (closed if start==end)
+    start_time: str = "00:00"
+    end_time: str = "23:59"
+    # ISO date strings explicitly disabled (YYYY-MM-DD)
+    blocked_dates: List[str] = Field(default_factory=list)
+    # explicit blocked time ranges: list of {date:"YYYY-MM-DD", slot:"HH:MM"}
+    blocked_slots: List[Dict[str, str]] = Field(default_factory=list)
+    # slot granularity (minutes); used to generate hourly slots
+    slot_minutes: int = 60
+
+
+# ---- MEDIA ----
+class MediaItem(BaseModel):
+    id: str
+    storage_path: str
+    url: str
+    original_filename: str
+    content_type: str
+    size: int
+    tag: Optional[str] = ""
+    created_at: str

@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { Loader2, Save } from "lucide-react";
+import MediaPicker from "@/components/admin/MediaPicker";
 
 export default function SharedDesks() {
   const [form, setForm] = useState(null);
@@ -50,7 +51,7 @@ export default function SharedDesks() {
           <Row label="المقاعد المتاحة"><Input type="number" value={form.available_seats} onChange={(e) => setF("available_seats", e.target.value)} className="bg-white/[0.04] border-white/10 text-white" /></Row>
           <Row label="المقاعد المشغولة"><Input type="number" value={form.occupied_seats} onChange={(e) => setF("occupied_seats", e.target.value)} className="bg-white/[0.04] border-white/10 text-white" /></Row>
         </div>
-        <Row label="الصورة (URL)"><Input value={form.image} onChange={(e) => setF("image", e.target.value)} className="bg-white/[0.04] border-white/10 text-white" /></Row>
+        <Row label="الصورة"><div className="mt-2"><MediaPicker value={form.image} onChange={(v) => setF("image", v)} label="اختيار الصورة" /></div></Row>
         <Row label="الوصف (عربي)"><Textarea rows={3} value={form.description} onChange={(e) => setF("description", e.target.value)} className="bg-white/[0.04] border-white/10 text-white" /></Row>
         <Row label="الوصف (إنجليزي)"><Textarea rows={3} value={form.description_en} onChange={(e) => setF("description_en", e.target.value)} className="bg-white/[0.04] border-white/10 text-white" /></Row>
         <div className="flex items-center gap-3">

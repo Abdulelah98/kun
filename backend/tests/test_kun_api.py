@@ -83,16 +83,18 @@ class TestPostEndpoints:
         assert "id" in data
 
     def test_book_meeting_room(self):
+        import uuid as _uuid
+        unique_date = f"2029-{(abs(hash(_uuid.uuid4())) % 9)+1:02d}-{(abs(hash(_uuid.uuid4())) % 28)+1:02d}"
         payload = {
             "name": "TEST_MeetingUser",
             "phone": "0500000003",
             "email": "meeting@test.com",
             "room_id": "room-1",
-            "date": "2026-03-01",
+            "date": unique_date,
             "time_slot": "09:00"
         }
         r = requests.post(f"{BASE_URL}/api/bookings/meeting-room", json=payload)
-        assert r.status_code == 200
+        assert r.status_code == 200, r.text
         data = r.json()
         assert data["status"] == "pending"
         assert "id" in data

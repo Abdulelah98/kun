@@ -40,6 +40,33 @@ body {
         --chart-5: 27 87% 67%;
         --radius: 0.5rem;
     }
+
+    /* Dark theme — KUN navy (#0B1E2D) with orange accents */
+    .dark {
+        --background: 207 62% 11%;       /* #0B1E2D */
+        --foreground: 0 0% 100%;
+        --card: 207 50% 14%;             /* slightly lighter navy */
+        --card-foreground: 0 0% 100%;
+        --popover: 207 50% 14%;
+        --popover-foreground: 0 0% 100%;
+        --primary: 22 90% 55%;           /* orange brand */
+        --primary-foreground: 0 0% 100%;
+        --secondary: 207 40% 18%;
+        --secondary-foreground: 0 0% 100%;
+        --muted: 207 40% 18%;
+        --muted-foreground: 210 10% 70%;
+        --accent: 207 40% 22%;
+        --accent-foreground: 0 0% 100%;
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 0 0% 100%;
+        --border: 207 30% 22%;
+        --input: 207 30% 22%;
+        --ring: 22 90% 55%;
+    }
+
+    html, body {
+        transition: background-color 0.28s ease, color 0.28s ease;
+    }
 }
 
 @layer base {

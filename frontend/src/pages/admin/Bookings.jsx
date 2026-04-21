@@ -18,13 +18,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
-import { Check, X, Loader2, Trash2, Phone, Mail } from "lucide-react";
+import { Check, X, Loader2, Trash2, Phone, Mail, Building2, CalendarDays } from "lucide-react";
 
 const STATUS_META = {
-  pending: { label: "قيد المراجعة", cls: "bg-amber-500/15 text-amber-300 border-amber-500/30" },
-  confirmed: { label: "مؤكد", cls: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30" },
-  rejected: { label: "مرفوض", cls: "bg-rose-500/15 text-rose-300 border-rose-500/30" },
-  cancelled: { label: "ملغي", cls: "bg-white/10 text-white/50 border-white/10" },
+  pending: { label: "قيد المراجعة", cls: "bg-amber-500/15 text-amber-500 border-amber-500/30 dark:text-amber-300" },
+  confirmed: { label: "مؤكد", cls: "bg-emerald-500/15 text-emerald-600 border-emerald-500/30 dark:text-emerald-300" },
+  rejected: { label: "مرفوض", cls: "bg-rose-500/15 text-rose-600 border-rose-500/30 dark:text-rose-300" },
+  cancelled: { label: "ملغي", cls: "bg-[var(--muted)] text-[var(--muted-foreground)] border-[var(--border)]" },
 };
 
 const TYPE_LABEL = {
@@ -32,6 +32,25 @@ const TYPE_LABEL = {
   office: "مكتب خاص",
   meeting_room: "قاعة اجتماعات",
 };
+
+function DetailsCell({ b }) {
+  const d = b.details || {};
+  if (b.type === "desk") {
+    return <span className="inline-flex items-center gap-1"><Building2 className="w-3 h-3" />عدد المكاتب: <b>{d.num_desks ?? "-"}</b></span>;
+  }
+  if (b.type === "office") {
+    return <span className="inline-flex items-center gap-1"><Building2 className="w-3 h-3" />المكتب: <b>{d.office_name || d.office_id || "-"}</b></span>;
+  }
+  if (b.type === "meeting_room") {
+    return (
+      <div className="space-y-0.5">
+        <div className="inline-flex items-center gap-1"><Building2 className="w-3 h-3" />القاعة: <b>{d.room_name || d.room_id || "-"}</b></div>
+        <div className="inline-flex items-center gap-1 text-[11px] opacity-70"><CalendarDays className="w-3 h-3" />{d.date} — {d.time_slot}</div>
+      </div>
+    );
+  }
+  return null;
+}
 
 export default function Bookings() {
   const [items, setItems] = useState([]);
@@ -63,9 +82,10 @@ export default function Bookings() {
   const updateStatus = async (id, status) => {
     setBusyId(id);
     try {
-      await api.patch(`/admin/bookings/${id}`, { status });
-      toast.success("تم تحديث الحالة");
-      load();
+      const { data } = await api.patch(`/admin/bookings/${id}`, { status });
+      // Optimistic inline update without full refetch
+      setItems((prev) => prev.map((b) => (b.id === id ? { ...b, ...data } : b)));
+      toast.success(status === "confirmed" ? "تم تأكيد الحجز" : status === "rejected" ? "تم رفض الحجز" : "تم تحديث الحالة");
     } catch (e) {
       toast.error(formatApiError(e));
     } finally {
@@ -78,8 +98,8 @@ export default function Bookings() {
     setBusyId(id);
     try {
       await api.delete(`/admin/bookings/${id}`);
+      setItems((prev) => prev.filter((b) => b.id !== id));
       toast.success("تم الحذف");
-      load();
     } catch (e) {
       toast.error(formatApiError(e));
     } finally {
@@ -92,11 +112,11 @@ export default function Bookings() {
       <div className="mb-6 flex items-end justify-between gap-4 flex-wrap">
         <div>
           <h1 className="text-3xl font-bold">الحجوزات</h1>
-          <p className="text-white/50 text-sm mt-1">إدارة جميع طلبات الحجز</p>
+          <p className="text-[var(--muted-foreground)] text-sm mt-1">إدارة جميع طلبات الحجز</p>
         </div>
         <div className="flex gap-2">
           <Select value={typeFilter} onValueChange={setTypeFilter}>
-            <SelectTrigger className="w-[170px] bg-white/[0.04] border-white/10 text-white">
+            <SelectTrigger className="w-[170px] bg-[var(--accent)] border-[var(--border)]">
               <SelectValue placeholder="النوع" />
             </SelectTrigger>
             <SelectContent>
@@ -107,7 +127,7 @@ export default function Bookings() {
             </SelectContent>
           </Select>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-[170px] bg-white/[0.04] border-white/10 text-white">
+            <SelectTrigger className="w-[170px] bg-[var(--accent)] border-[var(--border)]">
               <SelectValue placeholder="الحالة" />
             </SelectTrigger>
             <SelectContent>
@@ -121,49 +141,42 @@ export default function Bookings() {
         </div>
       </div>
 
-      <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl overflow-hidden">
+      <div className="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-white/[0.06] hover:bg-transparent">
-              <TableHead className="text-white/60">النوع</TableHead>
-              <TableHead className="text-white/60">الاسم</TableHead>
-              <TableHead className="text-white/60">التواصل</TableHead>
-              <TableHead className="text-white/60">التفاصيل</TableHead>
-              <TableHead className="text-white/60">التاريخ</TableHead>
-              <TableHead className="text-white/60">الحالة</TableHead>
-              <TableHead className="text-white/60 text-left">إجراءات</TableHead>
+            <TableRow className="border-[var(--border)] hover:bg-transparent">
+              <TableHead className="text-[var(--muted-foreground)]">النوع</TableHead>
+              <TableHead className="text-[var(--muted-foreground)]">الاسم</TableHead>
+              <TableHead className="text-[var(--muted-foreground)]">التواصل</TableHead>
+              <TableHead className="text-[var(--muted-foreground)]">التفاصيل</TableHead>
+              <TableHead className="text-[var(--muted-foreground)]">التاريخ</TableHead>
+              <TableHead className="text-[var(--muted-foreground)]">الحالة</TableHead>
+              <TableHead className="text-[var(--muted-foreground)] text-left">إجراءات</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
-              <TableRow><TableCell colSpan={7} className="text-center py-10 text-white/40">
+              <TableRow><TableCell colSpan={7} className="text-center py-10 text-[var(--muted-foreground)]">
                 <Loader2 className="w-5 h-5 animate-spin inline" />
               </TableCell></TableRow>
             ) : items.length === 0 ? (
-              <TableRow><TableCell colSpan={7} className="text-center py-10 text-white/40">
+              <TableRow><TableCell colSpan={7} className="text-center py-10 text-[var(--muted-foreground)]">
                 لا توجد حجوزات.
               </TableCell></TableRow>
             ) : items.map((b) => {
               const meta = STATUS_META[b.status] || STATUS_META.pending;
               return (
-                <TableRow key={b.id} className="border-white/[0.06]" data-testid={`booking-row-${b.id}`}>
+                <TableRow key={b.id} className="border-[var(--border)]" data-testid={`booking-row-${b.id}`}>
                   <TableCell className="text-sm">{TYPE_LABEL[b.type] || b.type}</TableCell>
                   <TableCell className="font-semibold">{b.name}</TableCell>
                   <TableCell className="text-xs space-y-1">
-                    <div className="flex items-center gap-1 text-white/70"><Phone className="w-3 h-3" />{b.phone}</div>
-                    <div className="flex items-center gap-1 text-white/50"><Mail className="w-3 h-3" />{b.email}</div>
+                    <div className="flex items-center gap-1"><Phone className="w-3 h-3" />{b.phone}</div>
+                    <div className="flex items-center gap-1 opacity-70"><Mail className="w-3 h-3" />{b.email}</div>
                   </TableCell>
-                  <TableCell className="text-xs text-white/70 max-w-[220px]">
-                    {b.type === "desk" && `عدد المكاتب: ${b.details?.num_desks}`}
-                    {b.type === "office" && `مكتب: ${b.details?.office_id}`}
-                    {b.type === "meeting_room" && (
-                      <>
-                        <div>قاعة: {b.details?.room_id}</div>
-                        <div>{b.details?.date} — {b.details?.time_slot}</div>
-                      </>
-                    )}
+                  <TableCell className="text-xs max-w-[260px]">
+                    <DetailsCell b={b} />
                   </TableCell>
-                  <TableCell className="text-xs text-white/50">
+                  <TableCell className="text-xs opacity-70">
                     {new Date(b.created_at).toLocaleString("ar-SA")}
                   </TableCell>
                   <TableCell>
@@ -174,22 +187,22 @@ export default function Bookings() {
                       {b.status !== "confirmed" && (
                         <Button size="icon" variant="ghost" disabled={busyId === b.id}
                           onClick={() => updateStatus(b.id, "confirmed")}
-                          className="h-8 w-8 text-emerald-400 hover:bg-emerald-500/10"
+                          className="h-8 w-8 text-emerald-500 hover:bg-emerald-500/10"
                           data-testid={`booking-confirm-${b.id}`}>
-                          <Check className="w-4 h-4" />
+                          {busyId === b.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
                         </Button>
                       )}
                       {b.status !== "rejected" && (
                         <Button size="icon" variant="ghost" disabled={busyId === b.id}
                           onClick={() => updateStatus(b.id, "rejected")}
-                          className="h-8 w-8 text-rose-400 hover:bg-rose-500/10"
+                          className="h-8 w-8 text-rose-500 hover:bg-rose-500/10"
                           data-testid={`booking-reject-${b.id}`}>
                           <X className="w-4 h-4" />
                         </Button>
                       )}
                       <Button size="icon" variant="ghost" disabled={busyId === b.id}
                         onClick={() => remove(b.id)}
-                        className="h-8 w-8 text-white/40 hover:text-rose-400 hover:bg-rose-500/10"
+                        className="h-8 w-8 text-[var(--muted-foreground)] hover:text-rose-500 hover:bg-rose-500/10"
                         data-testid={`booking-delete-${b.id}`}>
                         <Trash2 className="w-4 h-4" />
                       </Button>

@@ -13,6 +13,7 @@ import AboutPage from "@/pages/AboutPage";
 import ContactPage from "@/pages/ContactPage";
 
 import { AuthProvider } from "@/contexts/AuthContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import AdminLogin from "@/pages/admin/Login";
 import AdminLayout from "@/pages/admin/AdminLayout";
 import Dashboard from "@/pages/admin/Dashboard";
@@ -24,6 +25,8 @@ import SharedDesks from "@/pages/admin/SharedDesks";
 import Content from "@/pages/admin/Content";
 import Settings from "@/pages/admin/Settings";
 import Users from "@/pages/admin/Users";
+import Availability from "@/pages/admin/Availability";
+import MediaLibrary from "@/pages/admin/MediaLibrary";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -46,34 +49,38 @@ function PublicLayout({ children }) {
 function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <ScrollToTop />
-        <Routes>
-          {/* Public routes */}
-          <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
-          <Route path="/services" element={<PublicLayout><ServicesPage /></PublicLayout>} />
-          <Route path="/spaces" element={<PublicLayout><SpacesPage /></PublicLayout>} />
-          <Route path="/business" element={<PublicLayout><BusinessPage /></PublicLayout>} />
-          <Route path="/pod" element={<PublicLayout><PodPage /></PublicLayout>} />
-          <Route path="/about" element={<PublicLayout><AboutPage /></PublicLayout>} />
-          <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
+      <ThemeProvider>
+        <AuthProvider>
+          <ScrollToTop />
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
+            <Route path="/services" element={<PublicLayout><ServicesPage /></PublicLayout>} />
+            <Route path="/spaces" element={<PublicLayout><SpacesPage /></PublicLayout>} />
+            <Route path="/business" element={<PublicLayout><BusinessPage /></PublicLayout>} />
+            <Route path="/pod" element={<PublicLayout><PodPage /></PublicLayout>} />
+            <Route path="/about" element={<PublicLayout><AboutPage /></PublicLayout>} />
+            <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
 
-          {/* Admin routes */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="bookings" element={<Bookings />} />
-            <Route path="messages" element={<Messages />} />
-            <Route path="offices" element={<Offices />} />
-            <Route path="meeting-rooms" element={<MeetingRooms />} />
-            <Route path="shared-desks" element={<SharedDesks />} />
-            <Route path="content" element={<Content />} />
-            <Route path="settings" element={<Settings />} />
-            <Route path="users" element={<Users />} />
-          </Route>
-        </Routes>
-        <Toaster position="top-center" dir="rtl" />
-      </AuthProvider>
+            {/* Admin routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="bookings" element={<Bookings />} />
+              <Route path="availability" element={<Availability />} />
+              <Route path="messages" element={<Messages />} />
+              <Route path="offices" element={<Offices />} />
+              <Route path="meeting-rooms" element={<MeetingRooms />} />
+              <Route path="shared-desks" element={<SharedDesks />} />
+              <Route path="media" element={<MediaLibrary />} />
+              <Route path="content" element={<Content />} />
+              <Route path="settings" element={<Settings />} />
+              <Route path="users" element={<Users />} />
+            </Route>
+          </Routes>
+          <Toaster position="top-center" dir="rtl" />
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

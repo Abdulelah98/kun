@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
+import MediaPicker, { resolveMediaUrl } from "@/components/admin/MediaPicker";
 
 const EMPTY = {
   name: "",
@@ -57,7 +58,7 @@ export default function MeetingRooms() {
         capacity: Number(form.capacity),
         price: Number(form.price),
         order: Number(form.order),
-        images: typeof form.images === "string" ? form.images.split("\n").map((s) => s.trim()).filter(Boolean) : form.images,
+        images: Array.isArray(form.images) ? form.images : (typeof form.images === "string" ? form.images.split("\n").map((s) => s.trim()).filter(Boolean) : []),
         booked_slots: typeof form.booked_slots === "string" ? form.booked_slots.split("\n").map((s) => s.trim()).filter(Boolean) : form.booked_slots,
       };
       if (editing) await api.put(`/admin/meeting-rooms/${editing.id}`, body);
@@ -93,7 +94,7 @@ export default function MeetingRooms() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {items.map((it) => (
             <div key={it.id} className="bg-white/[0.03] border border-white/[0.06] rounded-2xl overflow-hidden flex" data-testid={`room-card-${it.id}`}>
-              {it.image && <div className="w-40 bg-white/5 shrink-0"><img src={it.image} alt="" className="w-full h-full object-cover" /></div>}
+              {it.image && <div className="w-40 bg-white/5 shrink-0"><img src={resolveMediaUrl(it.image)} alt="" className="w-full h-full object-cover" /></div>}
               <div className="flex-1 p-4">
                 <div className="font-bold">{it.name}</div>
                 <div className="text-xs text-white/50 mb-2">{it.name_en}</div>
@@ -117,7 +118,7 @@ export default function MeetingRooms() {
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent dir="rtl" className="bg-[#121214] border-white/10 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent dir="rtl" className="bg-[#0F2537] border-white/10 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle className="text-right">{editing ? "تعديل قاعة" : "قاعة جديدة"}</DialogTitle></DialogHeader>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FI label="الاسم (عربي)" v={form.name} s={(v) => setForm({ ...form, name: v })} />
@@ -126,12 +127,13 @@ export default function MeetingRooms() {
             <FI label="السعر" type="number" v={form.price} s={(v) => setForm({ ...form, price: v })} />
             <FI label="الوحدة" v={form.currency} s={(v) => setForm({ ...form, currency: v })} />
             <FI label="الترتيب" type="number" v={form.order} s={(v) => setForm({ ...form, order: v })} />
-            <div className="md:col-span-2"><FI label="الصورة (URL)" v={form.image} s={(v) => setForm({ ...form, image: v })} /></div>
             <div className="md:col-span-2">
-              <Label className="text-white/70">صور إضافية (سطر لكل رابط)</Label>
-              <Textarea rows={3} value={Array.isArray(form.images) ? form.images.join("\n") : form.images}
-                onChange={(e) => setForm({ ...form, images: e.target.value })}
-                className="bg-white/[0.04] border-white/10 text-white mt-1" />
+              <Label className="text-white/70">الصورة الرئيسية</Label>
+              <div className="mt-2"><MediaPicker value={form.image} onChange={(v) => setForm({ ...form, image: v })} label="اختيار الصورة" /></div>
+            </div>
+            <div className="md:col-span-2">
+              <Label className="text-white/70">صور إضافية</Label>
+              <div className="mt-2"><MediaPicker value={Array.isArray(form.images) ? form.images : []} onChange={(v) => setForm({ ...form, images: v })} multiple label="أضف صور" /></div>
             </div>
             <div className="md:col-span-2">
               <Label className="text-white/70">المواعيد المحجوزة (YYYY-MM-DDTHH:MM سطر لكل موعد)</Label>

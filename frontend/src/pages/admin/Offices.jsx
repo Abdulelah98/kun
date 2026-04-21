@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
+import MediaPicker, { resolveMediaUrl } from "@/components/admin/MediaPicker";
 
 const EMPTY = {
   name: "",
@@ -63,7 +64,7 @@ export default function Offices() {
         price: Number(form.price),
         order: Number(form.order),
         reserved_until: form.reserved_until || null,
-        images: typeof form.images === "string" ? form.images.split("\n").map((s) => s.trim()).filter(Boolean) : form.images,
+        images: Array.isArray(form.images) ? form.images : (typeof form.images === "string" ? form.images.split("\n").map((s) => s.trim()).filter(Boolean) : []),
       };
       if (editing) await api.put(`/admin/offices/${editing.id}`, body);
       else await api.post("/admin/offices", body);
@@ -101,7 +102,7 @@ export default function Offices() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map((it) => (
             <div key={it.id} className="bg-white/[0.03] border border-white/[0.06] rounded-2xl overflow-hidden" data-testid={`office-card-${it.id}`}>
-              {it.image && <div className="aspect-[16/9] bg-white/5"><img src={it.image} alt="" className="w-full h-full object-cover" /></div>}
+              {it.image && <div className="aspect-[16/9] bg-white/5"><img src={resolveMediaUrl(it.image)} alt="" className="w-full h-full object-cover" /></div>}
               <div className="p-4">
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <div>
@@ -135,7 +136,7 @@ export default function Offices() {
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent dir="rtl" className="bg-[#121214] border-white/10 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent dir="rtl" className="bg-[#0F2537] border-white/10 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle className="text-right">{editing ? "تعديل مكتب" : "مكتب جديد"}</DialogTitle></DialogHeader>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Field label="الاسم (عربي)" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
@@ -145,12 +146,13 @@ export default function Offices() {
             <Field label="العملة/الوحدة" value={form.currency} onChange={(v) => setForm({ ...form, currency: v })} />
             <Field label="الترتيب" type="number" value={form.order} onChange={(v) => setForm({ ...form, order: v })} />
             <Field label="محجوز حتى (YYYY-MM-DD)" value={form.reserved_until || ""} onChange={(v) => setForm({ ...form, reserved_until: v })} />
-            <Field label="الصورة الرئيسية (URL)" value={form.image} onChange={(v) => setForm({ ...form, image: v })} />
             <div className="md:col-span-2">
-              <Label className="text-white/70">صور إضافية (URL سطر لكل صورة)</Label>
-              <Textarea rows={4} value={Array.isArray(form.images) ? form.images.join("\n") : form.images}
-                onChange={(e) => setForm({ ...form, images: e.target.value })}
-                className="bg-white/[0.04] border-white/10 text-white mt-1" />
+              <Label className="text-white/70">الصورة الرئيسية</Label>
+              <div className="mt-2"><MediaPicker value={form.image} onChange={(v) => setForm({ ...form, image: v })} label="اختيار الصورة" /></div>
+            </div>
+            <div className="md:col-span-2">
+              <Label className="text-white/70">صور إضافية</Label>
+              <div className="mt-2"><MediaPicker value={Array.isArray(form.images) ? form.images : []} onChange={(v) => setForm({ ...form, images: v })} multiple label="أضف صور" /></div>
             </div>
             <div className="md:col-span-2">
               <Label className="text-white/70">الوصف</Label>

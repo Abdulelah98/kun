@@ -13,6 +13,7 @@ from routes.auth import router as auth_router
 from routes.public import router as public_router
 from routes.admin import router as admin_router
 from seed import run_all as seed_run_all
+from storage import init_storage
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
@@ -57,6 +58,10 @@ async def on_startup():
         await seed_run_all()
     except Exception as e:
         logger.exception("Seed failed: %s", e)
+    try:
+        init_storage()
+    except Exception as e:
+        logger.exception("Storage init failed: %s", e)
 
 
 @app.on_event("shutdown")

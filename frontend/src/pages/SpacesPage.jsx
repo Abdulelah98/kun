@@ -7,12 +7,25 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { toast } from "sonner";
 import axios from "axios";
 import { Users, Clock, CheckCircle, XCircle, Minus, Plus, ChevronLeft, ChevronRight, Expand, Wifi, Coffee, Printer, CalendarClock, LayoutGrid, Briefcase, Building2, MapPin, ConciergeBell, Presentation, Headset } from "lucide-react";
+import { resolveMediaUrl } from "@/components/admin/MediaPicker";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
-const timeSlots = [
-  "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00",
-];
+// Build hourly slots between start and end (HH:MM inclusive of start, exclusive of end)
+function buildSlots(start, end, stepMin = 60) {
+  if (!start || !end) return [];
+  const [sh, sm] = start.split(":").map(Number);
+  const [eh, em] = end.split(":").map(Number);
+  const startTotal = sh * 60 + sm;
+  const endTotal = eh * 60 + em;
+  const slots = [];
+  for (let t = startTotal; t + stepMin <= endTotal; t += stepMin) {
+    const h = String(Math.floor(t / 60)).padStart(2, "0");
+    const m = String(t % 60).padStart(2, "0");
+    slots.push(`${h}:${m}`);
+  }
+  return slots;
+}
 
 // Reusable hover-cycling gallery used for office cards
 function HoverGallery({ images, alt, onOpen }) {
@@ -168,6 +181,8 @@ export default function SpacesPage() {
   const [submitting, setSubmitting] = useState(false);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [galleryData, setGalleryData] = useState({ images: [], title: "", startIndex: 0 });
+  const [availability, setAvailability] = useState(null);
+  const [bookedSlots, setBookedSlots] = useState([]);
 
   const openGallery = (images, title, startIndex = 0) => {
     setGalleryData({ images, title, startIndex });
@@ -178,7 +193,47 @@ export default function SpacesPage() {
     axios.get(`${API}/offices`).then((r) => setOffices(r.data)).catch(() => {});
     axios.get(`${API}/shared-desks`).then((r) => setSharedDesks(r.data)).catch(() => {});
     axios.get(`${API}/meeting-rooms`).then((r) => setMeetingRooms(r.data)).catch(() => {});
+    axios.get(`${API}/availability`).then((r) => setAvailability(r.data)).catch(() => {});
   }, []);
+
+  // Load booked slots whenever room/date changes
+  useEffect(() => {
+    if (!selectedRoom || !selectedDate) {
+      setBookedSlots([]);
+      return;
+    }
+    const date = selectedDate.toISOString().split("T")[0];
+    axios
+      .get(`${API}/booked-slots`, { params: { room_id: selectedRoom.id, date } })
+      .then((r) => setBookedSlots(r.data.booked || []))
+      .catch(() => setBookedSlots([]));
+    setSelectedTime("");
+  }, [selectedRoom, selectedDate]);
+
+  // Derived: slots grid based on availability
+  const timeSlots = availability
+    ? buildSlots(availability.start_time, availability.end_time, availability.slot_minutes || 60)
+    : ["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"];
+
+  const isDateDisabled = (date) => {
+    if (!date) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (date < today) return true;
+    if (!availability) return false;
+    const dow = date.getDay(); // 0=Sun..6=Sat (matches backend)
+    if (!(availability.working_days || []).includes(dow)) return true;
+    const iso = date.toISOString().split("T")[0];
+    if ((availability.blocked_dates || []).includes(iso)) return true;
+    return false;
+  };
+
+  // Admin-blocked slots for selected date
+  const adminBlockedForDate = (() => {
+    if (!availability || !selectedDate) return [];
+    const iso = selectedDate.toISOString().split("T")[0];
+    return (availability.blocked_slots || []).filter((s) => s.date === iso).map((s) => s.slot);
+  })();
 
   const openBooking = (type, data) => {
     setBookingDialog({ open: true, type, data });
@@ -241,7 +296,7 @@ export default function SpacesPage() {
               {/* Hero image + availability + booking */}
               <div className="lg:col-span-8 relative rounded-2xl overflow-hidden min-h-[380px] md:min-h-[520px]">
                 <img
-                  src={sharedDesks.image}
+                  src={resolveMediaUrl(sharedDesks.image)}
                   alt="المكاتب المشتركة"
                   className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -401,7 +456,7 @@ export default function SpacesPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {offices.map((office) => {
-              const imgs = office.images && office.images.length ? office.images : [office.image];
+              const imgs = (office.images && office.images.length ? office.images : [office.image]).map(resolveMediaUrl);
               return (
                 <div
                   key={office.id}
@@ -460,7 +515,7 @@ export default function SpacesPage() {
                   onClick={() => setSelectedRoom(room)}
                   className={`flex gap-4 p-4 rounded-xl border cursor-pointer transition-all duration-300 ${selectedRoom?.id === room.id ? "border-[#f47424] bg-orange-50/50" : "border-gray-100 hover:border-gray-200"}`}
                 >
-                  <img src={room.image} alt={room.name} className="w-24 h-24 md:w-32 md:h-32 rounded-lg object-cover flex-shrink-0" />
+                  <img src={resolveMediaUrl(room.image)} alt={room.name} className="w-24 h-24 md:w-32 md:h-32 rounded-lg object-cover flex-shrink-0" />
                   <div className="flex-1">
                     <h3 className="text-lg font-bold text-gray-900 mb-1">{room.name}</h3>
                     <div className="flex flex-wrap gap-3 text-sm text-gray-500 mb-2">
@@ -486,7 +541,7 @@ export default function SpacesPage() {
                       mode="single"
                       selected={selectedDate}
                       onSelect={setSelectedDate}
-                      disabled={(date) => date < new Date()}
+                      disabled={isDateDisabled}
                       className="rounded-xl border border-gray-200 bg-white"
                       data-testid="meeting-calendar"
                       classNames={{
@@ -499,16 +554,30 @@ export default function SpacesPage() {
                     <div data-testid="time-slots">
                       <h4 className="font-semibold text-gray-800 mb-3">الأوقات المتاحة</h4>
                       <div className="grid grid-cols-3 gap-2">
-                        {timeSlots.map((slot) => (
-                          <button
-                            key={slot}
-                            data-testid={`time-slot-${slot}`}
-                            onClick={() => setSelectedTime(slot)}
-                            className={`py-2 rounded-md text-sm font-semibold transition-all ${selectedTime === slot ? "bg-[#f47424] text-white" : "bg-white border border-gray-200 text-gray-700 hover:border-[#f47424] hover:text-[#f47424]"}`}
-                          >
-                            {slot}
-                          </button>
-                        ))}
+                        {timeSlots.map((slot) => {
+                          const isBooked = bookedSlots.includes(slot);
+                          const isBlocked = adminBlockedForDate.includes(slot);
+                          const disabled = isBooked || isBlocked;
+                          return (
+                            <button
+                              key={slot}
+                              disabled={disabled}
+                              data-testid={`time-slot-${slot}`}
+                              onClick={() => !disabled && setSelectedTime(slot)}
+                              className={`py-2 rounded-md text-sm font-semibold transition-all relative ${
+                                disabled
+                                  ? "bg-gray-100 text-gray-400 cursor-not-allowed line-through"
+                                  : selectedTime === slot
+                                    ? "bg-[#f47424] text-white"
+                                    : "bg-white border border-gray-200 text-gray-700 hover:border-[#f47424] hover:text-[#f47424]"
+                              }`}
+                            >
+                              {slot}
+                              {isBooked && <span className="block text-[9px] font-normal opacity-70">محجوز</span>}
+                              {!isBooked && isBlocked && <span className="block text-[9px] font-normal opacity-70">مغلق</span>}
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
                   )}

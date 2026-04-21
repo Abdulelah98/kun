@@ -129,7 +129,7 @@ export default function Messages() {
                       <Eye className="w-4 h-4" />
                     </Button>
                   </DialogTrigger>
-                  <DialogContent dir="rtl" className="bg-[#121214] border-white/10 text-white max-w-xl">
+                  <DialogContent dir="rtl" className="bg-[#0F2537] border-white/10 text-white max-w-xl">
                     <DialogHeader>
                       <DialogTitle className="text-right">رسالة من {selected?.name}</DialogTitle>
                     </DialogHeader>

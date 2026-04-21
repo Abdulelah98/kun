@@ -1,9 +1,10 @@
 import uuid
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Response
 
 from database import get_db
+from storage import get_object
 from models.schemas import (
     OfficeOut,
     MeetingRoomOut,
@@ -16,6 +17,7 @@ from models.schemas import (
     ContactOut,
     SiteSettings,
     ContentBlockOut,
+    AvailabilityDoc,
 )
 
 router = APIRouter(tags=["public"])
@@ -69,6 +71,56 @@ async def get_settings():
     db = get_db()
     doc = await db.settings.find_one({"key": "site"}, {"_id": 0, "key": 0})
     return doc or SiteSettings().model_dump()
+
+
+@router.get("/availability")
+async def get_availability_public():
+    db = get_db()
+    doc = await db.availability.find_one({"key": "singleton"}, {"_id": 0, "key": 0})
+    return doc or AvailabilityDoc().model_dump()
+
+
+@router.get("/booked-slots")
+async def get_booked_slots(room_id: str, date: str):
+    """Return list of booked time slots (HH:MM) for a given room+date."""
+    db = get_db()
+    cursor = db.bookings.find(
+        {
+            "type": "meeting_room",
+            "status": {"$in": ["pending", "confirmed"]},
+            "$or": [
+                {"details.room_id": room_id, "details.date": date},
+                {"room_id": room_id, "date": date},
+            ],
+        },
+        {"_id": 0, "details": 1, "time_slot": 1},
+    )
+    items = await cursor.to_list(length=200)
+    slots = []
+    for it in items:
+        det = it.get("details") or {}
+        s = det.get("time_slot") or it.get("time_slot")
+        if s:
+            slots.append(s)
+    return {"room_id": room_id, "date": date, "booked": sorted(set(slots))}
+
+
+# ---------- Media file serving (public) ----------
+@router.get("/media/file/{path:path}")
+async def serve_media(path: str):
+    db = get_db()
+    record = await db.media.find_one({"storage_path": path, "is_deleted": {"$ne": True}}, {"_id": 0})
+    if not record:
+        raise HTTPException(status_code=404, detail="File not found")
+    try:
+        data, ctype = get_object(path)
+    except Exception:
+        raise HTTPException(status_code=404, detail="File not available")
+    return Response(
+        content=data,
+        media_type=record.get("content_type") or ctype,
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
 
 
 # ---------- Contact form ----------
@@ -125,14 +177,39 @@ async def book_office(booking: OfficeBookingIn):
 @router.post("/bookings/meeting-room", response_model=BookingResponse)
 async def book_meeting_room(booking: MeetingRoomBookingIn):
     db = get_db()
+
+    # Check availability rules
+    avail_doc = await db.availability.find_one({"key": "singleton"}, {"_id": 0, "key": 0})
+    if avail_doc:
+        avail = AvailabilityDoc(**avail_doc)
+        try:
+            d = datetime.strptime(booking.date, "%Y-%m-%d").date()
+        except ValueError:
+            raise HTTPException(status_code=400, detail="صيغة التاريخ غير صحيحة")
+        # Python weekday: Monday=0 … Sunday=6. Convert to Sun=0 convention.
+        dow = (d.weekday() + 1) % 7
+        if dow not in (avail.working_days or []):
+            raise HTTPException(status_code=400, detail="اليوم غير متاح للحجز")
+        if booking.date in (avail.blocked_dates or []):
+            raise HTTPException(status_code=400, detail="هذا التاريخ مغلق")
+        # time window
+        if booking.time_slot < avail.start_time or booking.time_slot >= avail.end_time:
+            raise HTTPException(status_code=400, detail="الموعد خارج أوقات العمل")
+        # blocked slots
+        for bs in (avail.blocked_slots or []):
+            if bs.get("date") == booking.date and bs.get("slot") == booking.time_slot:
+                raise HTTPException(status_code=400, detail="هذا الموعد محجوز من الإدارة")
+
     slot_key = f"{booking.date}T{booking.time_slot}"
     # check if slot already booked
     existing = await db.bookings.find_one(
         {
             "type": "meeting_room",
             "status": {"$in": ["pending", "confirmed"]},
-            "details.room_id": booking.room_id,
-            "details.slot": slot_key,
+            "$or": [
+                {"details.room_id": booking.room_id, "details.slot": slot_key},
+                {"room_id": booking.room_id, "date": booking.date, "time_slot": booking.time_slot},
+            ],
         }
     )
     if existing:

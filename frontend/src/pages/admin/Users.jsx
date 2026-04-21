@@ -114,7 +114,7 @@ export default function Users() {
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent dir="rtl" className="bg-[#121214] border-white/10 text-white max-w-md">
+        <DialogContent dir="rtl" className="bg-[#0F2537] border-white/10 text-white max-w-md">
           <DialogHeader><DialogTitle className="text-right">{editing ? "تعديل مستخدم" : "مستخدم جديد"}</DialogTitle></DialogHeader>
           <div className="space-y-4">
             <div>
