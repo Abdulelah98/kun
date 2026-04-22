@@ -14,6 +14,7 @@ import ContactPage from "@/pages/ContactPage";
 
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { ContentProvider } from "@/contexts/ContentContext";
 import AdminLogin from "@/pages/admin/Login";
 import AdminLayout from "@/pages/admin/AdminLayout";
 import Dashboard from "@/pages/admin/Dashboard";
@@ -51,7 +52,8 @@ function App() {
     <BrowserRouter>
       <ThemeProvider>
         <AuthProvider>
-          <ScrollToTop />
+          <ContentProvider>
+            <ScrollToTop />
           <Routes>
             {/* Public routes */}
             <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
@@ -79,6 +81,7 @@ function App() {
             </Route>
           </Routes>
           <Toaster position="top-center" dir="rtl" />
+          </ContentProvider>
         </AuthProvider>
       </ThemeProvider>
     </BrowserRouter>

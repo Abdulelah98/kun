@@ -52,7 +52,7 @@ export const PAGE_BLOCKS = [
   },
   {
     key: "services_overview",
-    page: "services",
+    page: "home",
     title: "بطاقات الخدمات (الرئيسية)",
     fields: [
       { key: "title", label: "العنوان", type: "text" },
@@ -65,6 +65,34 @@ export const PAGE_BLOCKS = [
           { key: "description", label: "الوصف", type: "textarea" },
           { key: "image", label: "الأيقونة / الصورة", type: "image" },
           { key: "link", label: "الرابط الداخلي", type: "text", help: "/spaces, /business ..." },
+        ],
+      },
+    ],
+  },
+  {
+    key: "services_page_header",
+    page: "services",
+    title: "رأس صفحة الخدمات",
+    fields: [
+      { key: "eyebrow", label: "النص العلوي الصغير", type: "text" },
+      { key: "title", label: "العنوان", type: "text" },
+      { key: "subtitle", label: "الوصف", type: "textarea" },
+    ],
+  },
+  {
+    key: "services_page_items",
+    page: "services",
+    title: "خدمات الصفحة التفصيلية",
+    fields: [
+      {
+        key: "items",
+        label: "الخدمات",
+        type: "list",
+        itemSchema: [
+          { key: "title", label: "اسم الخدمة", type: "text" },
+          { key: "description", label: "الوصف", type: "textarea" },
+          { key: "image", label: "الصورة", type: "image" },
+          { key: "link", label: "الرابط الداخلي", type: "text" },
         ],
       },
     ],

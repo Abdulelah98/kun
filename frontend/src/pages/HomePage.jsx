@@ -14,116 +14,50 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { useContent } from "@/contexts/ContentContext";
+import { resolveMediaUrl } from "@/components/admin/MediaPicker";
 
-const VIDEO_URL = "https://customer-assets.emergentagent.com/job_kun-conversion-site/artifacts/xk8jcmjb_WhatsApp-Video-2024-02-28-at-8.10.04-AM.mp4";
+const AUDIENCE_ICONS = [Rocket, Zap, Users, UserCheck, Building2];
+const WHY_ICONS = [Zap, TrendingDown, CheckCircle2, Shield];
+
+const VIDEO_URL_FALLBACK = "https://customer-assets.emergentagent.com/job_kun-conversion-site/artifacts/xk8jcmjb_WhatsApp-Video-2024-02-28-at-8.10.04-AM.mp4";
 const HERO_FALLBACK = "https://static.prod-images.emergentagent.com/jobs/5a4c12ca-bf7c-43dd-b928-467b4172e275/images/76af9fc8d16e1c9d906e9279b800de6f60c589b2bfd340b6c56981e341f3cdd3.png";
 
-const galleryImages = [
-  { src: "https://images.unsplash.com/photo-1765366417046-f46361a7f26f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBjb3dvcmtpbmclMjBzcGFjZSUyMGJyaWdodHxlbnwwfHx8fDE3NzYyNTc2Nzl8MA&ixlib=rb-4.1.0&q=85", alt: "مساحة عمل مشتركة" },
-  { src: "https://images.unsplash.com/photo-1772751541531-e084e8f56630?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBjb3dvcmtpbmclMjBzcGFjZSUyMGJyaWdodHxlbnwwfHx8fDE3NzYyNTc2Nzl8MA&ixlib=rb-4.1.0&q=85", alt: "مكاتب مشتركة" },
-  { src: "https://images.unsplash.com/photo-1770993151375-0dee97eda931?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBtZWV0aW5nJTIwcm9vbSUyMGdsYXNzJTIwb2ZmaWNlfGVufDB8fHx8MTc3NjI1NzY4OHww&ixlib=rb-4.1.0&q=85", alt: "قاعة اجتماعات" },
-  { src: "https://images.unsplash.com/photo-1637665662134-db459c1bbb46?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBvZmZpY2UlMjBtZWV0aW5nJTIwcm9vbXxlbnwwfHx8fDE3NzYyNTc2OTV8MA&ixlib=rb-4.1.0&q=85", alt: "غرفة مؤتمرات" },
-  { src: "https://images.unsplash.com/photo-1746021451691-4385f318ec13?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85", alt: "مكتب خاص" },
-  { src: "https://static.prod-images.emergentagent.com/jobs/5a4c12ca-bf7c-43dd-b928-467b4172e275/images/8bd54b2ba1b5f87de79c099636bfb4d644c3a7e5c60f7bb9ac0579b12f6dd2e1.png", alt: "بود ذكي" },
-];
-
-const services = [
-  {
-    logo: "/assets/logos/spaces.svg",
-    title: "المساحات",
-    desc: "مكاتب مشتركة، خاصة، وقاعات اجتماعات بتجهيزات احترافية متكاملة",
-    path: "/spaces",
-  },
-  {
-    logo: "/assets/logos/business.svg",
-    title: "خدمات الأعمال",
-    desc: "خدمات قانونية، موارد بشرية، وحلول أعمال متكاملة لنمو مشروعك",
-    path: "/business",
-  },
-  {
-    logo: "/assets/logos/pod.svg",
-    title: "البود الذكي",
-    desc: "كبائن عمل ذكية معزولة صوتياً لتركيز أعلى وإنتاجية أفضل",
-    path: "/pod",
-  },
-];
-
-const audiences = [
-  { icon: Rocket, label: "رواد الأعمال", desc: "مساحات تمنحك الحرية لبناء فكرتك" },
-  { icon: Zap, label: "الشركات الناشئة", desc: "انطلق أسرع وبتجربة أكثر احترافية" },
-  { icon: Users, label: "الفرق الصغيرة والمتوسطة", desc: "حلول مرنة تكبر مع فريقك" },
-  { icon: UserCheck, label: "المستقلين", desc: "بيئة احترافية تساعدك على التركيز والإنجاز" },
-  { icon: Building2, label: "الشركات الكبيرة", desc: "بنية تقنية تدعم التوسع وإدارة الفرق بكفاءة" },
-];
-
-const whyItems = [
-  {
-    icon: Zap,
-    title: "مرونة عالية في التوسع",
-    desc: "نمِّ فريقك أو قلّصه بسهولة دون التزامات طويلة الأجل.",
-  },
-  {
-    icon: TrendingDown,
-    title: "تقليل التكاليف التشغيلية",
-    desc: "ادفع فقط مقابل ما تحتاجه، بلا مصاريف ثابتة مرهقة.",
-  },
-  {
-    icon: CheckCircle2,
-    title: "جاهزية فورية",
-    desc: "ابدأ العمل من اليوم الأول بمساحات مجهزة بالكامل.",
-  },
-  {
-    icon: Shield,
-    title: "بيئة احترافية",
-    desc: "صُممت بعناية لتعزيز الإنتاجية والتركيز على نمو أعمالك.",
-  },
-];
-
 // Animated counter that runs once when scrolled into view
-function CountUp({ end, prefix = "", suffix = "", duration = 1200, testId }) {
-  const [value, setValue] = useState(0);
-  const nodeRef = useRef(null);
-  const startedRef = useRef(false);
-
-  useEffect(() => {
-    const node = nodeRef.current;
-    if (!node) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !startedRef.current) {
-            startedRef.current = true;
-            const startTime = performance.now();
-            const tick = (now) => {
-              const progress = Math.min((now - startTime) / duration, 1);
-              // easeOutCubic for a snappy feel
-              const eased = 1 - Math.pow(1 - progress, 3);
-              setValue(Math.round(end * eased));
-              if (progress < 1) requestAnimationFrame(tick);
-            };
-            requestAnimationFrame(tick);
-          }
-        });
-      },
-      { threshold: 0.4 }
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [end, duration]);
-
-  return (
-    <span ref={nodeRef} data-testid={testId}>
-      {prefix}
-      {value}
-      {suffix}
-    </span>
-  );
-}
-
 export default function HomePage() {
   const galleryRef = useRef(null);
   const bgWordsRef = useRef([]);
   const scrollPosRef = useRef({ last: 0, offsets: {} });
+
+  // CMS content
+  const hero = useContent("home_hero");
+  const about = useContent("home_about");
+  const servicesOverview = useContent("services_overview");
+  const whyBlock = useContent("home_why");
+  const audienceBlock = useContent("home_audience");
+  const galleryBlock = useContent("home_gallery");
+  const finalCta = useContent("home_final_cta");
+
+  const services = (servicesOverview.items || []).map((it) => ({
+    logo: resolveMediaUrl(it.image) || "/assets/logos/spaces.svg",
+    title: it.title,
+    desc: it.description,
+    path: it.link || "/",
+  }));
+  const whyItemsList = (whyBlock.items || []).map((it, i) => ({
+    icon: WHY_ICONS[i % WHY_ICONS.length],
+    title: it.title,
+    desc: it.description,
+  }));
+  const audiences = (audienceBlock.items || []).map((it, i) => ({
+    icon: AUDIENCE_ICONS[i % AUDIENCE_ICONS.length],
+    label: it.label,
+    desc: it.description,
+  }));
+  const galleryImages = (galleryBlock.images || []).map((src, i) => ({
+    src: resolveMediaUrl(src),
+    alt: `مساحة ${i + 1}`,
+  }));
 
   const scrollGallery = (dir) => {
     if (galleryRef.current) {
@@ -165,9 +99,9 @@ export default function HomePage() {
   return (
     <main data-testid="home-page">
       {/* Hero Section */}
-      <section data-testid="hero-section" className="hero-video-container" style={{ backgroundImage: `url(${HERO_FALLBACK})` }}>
-        <video autoPlay muted loop playsInline poster={HERO_FALLBACK}>
-          <source src={VIDEO_URL} type="video/mp4" />
+      <section data-testid="hero-section" className="hero-video-container" style={{ backgroundImage: `url(${resolveMediaUrl(hero.fallback_image) || HERO_FALLBACK})` }}>
+        <video autoPlay muted loop playsInline poster={resolveMediaUrl(hero.fallback_image) || HERO_FALLBACK}>
+          <source src={hero.video_url || VIDEO_URL_FALLBACK} type="video/mp4" />
         </video>
         <div className="hero-gradient-overlay" />
         <div className="hero-content">
@@ -193,9 +127,9 @@ export default function HomePage() {
                   className="text-[2.2rem] sm:text-[2.4rem] md:text-[3rem] lg:text-[3.8rem] font-black text-white leading-[1.28] tracking-tight mb-5"
                   style={{ letterSpacing: "-0.02em" }}
                 >
-                  مساحتك <span className="text-[#f47424]">الاحترافية</span>
+                  {hero.title_line1} <span className="text-[#f47424]">{hero.title_highlight}</span>
                   <br />
-                  تبدأ من هنا
+                  {hero.title_line2}
                 </h1>
                 <div className="w-12 h-[3px] bg-[#f47424] mx-auto rounded-full mb-7 hero-line-reveal" />
               </div>
@@ -203,9 +137,7 @@ export default function HomePage() {
                 data-testid="hero-subtext"
                 className="text-[0.9375rem] sm:text-base md:text-[1.0625rem] text-white/75 max-w-2xl mx-auto mb-10 hero-text-entrance hero-delay-1 font-medium leading-[1.8]"
               >
-                وفّر وقتك وركّز على نمو أعمالك — مكاتب جاهزة، قاعات اجتماعات،
-                <br className="hidden sm:block" />
-                وخدمات أعمال متكاملة في قلب الرياض
+                {hero.subtitle}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center hero-text-entrance hero-delay-2">
                 <Link to="/contact">
@@ -213,7 +145,7 @@ export default function HomePage() {
                     data-testid="hero-cta-book"
                     className="bg-[#f47424] text-white hover:bg-[#d9641d] px-9 py-2.5 rounded-full font-bold text-[0.9375rem] shadow-[0_4px_18px_rgba(244,116,36,0.3)] hover:shadow-[0_6px_24px_rgba(244,116,36,0.4)] transition-all duration-300 hover:-translate-y-[2px] h-12"
                   >
-                    احجز جولتك المجانية
+                    {hero.cta_primary}
                   </Button>
                 </Link>
                 <Link to="/services">
@@ -222,7 +154,7 @@ export default function HomePage() {
                     variant="outline"
                     className="border-white/25 text-white hover:bg-white/10 hover:border-white/40 px-9 py-2.5 rounded-full font-bold text-[0.9375rem] h-12 transition-all duration-300"
                   >
-                    استكشف الخدمات
+                    {hero.cta_secondary}
                   </Button>
                 </Link>
               </div>
@@ -239,12 +171,12 @@ export default function HomePage() {
           <div className="flex justify-start mt-12 md:mt-16">
             <div className="w-full md:max-w-2xl text-right">
               <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-gray-900 tracking-tight leading-[1.55] mb-6">
-                بيئة عمل متكاملة
+                {about.title_line1}
                 <br />
-                <span className="inline-block mt-2">صُنعت لتدعم <span className="text-[#f47424]">نجاحك</span></span>
+                <span className="inline-block mt-2">{about.title_line2} <span className="text-[#f47424]">{about.title_highlight}</span></span>
               </h2>
               <p className="text-gray-600 text-base md:text-[1.05rem] leading-[2]">
-                <span className="font-bold text-gray-900">كن</span> علامة سعودية رائدة في تقديم مساحات العمل الذكية وخدمات الأعمال المتكاملة. نُوفّر لرواد الأعمال والشركات بيئة احترافية ومرنة تُواكب تطلعاتهم وتُسهّل رحلة نموّهم.
+                <span className="font-bold text-gray-900">{about.brand_word}</span> {about.body}
               </p>
             </div>
           </div>
@@ -253,20 +185,20 @@ export default function HomePage() {
           <div className="mt-14 md:mt-16 pt-10 border-t border-gray-100">
             <div className="grid grid-cols-3 gap-4 md:gap-10 max-w-3xl mx-auto text-center">
               <div data-testid="about-stat-0">
-                <div className="text-3xl md:text-5xl font-bold text-[#f47424] mb-2 tracking-tight">
-                  <CountUp end={500} prefix="+" duration={1200} testId="about-stat-0-value" />
+                <div className="text-3xl md:text-5xl font-bold text-[#f47424] mb-2 tracking-tight" data-testid="about-stat-0-value">
+                  {about.stat1_value}
                 </div>
-                <div className="text-xs md:text-sm text-gray-500">عميل يثق بنا</div>
+                <div className="text-xs md:text-sm text-gray-500">{about.stat1_label}</div>
               </div>
               <div data-testid="about-stat-1">
-                <div className="text-3xl md:text-5xl font-bold text-[#f47424] mb-2 tracking-tight">
-                  <CountUp end={20} prefix="+" duration={1000} testId="about-stat-1-value" />
+                <div className="text-3xl md:text-5xl font-bold text-[#f47424] mb-2 tracking-tight" data-testid="about-stat-1-value">
+                  {about.stat2_value}
                 </div>
-                <div className="text-xs md:text-sm text-gray-500">خدمة متكاملة</div>
+                <div className="text-xs md:text-sm text-gray-500">{about.stat2_label}</div>
               </div>
               <div data-testid="about-stat-2">
-                <div className="text-3xl md:text-5xl font-bold text-[#f47424] mb-2 tracking-tight" data-testid="about-stat-2-value">24/7</div>
-                <div className="text-xs md:text-sm text-gray-500">دعم مستمر</div>
+                <div className="text-3xl md:text-5xl font-bold text-[#f47424] mb-2 tracking-tight" data-testid="about-stat-2-value">{about.stat3_value}</div>
+                <div className="text-xs md:text-sm text-gray-500">{about.stat3_label}</div>
               </div>
             </div>
           </div>
@@ -332,20 +264,18 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10 mt-16 md:mt-20">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">لماذا تختار كن؟</h2>
-              <p className="text-gray-500 text-base md:text-lg mb-10">مزايا حقيقية تصنع فرقاً ملموساً في تجربة عملك اليومية</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">{whyBlock.title}</h2>
+              <p className="text-gray-500 text-base md:text-lg mb-10">{whyBlock.subtitle}</p>
               <div className="space-y-5">
-                {whyItems.map((item, i) => (
+                {whyItemsList.map((item, i) => (
                   <div
                     key={i}
                     data-testid={`why-item-${i}`}
                     className="why-card group relative flex items-center gap-5 bg-white rounded-[20px] border border-gray-100 py-5 pr-6 pl-5 md:pr-7 md:pl-6 shadow-[0_1px_2px_rgba(16,24,40,0.04)] hover:shadow-[0_12px_32px_rgba(244,116,36,0.12)] hover:-translate-y-[3px] transition-all duration-300 ease-out overflow-hidden"
                     style={{ animation: `whyCardFadeIn 0.6s ${0.1 + i * 0.08}s both ease-out` }}
                   >
-                    {/* Right orange accent line */}
                     <span className="absolute right-0 top-4 bottom-4 w-[3px] rounded-full bg-[#f47424] opacity-80 group-hover:opacity-100 group-hover:top-3 group-hover:bottom-3 transition-all duration-300" />
 
-                    {/* Text content (right-aligned, appears first in RTL) */}
                     <div className="flex-1 text-right order-1 min-w-0">
                       <h3 className="text-[1.05rem] md:text-[1.1rem] font-bold text-gray-900 leading-tight mb-1.5 tracking-tight">
                         {item.title}
@@ -355,7 +285,6 @@ export default function HomePage() {
                       </p>
                     </div>
 
-                    {/* Icon (on far right in RTL visually, rendered after text) */}
                     <div className="why-icon-box order-2 flex-shrink-0 w-[54px] h-[54px] md:w-[58px] md:h-[58px] rounded-[14px] bg-[#f47424]/10 flex items-center justify-center transition-all duration-300 group-hover:bg-[#f47424]/15 group-hover:scale-[1.05]">
                       <item.icon className="w-6 h-6 md:w-[26px] md:h-[26px] text-[#f47424]" strokeWidth={2} />
                     </div>
@@ -365,7 +294,7 @@ export default function HomePage() {
             </div>
             <div className="rounded-2xl overflow-hidden md:mt-24 lg:mt-32">
               <img
-                src="https://images.unsplash.com/photo-1772751541531-e084e8f56630?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBjb3dvcmtpbmclMjBzcGFjZSUyMGJyaWdodHxlbnwwfHx8fDE3NzYyNTc2Nzl8MA&ixlib=rb-4.1.0&q=85"
+                src={resolveMediaUrl(whyBlock.image)}
                 alt="مساحة عمل كن"
                 className="w-full h-80 md:h-[460px] object-cover"
               />
@@ -379,8 +308,8 @@ export default function HomePage() {
         <span ref={setBgRef(3)} className="section-bg-word section-bg-word--right section-bg-word--dark" aria-hidden="true">عملاؤنا</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16 md:mb-20">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5">لمن صُممت هذه المساحات؟</h2>
-            <p className="text-gray-400 text-base md:text-lg">مساحات مرنة تناسب مختلف أساليب العمل</p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5">{audienceBlock.title}</h2>
+            <p className="text-gray-400 text-base md:text-lg">{audienceBlock.subtitle}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-5 md:gap-6 max-w-6xl mx-auto">
             {audiences.map((a, i) => {
@@ -423,7 +352,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center justify-between mb-10 mt-16 md:mt-20 relative z-10">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">اكتشف مساحاتنا</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">{galleryBlock.title}</h2>
             </div>
             <div className="hidden md:flex gap-2">
               <button
@@ -466,17 +395,17 @@ export default function HomePage() {
         <div className="max-w-3xl mx-auto px-4 relative z-10">
           <div className="text-center relative z-10 mt-16 md:mt-20">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-6">
-              ابدأ اليوم وارتقِ بطريقة عملك
+              {finalCta.title}
             </h2>
             <p className="text-gray-500 text-base md:text-lg mb-10">
-              انضم إلى مجتمع كن واحصل على بيئة عمل احترافية تدعم نمو أعمالك
+              {finalCta.subtitle}
             </p>
             <Link to="/contact">
               <Button
                 data-testid="final-cta-button"
                 className="bg-[#f47424] text-white hover:bg-[#d9641d] px-10 py-3 rounded-md font-bold text-base shadow-md hover:shadow-lg transition-all h-12"
               >
-                احجز جولتك المجانية
+                {finalCta.cta_text}
               </Button>
             </Link>
           </div>

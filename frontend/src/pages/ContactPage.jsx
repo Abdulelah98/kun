@@ -5,7 +5,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import axios from "axios";
-import { Mail, Phone, MapPin, MessageCircle, Instagram, Twitter, Send } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle, Instagram, Twitter, Send, Clock } from "lucide-react";
+import { useContent } from "@/contexts/ContentContext";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -19,6 +20,10 @@ const serviceOptions = [
 ];
 
 export default function ContactPage() {
+  const header = useContent("contact_header");
+  const info = useContent("contact_info");
+  const formT = useContent("contact_form");
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -37,7 +42,7 @@ export default function ContactPage() {
     setSubmitting(true);
     try {
       await axios.post(`${API}/contact`, formData);
-      toast.success("تم إرسال طلبك بنجاح! سنتواصل معك قريباً");
+      toast.success(formT.success_message || "تم إرسال طلبك بنجاح! سنتواصل معك قريباً");
       setFormData({ name: "", phone: "", email: "", service_type: "", message: "" });
     } catch {
       toast.error("حدث خطأ، يرجى المحاولة مرة أخرى");
@@ -46,17 +51,19 @@ export default function ContactPage() {
     }
   };
 
+  const phoneDigits = (info.phone_value || "").replace(/[^0-9+]/g, "");
+
   return (
     <main data-testid="contact-page" className="pt-16">
       {/* Header - Dark navy */}
       <section className="bg-[#0A1128] py-24 md:py-32 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-4">تواصل معنا</p>
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-4">{header.eyebrow}</p>
           <h1 data-testid="contact-title" className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-5 leading-[1.2]">
-            نسعد بتواصلك معنا
+            {header.title}
           </h1>
           <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">
-            فريقنا جاهز لمساعدتك في اختيار المساحة المثالية لأعمالك
+            {header.subtitle}
           </p>
         </div>
       </section>
@@ -67,10 +74,13 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
             {/* Form */}
             <div className="lg:col-span-3">
+              {formT.title && (
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">{formT.title}</h2>
+              )}
               <form onSubmit={handleSubmit} data-testid="contact-form" className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">الاسم الكريم *</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">{formT.name_label} *</label>
                     <Input
                       data-testid="contact-name"
                       placeholder="أدخل اسمك"
@@ -80,7 +90,7 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">رقم الهاتف *</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">{formT.phone_label} *</label>
                     <Input
                       data-testid="contact-phone"
                       placeholder="05xxxxxxxx"
@@ -92,7 +102,7 @@ export default function ContactPage() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">البريد الإلكتروني *</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">{formT.email_label} *</label>
                     <Input
                       data-testid="contact-email"
                       type="email"
@@ -103,7 +113,7 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">نوع الخدمة *</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">{formT.service_label} *</label>
                     <Select
                       value={formData.service_type}
                       onValueChange={(val) => setFormData({ ...formData, service_type: val })}
@@ -123,7 +133,7 @@ export default function ContactPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">رسالتك</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">{formT.message_label}</label>
                   <Textarea
                     data-testid="contact-message"
                     placeholder="اكتب رسالتك هنا..."
@@ -139,7 +149,7 @@ export default function ContactPage() {
                   className="bg-[#f47424] text-white hover:bg-[#d9641d] font-bold px-8 py-3 rounded-md text-base h-12"
                 >
                   <span className="flex items-center gap-2">
-                    {submitting ? "جاري الإرسال..." : "إرسال الطلب"}
+                    {submitting ? "جاري الإرسال..." : (formT.submit_text || "إرسال الطلب")}
                     <Send size={16} />
                   </span>
                 </Button>
@@ -151,30 +161,44 @@ export default function ContactPage() {
               <div className="bg-[#EDF0F4] rounded-xl p-6 border border-gray-100">
                 <h3 className="font-bold text-gray-900 mb-5">معلومات التواصل</h3>
                 <div className="space-y-4">
-                  <a href="mailto:info@kunws.com" className="flex items-center gap-3 text-gray-600 hover:text-[#f47424] transition-colors">
-                    <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
-                      <Mail className="w-5 h-5 text-[#f47424]" />
+                  {info.email_value && (
+                    <a href={`mailto:${info.email_value}`} className="flex items-center gap-3 text-gray-600 hover:text-[#f47424] transition-colors">
+                      <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
+                        <Mail className="w-5 h-5 text-[#f47424]" />
+                      </div>
+                      <span className="text-sm">{info.email_value}</span>
+                    </a>
+                  )}
+                  {info.phone_value && (
+                    <a href={`tel:${phoneDigits}`} className="flex items-center gap-3 text-gray-600 hover:text-[#f47424] transition-colors">
+                      <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
+                        <Phone className="w-5 h-5 text-[#f47424]" />
+                      </div>
+                      <span className="text-sm">{info.phone_value}</span>
+                    </a>
+                  )}
+                  {info.address_value && (
+                    <div className="flex items-center gap-3 text-gray-600">
+                      <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
+                        <MapPin className="w-5 h-5 text-[#f47424]" />
+                      </div>
+                      <span className="text-sm whitespace-pre-line">{info.address_value}</span>
                     </div>
-                    <span className="text-sm">info@kunws.com</span>
-                  </a>
-                  <a href="tel:+966535420969" className="flex items-center gap-3 text-gray-600 hover:text-[#f47424] transition-colors">
-                    <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
-                      <Phone className="w-5 h-5 text-[#f47424]" />
+                  )}
+                  {info.working_hours_value && (
+                    <div className="flex items-center gap-3 text-gray-600">
+                      <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
+                        <Clock className="w-5 h-5 text-[#f47424]" />
+                      </div>
+                      <span className="text-sm">{info.working_hours_value}</span>
                     </div>
-                    <span className="text-sm">+966 53 542 0969</span>
-                  </a>
-                  <div className="flex items-center gap-3 text-gray-600">
-                    <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-5 h-5 text-[#f47424]" />
-                    </div>
-                    <span className="text-sm">المملكة العربية السعودية، الرياض</span>
-                  </div>
+                  )}
                 </div>
               </div>
 
               {/* WhatsApp */}
               <a
-                href="https://wa.me/966535420969"
+                href={`https://wa.me/${phoneDigits.replace("+", "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="whatsapp-button"
