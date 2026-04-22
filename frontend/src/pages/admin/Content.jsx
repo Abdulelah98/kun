@@ -31,6 +31,24 @@ import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, v
 import { CSS } from "@dnd-kit/utilities";
 import MediaPicker from "@/components/admin/MediaPicker";
 import { PAGES, PAGE_BLOCKS } from "./contentSchema";
+import { DEFAULT_CONTENT } from "@/lib/defaultContent";
+
+/**
+ * Merge live DB content on top of defaults so the editor shows the exact
+ * text/images the user currently sees on the public site. Any value
+ * actually persisted in the CMS wins over the default.
+ */
+function mergeWithDefaults(key, fromDb) {
+  const defaults = DEFAULT_CONTENT[key] || {};
+  const db = fromDb || {};
+  const merged = { ...defaults };
+  for (const [k, v] of Object.entries(db)) {
+    if (v === "" || v === null || v === undefined) continue;
+    if (Array.isArray(v) && v.length === 0 && Array.isArray(defaults[k])) continue;
+    merged[k] = v;
+  }
+  return merged;
+}
 
 const ICONS = { home: Home, info: Info, briefcase: Briefcase, phone: Phone, box: Box, globe: Globe, building: Building2 };
 
@@ -196,12 +214,12 @@ export default function Content() {
       for (const b of data) map[b.key] = b;
       setBlocks(map);
 
-      // Initialize editor states for every schema key (merge with DB)
+      // Initialize editor states for every schema key (merge DB + defaults)
       const init = {};
       for (const schema of PAGE_BLOCKS) {
         const doc = map[schema.key];
         init[schema.key] = {
-          ar: doc?.ar || {},
+          ar: mergeWithDefaults(schema.key, doc?.ar),
           en: doc?.en || {},
           active: doc?.active ?? true,
           order: doc?.order ?? PAGE_BLOCKS.findIndex((p) => p.key === schema.key),
