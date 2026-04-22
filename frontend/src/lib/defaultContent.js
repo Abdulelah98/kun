@@ -167,4 +167,133 @@ export const DEFAULT_CONTENT = {
     submit_text: "إرسال الطلب",
     success_message: "تم إرسال طلبك بنجاح! سنتواصل معك قريباً",
   },
+
+  // ==================== SPACES ====================
+  spaces_header: {
+    eyebrow: "المساحات",
+    title: "مساحات عمل تناسب طموحك",
+    subtitle: "اختر المساحة المثالية لأعمالك من بين خيارات متنوعة ومرنة",
+  },
+  spaces_shared_desks: {
+    title: "المكاتب المشتركة",
+    price_start_badge: "يبدأ من",
+    price_display: "1,500 ريال / شهرياً",
+    features_eyebrow: "ما الذي تحصل عليه",
+    features_title: "كل ما تحتاجه لإنتاجية بلا حدود",
+    features: [
+      { text: "مكتب مشترك (Hot Desk)" },
+      { text: "إنترنت فائق السرعة غير محدود" },
+      { text: "ضيافة غير محدودة (قهوة، شاي، مياه)" },
+      { text: "طباعة غير محدودة" },
+      { text: "وصول مرن بالساعة أو اليوم" },
+      { text: "استخدام المناطق المشتركة" },
+    ],
+    cta: "احجز مكتبك المشترك",
+  },
+  spaces_private_offices: {
+    title: "المكاتب الخاصة",
+    price_start_badge: "يبدأ من",
+    price_display: "3,500 ريال / شهرياً",
+    features_title: "كل ما تحتاجه لإنتاجية بلا حدود",
+    features: [
+      { text: "مكتب خاص مجهز بالكامل" },
+      { text: "إنترنت فائق السرعة غير محدود" },
+      { text: "ضيافة غير محدودة (قهوة، شاي، مياه)" },
+      { text: "طباعة غير محدودة" },
+      { text: "عنوان تجاري رسمي" },
+      { text: "خدمة استقبال وسكرتارية" },
+      { text: "قاعات اجتماعات (ساعات شهرية)" },
+      { text: "دعم إداري وتشغيلي متكامل" },
+    ],
+  },
+  spaces_meeting_rooms: {
+    title: "قاعات الاجتماعات",
+    pick_date_title: "اختر التاريخ والوقت",
+    available_times_title: "الأوقات المتاحة",
+    empty_state_text: "اختر قاعة اجتماعات للبدء",
+    cta: "احجز القاعة",
+  },
+
+  // ==================== BUSINESS ====================
+  business_header: {
+    eyebrow: "خدمات الأعمال",
+    title: "خدمات أعمال متكاملة",
+    subtitle: "حلول احترافية لدعم نمو مشروعك وتسهيل أعمالك",
+  },
+  business_services: {
+    items: [
+      {
+        title: "الخدمات القانونية",
+        description:
+          "نقدم استشارات قانونية شاملة تشمل تأسيس الشركات، صياغة العقود، والتمثيل القانوني لحماية مصالح عملك.",
+        image:
+          "https://images.unsplash.com/photo-1746021375246-7dc8ab0583f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwzfHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85",
+      },
+      {
+        title: "الموارد البشرية",
+        description:
+          "حلول متكاملة لإدارة الموارد البشرية من التوظيف وإدارة الرواتب إلى تطوير الكفاءات وبناء فرق العمل.",
+        image:
+          "https://images.unsplash.com/photo-1637665662134-db459c1bbb46?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBvZmZpY2UlMjBtZWV0aW5nJTIwcm9vbXxlbnwwfHx8fDE3NzYyNTc2OTV8MA&ixlib=rb-4.1.0&q=85",
+      },
+      {
+        title: "حلول مساحات العمل",
+        description:
+          "تصميم وتجهيز مساحات العمل وفق أحدث المعايير العالمية مع حلول مرنة تتكيف مع نمو أعمالك.",
+        image:
+          "https://images.unsplash.com/photo-1770993151375-0dee97eda931?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBtZWV0aW5nJTIwcm9vbSUyMGdsYXNzJTIwb2ZmaWNlfGVufDB8fHx8MTc3NjI1NzY4OHww&ixlib=rb-4.1.0&q=85",
+      },
+    ],
+  },
+
+  // ==================== POD ====================
+  pod_header: {
+    eyebrow: "البود الذكي",
+    title: "مساحتك الخاصة للتركيز والإنتاجية",
+    subtitle:
+      "كبائن عمل ذكية معزولة صوتياً ومجهزة بأحدث التقنيات. مثالية للمكالمات المهمة، الاجتماعات الافتراضية، والعمل الذي يتطلب تركيزاً عالياً.",
+    hero_image:
+      "https://static.prod-images.emergentagent.com/jobs/5a4c12ca-bf7c-43dd-b928-467b4172e275/images/8bd54b2ba1b5f87de79c099636bfb4d644c3a7e5c60f7bb9ac0579b12f6dd2e1.png",
+  },
+  pod_features: {
+    title: "مميزات البود الذكي",
+    items: [
+      { title: "عزل صوتي متقدم", description: "تقنية عزل صوتي احترافية توفر بيئة هادئة تماماً" },
+      { title: "تركيز أعلى", description: "بيئة مصممة خصيصاً لرفع الإنتاجية والتركيز" },
+      { title: "خصوصية تامة", description: "مساحة شخصية مغلقة لمكالماتك واجتماعاتك المهمة" },
+      { title: "إنترنت فائق السرعة", description: "اتصال مستقر وسريع لضمان سلاسة عملك" },
+      { title: "تهوية ذكية", description: "نظام تهوية متطور يضمن راحتك طوال الوقت" },
+      { title: "شحن وتقنية", description: "منافذ شحن متعددة وشاشة عرض مدمجة" },
+    ],
+  },
+
+  // ==================== GLOBAL (Navbar / Footer) ====================
+  global_navbar: {
+    logo_alt: "KUN",
+    logo_image:
+      "https://customer-assets.emergentagent.com/job_kun-conversion-site/artifacts/lox96qjv_KUN-LOGO.svg",
+    cta_text: "احجز جولتك المجانية",
+    links: [
+      { label: "الرئيسية", href: "/" },
+      { label: "المساحات", href: "/spaces" },
+      { label: "خدمات الأعمال", href: "/business" },
+      { label: "البود الذكي", href: "/pod" },
+      { label: "من نحن", href: "/about" },
+      { label: "تواصل معنا", href: "/contact" },
+    ],
+  },
+  global_footer: {
+    brand_description:
+      "رائدون في توفير مساحات العمل المشتركة في الرياض. نقدم بيئة عمل احترافية وتعاونية لتحقيق أهدافك.",
+    rights_text: "2025 © KUN - جميع الحقوق محفوظة",
+    quick_links_title: "روابط سريعة",
+    quick_links: [
+      { label: "الرئيسية", href: "/" },
+      { label: "المساحات", href: "/spaces" },
+      { label: "خدمات الأعمال", href: "/business" },
+      { label: "البود الذكي", href: "/pod" },
+      { label: "من نحن", href: "/about" },
+    ],
+    social_title: "تابعنا",
+  },
 };
