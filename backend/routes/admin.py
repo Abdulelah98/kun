@@ -17,6 +17,7 @@ from models.schemas import (
     MeetingRoomOut,
     ContentBlockIn,
     ContentBlockOut,
+    ContentReorderItem,
     SiteSettings,
     BookingStatusUpdate,
     BookingOut,
@@ -170,6 +171,19 @@ async def delete_content(key: str, _user: dict = Depends(require_admin)):
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Content not found")
     return {"ok": True}
+
+
+@router.post("/content/reorder")
+async def reorder_content(payload: List[ContentReorderItem], _user: dict = Depends(require_admin)):
+    """Update `order` on multiple content blocks at once."""
+    db = get_db()
+    for item in payload:
+        await db.content_blocks.update_one(
+            {"key": item.key},
+            {"$set": {"order": item.order, "updated_at": _now_iso()}},
+            upsert=True,
+        )
+    return {"success": True, "updated": len(payload)}
 
 
 # ================= SITE SETTINGS =================

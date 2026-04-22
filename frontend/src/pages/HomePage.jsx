@@ -14,7 +14,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { useContent } from "@/contexts/ContentContext";
+import { useContent, useSectionActive } from "@/contexts/ContentContext";
 import { resolveMediaUrl } from "@/components/admin/MediaPicker";
 
 const AUDIENCE_ICONS = [Rocket, Zap, Users, UserCheck, Building2];
@@ -37,6 +37,15 @@ export default function HomePage() {
   const audienceBlock = useContent("home_audience");
   const galleryBlock = useContent("home_gallery");
   const finalCta = useContent("home_final_cta");
+
+  // Section visibility (admin can disable any section)
+  const heroActive = useSectionActive("home_hero");
+  const aboutActive = useSectionActive("home_about");
+  const servicesActive = useSectionActive("services_overview");
+  const whyActive = useSectionActive("home_why");
+  const audienceActive = useSectionActive("home_audience");
+  const galleryActive = useSectionActive("home_gallery");
+  const finalCtaActive = useSectionActive("home_final_cta");
 
   const services = (servicesOverview.items || []).map((it) => ({
     logo: resolveMediaUrl(it.image) || "/assets/logos/spaces.svg",
@@ -99,6 +108,7 @@ export default function HomePage() {
   return (
     <main data-testid="home-page">
       {/* Hero Section */}
+      {heroActive && (
       <section data-testid="hero-section" className="hero-video-container" style={{ backgroundImage: `url(${resolveMediaUrl(hero.fallback_image) || HERO_FALLBACK})` }}>
         <video autoPlay muted loop playsInline poster={resolveMediaUrl(hero.fallback_image) || HERO_FALLBACK}>
           <source src={hero.video_url || VIDEO_URL_FALLBACK} type="video/mp4" />
@@ -162,8 +172,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* About Us Section */}
+      {aboutActive && (
       <section data-testid="about-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
         <span ref={setBgRef(0)} className="section-bg-word section-bg-word--left" aria-hidden="true">من نحن</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -204,8 +216,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Services Overview */}
+      {servicesActive && (
       <section data-testid="services-section" className="services-section py-28 md:py-36 relative overflow-hidden">
         <span ref={setBgRef(1)} className="section-bg-word section-bg-word--right" aria-hidden="true">خدماتنا</span>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -257,8 +271,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Why KUN */}
+      {whyActive && (
       <section data-testid="why-kun-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
         <span ref={setBgRef(2)} className="section-bg-word section-bg-word--left" aria-hidden="true">لماذا كن</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -302,8 +318,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Target Audience - Dark themed */}
+      {audienceActive && (
       <section data-testid="audience-section" className="py-24 md:py-32 bg-[#0A1128] relative overflow-hidden">
         <span ref={setBgRef(3)} className="section-bg-word section-bg-word--right section-bg-word--dark" aria-hidden="true">عملاؤنا</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -345,8 +363,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Image Gallery */}
+      {galleryActive && (
       <section data-testid="gallery-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
         <span ref={setBgRef(4)} className="section-bg-word section-bg-word--left" aria-hidden="true">مساحاتنا</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -388,8 +408,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Final CTA */}
+      {finalCtaActive && (
       <section data-testid="final-cta-section" className="py-28 md:py-36 bg-[#EDF0F4] relative overflow-hidden">
         <span ref={setBgRef(5)} className="section-bg-word section-bg-word--center" style={{ top: '15%' }} aria-hidden="true">تواصل</span>
         <div className="max-w-3xl mx-auto px-4 relative z-10">
@@ -411,6 +433,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      )}
     </main>
   );
 }

@@ -148,10 +148,16 @@ class ContentBlockIn(BaseModel):
     ar: Dict[str, Any] = Field(default_factory=dict)
     en: Dict[str, Any] = Field(default_factory=dict)
     active: bool = True
+    order: int = 0
 
 
 class ContentBlockOut(ContentBlockIn):
     updated_at: Optional[str] = None
+
+
+class ContentReorderItem(BaseModel):
+    key: str
+    order: int
 
 
 # ---- SETTINGS (singleton doc with key="site") ----

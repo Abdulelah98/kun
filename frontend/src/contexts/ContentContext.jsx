@@ -7,6 +7,7 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 export function ContentProvider({ children }) {
   const [content, setContent] = useState({});
+  const [activeMap, setActiveMap] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -16,11 +17,14 @@ export function ContentProvider({ children }) {
       .then((r) => {
         if (cancel) return;
         const map = {};
-        // backend returns {key: {key, ar, en, active, updated_at}}
+        const active = {};
         for (const [k, v] of Object.entries(r.data || {})) {
           map[k] = v?.ar || {};
+          // undefined/true mean active by default; only explicit false hides
+          active[k] = v?.active !== false;
         }
         setContent(map);
+        setActiveMap(active);
       })
       .catch(() => {})
       .finally(() => !cancel && setLoading(false));
@@ -33,17 +37,20 @@ export function ContentProvider({ children }) {
     try {
       const r = await axios.get(`${API}/content`);
       const map = {};
+      const active = {};
       for (const [k, v] of Object.entries(r.data || {})) {
         map[k] = v?.ar || {};
+        active[k] = v?.active !== false;
       }
       setContent(map);
+      setActiveMap(active);
     } catch {
       /* noop */
     }
   };
 
   return (
-    <ContentContext.Provider value={{ content, loading, refresh }}>
+    <ContentContext.Provider value={{ content, activeMap, loading, refresh }}>
       {children}
     </ContentContext.Provider>
   );
@@ -52,13 +59,11 @@ export function ContentProvider({ children }) {
 /**
  * Merge CMS content with defaults. CMS values take priority;
  * any missing field falls back to the default.
- * For arrays like `items`, the CMS array fully replaces defaults when non-empty.
  */
 export function useContent(key) {
   const ctx = useContext(ContentContext);
   const fromCms = ctx?.content?.[key] || {};
   const defaults = DEFAULT_CONTENT[key] || {};
-  // Shallow merge; for list fields use CMS if it has items, otherwise default
   const merged = { ...defaults };
   for (const [k, v] of Object.entries(fromCms)) {
     if (Array.isArray(v) && v.length === 0 && Array.isArray(defaults[k])) continue;
@@ -66,4 +71,12 @@ export function useContent(key) {
     merged[k] = v;
   }
   return merged;
+}
+
+/** Returns true if the section is visible on the site (default: true). */
+export function useSectionActive(key) {
+  const ctx = useContext(ContentContext);
+  // Undefined means not saved yet → treat as active
+  const v = ctx?.activeMap?.[key];
+  return v !== false;
 }

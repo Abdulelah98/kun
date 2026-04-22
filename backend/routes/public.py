@@ -61,7 +61,8 @@ async def get_content_block(key: str):
 @router.get("/content")
 async def get_all_content():
     db = get_db()
-    cursor = db.content_blocks.find({"active": True}, {"_id": 0})
+    # Return ALL content blocks so the frontend can honor active=false explicitly
+    cursor = db.content_blocks.find({}, {"_id": 0}).sort("order", 1)
     items = await cursor.to_list(length=500)
     return {item["key"]: item for item in items}
 
