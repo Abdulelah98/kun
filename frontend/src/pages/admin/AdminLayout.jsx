@@ -60,7 +60,7 @@ export default function AdminLayout() {
   };
 
   return (
-    <div dir="rtl" className="min-h-screen bg-[var(--background)] text-[var(--foreground)] font-cairo flex">
+    <div dir="rtl" className="admin-scope min-h-screen bg-[var(--background)] text-[var(--foreground)] font-cairo flex">
       <aside className="w-64 shrink-0 border-l border-[var(--border)] bg-[var(--card)] h-screen sticky top-0 flex flex-col">
         <div className="px-5 py-5 border-b border-[var(--border)] flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">

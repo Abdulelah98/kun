@@ -69,6 +69,83 @@ body {
     }
 }
 
+/* =========================================================
+ * Admin panel — Light theme overrides
+ * Admin components were built with hardcoded "white/X" utilities
+ * (which assume a dark background). In light mode we remap them
+ * to theme-aware neutral tints so cards, borders, and muted text
+ * remain legible. Scoped to `.admin-scope` so the public site
+ * (always navy) is untouched.
+ * ========================================================= */
+html:not(.dark) .admin-scope {
+    --kun-surface-1: 220 14% 98%;
+    --kun-surface-2: 220 14% 96%;
+    --kun-surface-3: 220 14% 93%;
+    --kun-border-1: 220 13% 88%;
+    --kun-border-2: 220 13% 82%;
+    --kun-text-strong: 220 15% 12%;
+    --kun-text-muted: 220 9% 42%;
+    --kun-text-soft: 220 9% 55%;
+}
+
+html:not(.dark) .admin-scope .bg-white\/\[0\.02\],
+html:not(.dark) .admin-scope .bg-white\/\[0\.03\],
+html:not(.dark) .admin-scope .bg-white\/\[0\.04\],
+html:not(.dark) .admin-scope .bg-white\/5 {
+    background-color: hsl(var(--kun-surface-1)) !important;
+}
+html:not(.dark) .admin-scope .bg-white\/10,
+html:not(.dark) .admin-scope .bg-white\/90 {
+    background-color: hsl(var(--kun-surface-2)) !important;
+}
+
+html:not(.dark) .admin-scope .hover\:bg-white\/5:hover {
+    background-color: hsl(var(--kun-surface-2)) !important;
+}
+html:not(.dark) .admin-scope .hover\:bg-white\/10:hover {
+    background-color: hsl(var(--kun-surface-3)) !important;
+}
+
+html:not(.dark) .admin-scope .border-white\/\[0\.06\],
+html:not(.dark) .admin-scope .border-white\/10 {
+    border-color: hsl(var(--kun-border-1)) !important;
+}
+html:not(.dark) .admin-scope .hover\:border-white\/10:hover {
+    border-color: hsl(var(--kun-border-2)) !important;
+}
+
+html:not(.dark) .admin-scope .text-white,
+html:not(.dark) .admin-scope .text-white\/80,
+html:not(.dark) .admin-scope .text-white\/70 {
+    color: hsl(var(--kun-text-strong)) !important;
+}
+html:not(.dark) .admin-scope .text-white\/60,
+html:not(.dark) .admin-scope .text-white\/50,
+html:not(.dark) .admin-scope .text-white\/40 {
+    color: hsl(var(--kun-text-muted)) !important;
+}
+html:not(.dark) .admin-scope .text-white\/30 {
+    color: hsl(var(--kun-text-soft)) !important;
+}
+html:not(.dark) .admin-scope .placeholder\:text-white\/30::placeholder {
+    color: hsl(var(--kun-text-soft)) !important;
+}
+
+/* Preserve white text on brand-orange buttons */
+html:not(.dark) .admin-scope .bg-\[\#f47424\].text-white,
+html:not(.dark) .admin-scope .text-white.bg-\[\#f47424\],
+html:not(.dark) .admin-scope button.bg-\[\#f47424\],
+html:not(.dark) .admin-scope a.bg-\[\#f47424\] {
+    color: #fff !important;
+}
+
+/* Subtle shadow on cards for clear separation on white page bg */
+html:not(.dark) .admin-scope .rounded-2xl.border,
+html:not(.dark) .admin-scope .rounded-xl.border,
+html:not(.dark) .admin-scope .rounded-lg.border {
+    box-shadow: 0 1px 2px 0 rgb(15 23 42 / 0.04);
+}
+
 @layer base {
     * {
         @apply border-border;
