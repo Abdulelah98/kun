@@ -2,7 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import api from "@/lib/api";
 import { Calendar } from "@/components/ui/calendar";
 import { Badge } from "@/components/ui/badge";
-import { Clock, CalendarDays, Lock, CheckCircle2, Users } from "lucide-react";
+import { Clock, CalendarDays, Lock, CheckCircle2, Users, Repeat, Sparkles, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 // Build HH:MM slots between start/end given a step
 function buildSlots(start = "09:00", end = "21:00", step = 60) {
@@ -101,19 +105,220 @@ export default function SlotEditor({ value = [], onChange, roomId }) {
   // Count of blocked slots across all dates
   const totalBlocked = blockedList.length;
 
+  // ------ Recurring template state ------
+  const [recurOpen, setRecurOpen] = useState(false);
+  const [recurDays, setRecurDays] = useState([]); // 0..6
+  const [recurStart, setRecurStart] = useState("14:00");
+  const [recurEnd, setRecurEnd] = useState("16:00");
+  const [recurWeeks, setRecurWeeks] = useState(4);
+
+  const DAYS = [
+    { val: 0, ar: "الأحد" },
+    { val: 1, ar: "الإثنين" },
+    { val: 2, ar: "الثلاثاء" },
+    { val: 3, ar: "الأربعاء" },
+    { val: 4, ar: "الخميس" },
+    { val: 5, ar: "الجمعة" },
+    { val: 6, ar: "السبت" },
+  ];
+
+  const toggleRecurDay = (v) => {
+    setRecurDays((prev) => (prev.includes(v) ? prev.filter((x) => x !== v) : [...prev, v]));
+  };
+
+  const applyRecurring = () => {
+    if (recurDays.length === 0) {
+      toast.error("اختر يوماً واحداً على الأقل");
+      return;
+    }
+    const step = availability?.slot_minutes || 60;
+    const windowSlots = buildSlots(recurStart, recurEnd, step);
+    if (windowSlots.length === 0) {
+      toast.error("تحقق من وقت البداية والنهاية");
+      return;
+    }
+    const weeks = Math.max(1, Math.min(52, Number(recurWeeks) || 1));
+    const base = new Date(date);
+    base.setHours(0, 0, 0, 0);
+
+    const newKeys = new Set(blockedList);
+    let added = 0;
+    for (let w = 0; w < weeks; w++) {
+      for (let d = 0; d < 7; d++) {
+        const cur = new Date(base);
+        cur.setDate(base.getDate() + w * 7 + d);
+        if (!recurDays.includes(cur.getDay())) continue;
+        // Respect availability.working_days & blocked_dates
+        if (availability && !(availability.working_days || []).includes(cur.getDay())) continue;
+        const iso = isoDate(cur);
+        if (availability && (availability.blocked_dates || []).includes(iso)) continue;
+        for (const hhmm of windowSlots) {
+          const key = `${iso}T${hhmm}`;
+          if (!newKeys.has(key)) {
+            newKeys.add(key);
+            added++;
+          }
+        }
+      }
+    }
+    onChange?.(Array.from(newKeys));
+    toast.success(`تمت إضافة ${added} فترة إلى الجدول`);
+    setRecurOpen(false);
+    setRecurDays([]);
+  };
+
+  const clearAllBlocked = () => {
+    if (blockedList.length === 0) return;
+    if (!window.confirm("حذف جميع الفترات المحجوزة من الإدارة؟")) return;
+    onChange?.([]);
+    toast.success("تم مسح الجدول");
+  };
+
   return (
     <div className="rounded-2xl border border-[var(--border)] bg-[var(--accent)] overflow-hidden" data-testid="slot-editor">
-      <div className="px-5 py-3 border-b border-[var(--border)] flex items-center justify-between gap-3">
+      <div className="px-5 py-3 border-b border-[var(--border)] flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2 text-sm font-semibold text-[var(--foreground)]">
           <CalendarDays className="w-4 h-4 text-[#f47424]" />
           جدول الحجز
         </div>
-        {totalBlocked > 0 && (
-          <Badge className="bg-[#f47424]/15 text-[#f47424] border border-[#f47424]/30 hover:bg-[#f47424]/20">
-            {totalBlocked} فترة محجوزة من الإدارة
-          </Badge>
-        )}
+        <div className="flex items-center gap-2">
+          {totalBlocked > 0 && (
+            <>
+              <Badge className="bg-[#f47424]/15 text-[#f47424] border border-[#f47424]/30 hover:bg-[#f47424]/20">
+                {totalBlocked} فترة محجوزة
+              </Badge>
+              <button
+                type="button"
+                onClick={clearAllBlocked}
+                className="text-xs text-rose-500 hover:text-rose-400 flex items-center gap-1"
+                data-testid="slot-clear-all"
+              >
+                <X className="w-3 h-3" /> مسح الكل
+              </button>
+            </>
+          )}
+          <Button
+            type="button"
+            size="sm"
+            onClick={() => setRecurOpen((v) => !v)}
+            className="bg-[#f47424]/10 text-[#f47424] hover:bg-[#f47424]/20 border border-[#f47424]/30 h-8 px-3 text-xs font-semibold"
+            data-testid="slot-recur-toggle"
+          >
+            <Repeat className="w-3.5 h-3.5 ml-1" />
+            قالب متكرر
+          </Button>
+        </div>
       </div>
+
+      {/* Recurring template panel */}
+      {recurOpen && (
+        <div
+          className="px-5 py-4 border-b border-[var(--border)] bg-[var(--card)]/60"
+          data-testid="slot-recur-panel"
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles className="w-4 h-4 text-[#f47424]" />
+            <span className="text-sm font-semibold">قالب الحجز المتكرر</span>
+            <span className="text-[11px] text-[var(--muted-foreground)]">
+              (يبدأ من التاريخ المحدد في التقويم)
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr,auto] gap-4 items-end">
+            <div className="space-y-3">
+              <div>
+                <Label className="text-xs text-[var(--muted-foreground)] mb-2 block">الأيام</Label>
+                <div className="flex flex-wrap gap-1.5">
+                  {DAYS.map((d) => {
+                    const on = recurDays.includes(d.val);
+                    return (
+                      <button
+                        key={d.val}
+                        type="button"
+                        onClick={() => toggleRecurDay(d.val)}
+                        data-testid={`recur-day-${d.val}`}
+                        className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
+                          on
+                            ? "bg-[#f47424] text-white border-[#f47424] shadow-sm shadow-[#f47424]/30"
+                            : "bg-[var(--accent)] text-[var(--foreground)] border-[var(--border)] hover:border-[#f47424]/50"
+                        }`}
+                      >
+                        {d.ar}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2">
+                <div>
+                  <Label className="text-xs text-[var(--muted-foreground)] mb-1 block">من</Label>
+                  <Input
+                    type="time"
+                    value={recurStart}
+                    onChange={(e) => setRecurStart(e.target.value)}
+                    className="bg-[var(--accent)] border-[var(--border)] h-9"
+                    data-testid="recur-start"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs text-[var(--muted-foreground)] mb-1 block">إلى</Label>
+                  <Input
+                    type="time"
+                    value={recurEnd}
+                    onChange={(e) => setRecurEnd(e.target.value)}
+                    className="bg-[var(--accent)] border-[var(--border)] h-9"
+                    data-testid="recur-end"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs text-[var(--muted-foreground)] mb-1 block">لمدة (أسابيع)</Label>
+                  <Input
+                    type="number"
+                    min={1}
+                    max={52}
+                    value={recurWeeks}
+                    onChange={(e) => setRecurWeeks(e.target.value)}
+                    className="bg-[var(--accent)] border-[var(--border)] h-9"
+                    data-testid="recur-weeks"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Button
+                type="button"
+                onClick={applyRecurring}
+                className="bg-[#f47424] hover:bg-[#d9641d] text-white h-10 font-bold"
+                data-testid="recur-apply"
+              >
+                تطبيق
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setRecurOpen(false)}
+                className="border-[var(--border)] bg-transparent h-9 text-xs"
+              >
+                إلغاء
+              </Button>
+            </div>
+          </div>
+
+          {recurDays.length > 0 && (
+            <p className="text-[11px] text-[var(--muted-foreground)] mt-3">
+              سيتم إغلاق{" "}
+              <span className="text-[#f47424] font-semibold">
+                {recurDays.map((v) => DAYS.find((x) => x.val === v).ar).join("، ")}
+              </span>{" "}
+              من <span className="font-semibold">{formatTime12(recurStart)}</span> إلى{" "}
+              <span className="font-semibold">{formatTime12(recurEnd)}</span> لمدة{" "}
+              <span className="font-semibold">{recurWeeks}</span> أسبوع.
+            </p>
+          )}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-[auto,1fr] gap-0">
         {/* Calendar */}
