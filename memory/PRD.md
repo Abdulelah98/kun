@@ -93,6 +93,8 @@ Build a modern, high-conversion bilingual (Arabic-first) website for KUN workspa
 - [x] **Booked-slots public endpoint** `/api/booked-slots?room_id=X&date=Y` for client to disable unavailable slots on SpacesPage calendar
 - [x] **Dark/Light Theme**: new `ThemeContext` with navy #0B1E2D dark mode + off-white light mode, localStorage persisted, toggle in admin sidebar, smooth transitions. Black replaced with navy across admin
 - [x] **CMS grouping**: Content blocks grouped by page in sidebar (Home/Services/About/Contact)
+- [x] **Apr 2026 — Visual Slot Editor**: Replaced the raw textarea (`YYYY-MM-DDTHH:MM` per line) in admin Meeting Rooms with an Airbnb/Calendly-style calendar + time-slot chip picker (`/app/frontend/src/components/admin/SlotEditor.jsx`). Date picker → hourly chips with 3 visual states (Available / Admin-blocked / Customer-booked), 12h AM/PM format, brand-orange fills, soft shadows, hover lift. Pulls live slots from `/api/availability` and real customer bookings from `/api/booked-slots`.
+- [x] Added missing `JWT_SECRET` to backend `.env` (was causing login 500s after fork).
 
 ## Prioritized Backlog
 

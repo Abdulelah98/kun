@@ -3,8 +3,8 @@ import api, { formatApiError } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import SlotEditor from "@/components/admin/SlotEditor";
 import {
   Dialog,
   DialogContent,
@@ -59,7 +59,7 @@ export default function MeetingRooms() {
         price: Number(form.price),
         order: Number(form.order),
         images: Array.isArray(form.images) ? form.images : (typeof form.images === "string" ? form.images.split("\n").map((s) => s.trim()).filter(Boolean) : []),
-        booked_slots: typeof form.booked_slots === "string" ? form.booked_slots.split("\n").map((s) => s.trim()).filter(Boolean) : form.booked_slots,
+        booked_slots: Array.isArray(form.booked_slots) ? form.booked_slots : [],
       };
       if (editing) await api.put(`/admin/meeting-rooms/${editing.id}`, body);
       else await api.post("/admin/meeting-rooms", body);
@@ -136,10 +136,12 @@ export default function MeetingRooms() {
               <div className="mt-2"><MediaPicker value={Array.isArray(form.images) ? form.images : []} onChange={(v) => setForm({ ...form, images: v })} multiple label="أضف صور" /></div>
             </div>
             <div className="md:col-span-2">
-              <Label className="text-white/70">المواعيد المحجوزة (YYYY-MM-DDTHH:MM سطر لكل موعد)</Label>
-              <Textarea rows={3} value={Array.isArray(form.booked_slots) ? form.booked_slots.join("\n") : form.booked_slots}
-                onChange={(e) => setForm({ ...form, booked_slots: e.target.value })}
-                className="bg-white/[0.04] border-white/10 text-white mt-1" />
+              <Label className="text-white/70 mb-2 block">المواعيد المحجوزة مسبقاً</Label>
+              <SlotEditor
+                value={Array.isArray(form.booked_slots) ? form.booked_slots : []}
+                onChange={(v) => setForm({ ...form, booked_slots: v })}
+                roomId={editing?.id}
+              />
             </div>
             <div className="flex items-center gap-3">
               <Switch checked={form.active} onCheckedChange={(v) => setForm({ ...form, active: v })} />
