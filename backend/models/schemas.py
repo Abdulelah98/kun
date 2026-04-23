@@ -178,6 +178,8 @@ class SiteSettings(BaseModel):
 class AvailabilityDoc(BaseModel):
     # days of week 0..6 (0=Sunday) that are working
     working_days: List[int] = Field(default_factory=lambda: [0, 1, 2, 3, 4, 5, 6])
+    # when True, the venue is open 24/7 and start/end are ignored
+    all_day: bool = False
     # working hours in 24h "HH:MM" (closed if start==end)
     start_time: str = "00:00"
     end_time: str = "23:59"

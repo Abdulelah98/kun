@@ -66,15 +66,17 @@ export default function SlotEditor({ value = [], onChange, roomId }) {
       .catch(() => setCustomerBooked([]));
   }, [roomId, date]);
 
-  const slots = useMemo(
-    () =>
-      buildSlots(
-        availability?.start_time || "09:00",
-        availability?.end_time || "21:00",
-        availability?.slot_minutes || 60
-      ),
-    [availability]
-  );
+  const slots = useMemo(() => {
+    if (availability?.all_day) {
+      const step = availability.slot_minutes || 60;
+      return buildSlots("00:00", "24:00", step);
+    }
+    return buildSlots(
+      availability?.start_time || "09:00",
+      availability?.end_time || "21:00",
+      availability?.slot_minutes || 60
+    );
+  }, [availability]);
 
   const blockedList = Array.isArray(value) ? value : [];
   const blockedForDate = useMemo(() => {

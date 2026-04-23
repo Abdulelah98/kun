@@ -3,6 +3,7 @@ import api, { formatApiError } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { Loader2, Save, Plus, Trash2 } from "lucide-react";
 
@@ -65,6 +66,7 @@ export default function Availability() {
     try {
       const body = {
         ...form,
+        all_day: !!form.all_day,
         working_days: (form.working_days || []).map(Number),
         slot_minutes: Number(form.slot_minutes || 60),
       };
@@ -112,22 +114,37 @@ export default function Availability() {
         </div>
 
         {/* Working hours */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <Label className="text-[var(--muted-foreground)] mb-1.5 block">بداية الدوام</Label>
-            <Input type="time" value={form.start_time} onChange={(e) => setForm({ ...form, start_time: e.target.value })}
-              className="bg-[var(--accent)] border-[var(--border)]" data-testid="avail-start" />
+        <div className="space-y-4">
+          <div className="flex items-center justify-between rounded-xl border border-[var(--border)] bg-[var(--accent)]/50 p-4">
+            <div>
+              <Label className="text-[var(--foreground)] text-base font-semibold">يوم كامل (24 ساعة)</Label>
+              <p className="text-xs text-[var(--muted-foreground)] mt-0.5">تفعيل الخيار يعرض جميع ساعات اليوم (24 فترة) في التقويم ويتجاهل أوقات البداية والنهاية.</p>
+            </div>
+            <Switch
+              checked={!!form.all_day}
+              onCheckedChange={(v) => setForm({ ...form, all_day: v })}
+              data-testid="avail-all-day"
+              className="data-[state=checked]:bg-[#f47424]"
+            />
           </div>
-          <div>
-            <Label className="text-[var(--muted-foreground)] mb-1.5 block">نهاية الدوام</Label>
-            <Input type="time" value={form.end_time} onChange={(e) => setForm({ ...form, end_time: e.target.value })}
-              className="bg-[var(--accent)] border-[var(--border)]" data-testid="avail-end" />
-          </div>
-          <div>
-            <Label className="text-[var(--muted-foreground)] mb-1.5 block">مدة الفترة (دقيقة)</Label>
-            <Input type="number" min={15} step={15} value={form.slot_minutes}
-              onChange={(e) => setForm({ ...form, slot_minutes: e.target.value })}
-              className="bg-[var(--accent)] border-[var(--border)]" />
+
+          <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 transition-opacity ${form.all_day ? "opacity-50 pointer-events-none" : ""}`}>
+            <div>
+              <Label className="text-[var(--muted-foreground)] mb-1.5 block">بداية الدوام</Label>
+              <Input type="time" value={form.start_time} onChange={(e) => setForm({ ...form, start_time: e.target.value })}
+                className="bg-[var(--accent)] border-[var(--border)]" data-testid="avail-start" disabled={!!form.all_day} />
+            </div>
+            <div>
+              <Label className="text-[var(--muted-foreground)] mb-1.5 block">نهاية الدوام</Label>
+              <Input type="time" value={form.end_time} onChange={(e) => setForm({ ...form, end_time: e.target.value })}
+                className="bg-[var(--accent)] border-[var(--border)]" data-testid="avail-end" disabled={!!form.all_day} />
+            </div>
+            <div>
+              <Label className="text-[var(--muted-foreground)] mb-1.5 block">مدة الفترة (دقيقة)</Label>
+              <Input type="number" min={15} step={15} value={form.slot_minutes}
+                onChange={(e) => setForm({ ...form, slot_minutes: e.target.value })}
+                className="bg-[var(--accent)] border-[var(--border)]" />
+            </div>
           </div>
         </div>
 

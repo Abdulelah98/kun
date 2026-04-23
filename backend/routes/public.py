@@ -212,9 +212,10 @@ async def book_meeting_room(booking: MeetingRoomBookingIn):
             raise HTTPException(status_code=400, detail="اليوم غير متاح للحجز")
         if booking.date in (avail.blocked_dates or []):
             raise HTTPException(status_code=400, detail="هذا التاريخ مغلق")
-        # time window
-        if booking.time_slot < avail.start_time or booking.time_slot >= avail.end_time:
-            raise HTTPException(status_code=400, detail="الموعد خارج أوقات العمل")
+        # time window (skipped when all_day is enabled)
+        if not getattr(avail, "all_day", False):
+            if booking.time_slot < avail.start_time or booking.time_slot >= avail.end_time:
+                raise HTTPException(status_code=400, detail="الموعد خارج أوقات العمل")
         # blocked slots
         for bs in (avail.blocked_slots or []):
             if bs.get("date") == booking.date and bs.get("slot") == booking.time_slot:
