@@ -202,6 +202,49 @@ async def update_settings(payload: SiteSettings, _user: dict = Depends(require_a
     return doc
 
 
+# ================= BRANDING (colors + logos) =================
+DEFAULT_BRANDING = {
+    "primary_color": "#f47424",
+    "primary_hover": "#d9641d",
+    "secondary_color": "#0A1128",
+    "accent_color": "#EDF0F4",
+    "logo_primary": "https://customer-assets.emergentagent.com/job_kun-conversion-site/artifacts/lox96qjv_KUN-LOGO.svg",
+    "logo_alt": "/assets/kun-logo-dark.png",
+    "admin_logo": "",
+    "favicon": "",
+}
+
+
+class BrandingDoc(BaseModel):
+    primary_color: Optional[str] = None
+    primary_hover: Optional[str] = None
+    secondary_color: Optional[str] = None
+    accent_color: Optional[str] = None
+    logo_primary: Optional[str] = None
+    logo_alt: Optional[str] = None
+    admin_logo: Optional[str] = None
+    favicon: Optional[str] = None
+
+
+@router.get("/branding")
+async def get_branding_admin(_user: dict = Depends(require_staff_or_admin)):
+    db = get_db()
+    doc = await db.settings.find_one({"key": "branding"}, {"_id": 0, "key": 0})
+    return {**DEFAULT_BRANDING, **(doc or {})}
+
+
+@router.put("/branding")
+async def update_branding(payload: BrandingDoc, _user: dict = Depends(require_admin)):
+    db = get_db()
+    # Merge new values over existing so admin can update a subset
+    existing = await db.settings.find_one({"key": "branding"}, {"_id": 0, "key": 0}) or {}
+    merged = {**DEFAULT_BRANDING, **existing}
+    for k, v in payload.model_dump(exclude_none=True).items():
+        merged[k] = v
+    await db.settings.update_one({"key": "branding"}, {"$set": merged}, upsert=True)
+    return merged
+
+
 # ================= BOOKINGS =================
 _DETAIL_FIELDS = {"num_desks", "office_id", "room_id", "date", "time_slot", "slot"}
 

@@ -74,6 +74,25 @@ async def get_settings():
     return doc or SiteSettings().model_dump()
 
 
+_DEFAULT_BRANDING = {
+    "primary_color": "#f47424",
+    "primary_hover": "#d9641d",
+    "secondary_color": "#0A1128",
+    "accent_color": "#EDF0F4",
+    "logo_primary": "https://customer-assets.emergentagent.com/job_kun-conversion-site/artifacts/lox96qjv_KUN-LOGO.svg",
+    "logo_alt": "/assets/kun-logo-dark.png",
+    "admin_logo": "",
+    "favicon": "",
+}
+
+
+@router.get("/branding")
+async def get_branding_public():
+    db = get_db()
+    doc = await db.settings.find_one({"key": "branding"}, {"_id": 0, "key": 0})
+    return {**_DEFAULT_BRANDING, **(doc or {})}
+
+
 @router.get("/availability")
 async def get_availability_public():
     db = get_db()

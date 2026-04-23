@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useBranding } from "@/contexts/BrandingContext";
 import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard,
@@ -19,6 +20,7 @@ import {
   Clock,
   Moon,
   Sun,
+  Palette,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -32,6 +34,7 @@ const NAV = [
   { to: "/admin/shared-desks", label: "المكاتب المشتركة", icon: Sofa, roles: ["admin"] },
   { to: "/admin/media", label: "مكتبة الصور", icon: ImageIcon, roles: ["admin"] },
   { to: "/admin/content", label: "إدارة المحتوى", icon: FileText, roles: ["admin"] },
+  { to: "/admin/branding", label: "الهوية البصرية", icon: Palette, roles: ["admin"] },
   { to: "/admin/settings", label: "الإعدادات", icon: Sliders, roles: ["admin"] },
   { to: "/admin/users", label: "المستخدمون", icon: Users2, roles: ["admin"] },
 ];
@@ -39,6 +42,7 @@ const NAV = [
 export default function AdminLayout() {
   const { user, logout } = useAuth();
   const { theme, toggle: toggleTheme } = useTheme();
+  const branding = useBranding();
   const navigate = useNavigate();
 
   if (user === null) {
@@ -64,7 +68,15 @@ export default function AdminLayout() {
       <aside className="w-64 shrink-0 border-l border-[var(--border)] bg-[var(--card)] h-screen sticky top-0 flex flex-col">
         <div className="px-5 py-5 border-b border-[var(--border)] flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-xl bg-[#f47424] flex items-center justify-center text-white font-black text-lg">K</div>
+            {branding.admin_logo ? (
+              <img
+                src={branding.admin_logo}
+                alt="Admin Logo"
+                className="w-9 h-9 rounded-xl object-contain bg-[var(--accent)]"
+              />
+            ) : (
+              <div className="w-9 h-9 rounded-xl bg-[#f47424] flex items-center justify-center text-white font-black text-lg">K</div>
+            )}
             <div>
               <div className="text-sm font-bold leading-tight">KUN Admin</div>
               <div className="text-[11px] text-[var(--muted-foreground)]">لوحة التحكم</div>

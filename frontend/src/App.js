@@ -15,6 +15,7 @@ import ContactPage from "@/pages/ContactPage";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { ContentProvider } from "@/contexts/ContentContext";
+import { BrandingProvider } from "@/contexts/BrandingContext";
 import AdminLogin from "@/pages/admin/Login";
 import AdminLayout from "@/pages/admin/AdminLayout";
 import Dashboard from "@/pages/admin/Dashboard";
@@ -28,6 +29,7 @@ import Settings from "@/pages/admin/Settings";
 import Users from "@/pages/admin/Users";
 import Availability from "@/pages/admin/Availability";
 import MediaLibrary from "@/pages/admin/MediaLibrary";
+import Branding from "@/pages/admin/Branding";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -51,9 +53,10 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
-        <AuthProvider>
-          <ContentProvider>
-            <ScrollToTop />
+        <BrandingProvider>
+          <AuthProvider>
+            <ContentProvider>
+              <ScrollToTop />
           <Routes>
             {/* Public routes */}
             <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
@@ -76,13 +79,15 @@ function App() {
               <Route path="shared-desks" element={<SharedDesks />} />
               <Route path="media" element={<MediaLibrary />} />
               <Route path="content" element={<Content />} />
+              <Route path="branding" element={<Branding />} />
               <Route path="settings" element={<Settings />} />
               <Route path="users" element={<Users />} />
             </Route>
           </Routes>
           <Toaster position="top-center" dir="rtl" />
-          </ContentProvider>
-        </AuthProvider>
+            </ContentProvider>
+          </AuthProvider>
+        </BrandingProvider>
       </ThemeProvider>
     </BrowserRouter>
   );

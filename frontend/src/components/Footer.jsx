@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
-
-const LOGO_URL = "https://customer-assets.emergentagent.com/job_kun-conversion-site/artifacts/lox96qjv_KUN-LOGO.svg";
+import { useBranding } from "@/contexts/BrandingContext";
 
 export default function Footer() {
+  const branding = useBranding();
+  const LOGO_URL = branding.logo_primary;
   return (
     <footer data-testid="main-footer" className="bg-gray-900 text-white pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

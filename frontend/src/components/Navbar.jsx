@@ -2,9 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const LOGO_URL = "https://customer-assets.emergentagent.com/job_kun-conversion-site/artifacts/lox96qjv_KUN-LOGO.svg";
-const LOGO_DARK_URL = "/assets/kun-logo-dark.png";
+import { useBranding } from "@/contexts/BrandingContext";
 
 const navLinks = [
   { label: "الرئيسية", path: "/" },
@@ -23,6 +21,9 @@ export default function Navbar() {
   const [hovered, setHovered] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const branding = useBranding();
+  const LOGO_URL = branding.logo_primary;
+  const LOGO_DARK_URL = branding.logo_alt || branding.logo_primary;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
