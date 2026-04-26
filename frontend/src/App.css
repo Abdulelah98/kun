@@ -337,22 +337,22 @@ html {
     transition: transform 0.08s ease-out;
 }
 
-/* Visual LEFT side of screen */
+/* Visual LEFT in RTL / RIGHT in LTR — anchored to the inline-end edge */
 .section-bg-word--left {
-    left: 5%;
-    right: auto;
+    inset-inline-end: 5%;
+    inset-inline-start: auto;
 }
 
-/* Visual RIGHT side of screen */
+/* Visual RIGHT in RTL / LEFT in LTR — anchored to the inline-start edge */
 .section-bg-word--right {
-    right: 5%;
-    left: auto;
+    inset-inline-start: 5%;
+    inset-inline-end: auto;
 }
 
 /* Visual CENTER — centered horizontally */
 .section-bg-word--center {
-    left: 0;
-    right: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
     text-align: center;
 }
 
@@ -365,9 +365,9 @@ html {
     .section-bg-word {
         font-size: clamp(3rem, 18vw, 6rem);
     }
-    .section-bg-word--left { left: -5%; right: auto; }
-    .section-bg-word--right { right: -20%; left: auto; }
-    .section-bg-word--center { left: 0; right: 0; text-align: center; }
+    .section-bg-word--left { inset-inline-end: -5%; inset-inline-start: auto; }
+    .section-bg-word--right { inset-inline-start: -20%; inset-inline-end: auto; }
+    .section-bg-word--center { inset-inline-start: 0; inset-inline-end: 0; text-align: center; }
 }
 
 /* Mobile hero fallback */
