@@ -1,19 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useBranding } from "@/contexts/BrandingContext";
-
-const navLinks = [
-  { label: "الرئيسية", path: "/" },
-  { label: "الخدمات", path: "/services", children: [
-    { label: "المساحات", path: "/spaces" },
-    { label: "خدمات الأعمال", path: "/business" },
-    { label: "البود الذكي", path: "/pod" },
-  ]},
-  { label: "من نحن", path: "/about" },
-  { label: "تواصل معنا", path: "/contact" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -22,8 +12,24 @@ export default function Navbar() {
   const location = useLocation();
   const isHome = location.pathname === "/";
   const branding = useBranding();
+  const { lang, toggleLang, t } = useLanguage();
   const LOGO_URL = branding.logo_primary;
   const LOGO_DARK_URL = branding.logo_alt || branding.logo_primary;
+
+  const navLinks = [
+    { label: t("nav.home"), path: "/" },
+    {
+      label: t("nav.services"),
+      path: "/services",
+      children: [
+        { label: t("nav.spaces"), path: "/spaces" },
+        { label: t("nav.business"), path: "/business" },
+        { label: t("nav.pod"), path: "/pod" },
+      ],
+    },
+    { label: t("nav.about"), path: "/about" },
+    { label: t("nav.contact"), path: "/contact" },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -32,10 +38,11 @@ export default function Navbar() {
   }, []);
 
   const transparent = isHome && !scrolled && !mobileOpen;
-  // Navbar surface acts "light" when not transparent OR hovered
   const lightSurface = !transparent || hovered;
-  // Show dark logo whenever the navbar surface is light
   const useDarkLogo = lightSurface;
+
+  // The label shows the OTHER language (so users know what they switch TO)
+  const switchLabel = lang === "ar" ? "EN" : "AR";
 
   return (
     <header
@@ -50,13 +57,11 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-[72px]">
         <Link to="/" data-testid="nav-logo-link" className="relative block h-10 md:h-12 w-10 md:w-12">
-          {/* White logo (transparent hero) */}
           <img
             src={LOGO_URL}
             alt="KUN"
             className={`absolute inset-0 h-full w-full object-contain brightness-0 invert transition-opacity duration-300 ${useDarkLogo ? "opacity-0" : "opacity-100"}`}
           />
-          {/* Dark logo (white navbar / hover) */}
           <img
             src={LOGO_DARK_URL}
             alt="KUN"
@@ -106,24 +111,53 @@ export default function Navbar() {
               )}
             </div>
           ))}
+          {/* Language Switcher */}
+          <button
+            data-testid="lang-toggle-desktop"
+            onClick={toggleLang}
+            aria-label={t("lang.toggle.aria")}
+            className={`flex items-center gap-1.5 text-[13px] font-bold tracking-wide rounded-full px-3.5 py-1.5 border transition-all duration-300 ${
+              lightSurface
+                ? "border-gray-200 text-gray-700 hover:border-[#f47424] hover:text-[#f47424]"
+                : "border-white/30 text-white hover:border-white hover:bg-white/10"
+            }`}
+          >
+            <Globe size={15} strokeWidth={2.2} />
+            <span>{switchLabel}</span>
+          </button>
           <Link to="/contact">
             <Button
               data-testid="nav-cta-button"
               className="bg-[#f47424] text-white hover:bg-[#d9641d] font-bold px-6 py-2.5 rounded-full text-sm shadow-[0_4px_16px_rgba(244,116,36,0.3)] hover:shadow-[0_6px_24px_rgba(244,116,36,0.4)] transition-all duration-300 hover:-translate-y-[1px]"
             >
-              احجز جولتك المجانية
+              {t("nav.cta")}
             </Button>
           </Link>
         </nav>
 
-        {/* Mobile toggle */}
-        <button
-          data-testid="mobile-menu-toggle"
-          className={`md:hidden transition-colors ${lightSurface ? "text-gray-700" : "text-white"}`}
-          onClick={() => setMobileOpen(!mobileOpen)}
-        >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Mobile right side: language toggle + menu */}
+        <div className="md:hidden flex items-center gap-3">
+          <button
+            data-testid="lang-toggle-mobile"
+            onClick={toggleLang}
+            aria-label={t("lang.toggle.aria")}
+            className={`flex items-center gap-1 text-[12px] font-bold rounded-full px-2.5 py-1 border transition-colors ${
+              lightSurface
+                ? "border-gray-200 text-gray-700"
+                : "border-white/40 text-white"
+            }`}
+          >
+            <Globe size={13} strokeWidth={2.2} />
+            <span>{switchLabel}</span>
+          </button>
+          <button
+            data-testid="mobile-menu-toggle"
+            className={`transition-colors ${lightSurface ? "text-gray-700" : "text-white"}`}
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Nav */}
@@ -145,7 +179,7 @@ export default function Navbar() {
                 {link.label}
               </Link>
               {link.children && (
-                <div className="pr-4 space-y-1">
+                <div className={`${lang === "ar" ? "pr-4" : "pl-4"} space-y-1`}>
                   {link.children.map((child) => (
                     <Link
                       key={child.path}
@@ -168,7 +202,7 @@ export default function Navbar() {
               data-testid="mobile-nav-cta"
               className="w-full bg-[#f47424] text-white hover:bg-[#d9641d] font-bold mt-2 rounded-full shadow-[0_4px_16px_rgba(244,116,36,0.3)]"
             >
-              احجز جولتك المجانية
+              {t("nav.cta")}
             </Button>
           </Link>
         </nav>

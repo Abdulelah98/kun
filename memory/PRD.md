@@ -93,16 +93,22 @@ Build a modern, high-conversion bilingual (Arabic-first) website for KUN workspa
 - [x] **Booked-slots public endpoint** `/api/booked-slots?room_id=X&date=Y` for client to disable unavailable slots on SpacesPage calendar
 - [x] **Dark/Light Theme**: new `ThemeContext` with navy #0B1E2D dark mode + off-white light mode, localStorage persisted, toggle in admin sidebar, smooth transitions. Black replaced with navy across admin
 - [x] **CMS grouping**: Content blocks grouped by page in sidebar (Home/Services/About/Contact)
-- [x] **Apr 2026 — Visual Slot Editor**: Replaced the raw textarea (`YYYY-MM-DDTHH:MM` per line) in admin Meeting Rooms with an Airbnb/Calendly-style calendar + time-slot chip picker (`/app/frontend/src/components/admin/SlotEditor.jsx`). Date picker → hourly chips with 3 visual states (Available / Admin-blocked / Customer-booked), 12h AM/PM format, brand-orange fills, soft shadows, hover lift. Pulls live slots from `/api/availability` and real customer bookings from `/api/booked-slots`.
-- [x] Added missing `JWT_SECRET` to backend `.env` (was causing login 500s after fork).
+### Feb 2026 — Bilingual AR/EN Toggle (HomePage milestone)
+- [x] Created `LanguageContext` (`/app/frontend/src/contexts/LanguageContext.jsx`) with localStorage persistence, browser-language auto-detection (per user choice 3-b), and dynamic `<html dir/lang>` sync
+- [x] Static UI translation dictionary at `/app/frontend/src/lib/i18n.js` (navbar, footer, home extras)
+- [x] English defaults at `/app/frontend/src/lib/defaultContentEn.js` for hero/about/services/why/audience/gallery/final CTA
+- [x] Refactored `ContentContext` to be language-aware: stores raw `{ar, en}` blocks, picks active lang at access time with smart fallback chain (`defaults.ar` < `cms.other` < `defaults.active` < `cms.active`)
+- [x] Globe icon AR/EN toggle in Navbar (per user choice 2-b), desktop + mobile variants
+- [x] HomePage hardcoded strings localized: "اكتشف المزيد", gallery alt text, decorative section watermarks (about/services/why/audience/gallery/contact)
+- [x] Footer fully translated (brand description, quick links, contact label, copyright, location)
+- [x] Self-tested: EN renders LTR with English hero "Your professional workspace starts here", AR renders RTL with Arabic original; toggle persists across reloads via localStorage
 
 ## Prioritized Backlog
 
 ### P0 — None remaining
 
 ### P1 (Important)
-- Wire public homepage, About, Services, Contact to read from `/api/content/{key}` (still hardcoded)
-- English language toggle on public site (data already bilingual)
+- Extend bilingual AR/EN toggle to remaining public pages: Spaces, Services, Business, Pod, About, Contact (HomePage done Feb 2026)
 - Resend email notifications on new contact/booking
 
 ### P2 (Nice to have)

@@ -15,6 +15,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useContent, useSectionActive } from "@/contexts/ContentContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { resolveMediaUrl } from "@/components/admin/MediaPicker";
 
 const AUDIENCE_ICONS = [Rocket, Zap, Users, UserCheck, Building2];
@@ -28,6 +29,7 @@ export default function HomePage() {
   const galleryRef = useRef(null);
   const bgWordsRef = useRef([]);
   const scrollPosRef = useRef({ last: 0, offsets: {} });
+  const { t } = useLanguage();
 
   // CMS content
   const hero = useContent("home_hero");
@@ -65,7 +67,7 @@ export default function HomePage() {
   }));
   const galleryImages = (galleryBlock.images || []).map((src, i) => ({
     src: resolveMediaUrl(src),
-    alt: `مساحة ${i + 1}`,
+    alt: `${t("home.gallery_image_alt")} ${i + 1}`,
   }));
 
   const scrollGallery = (dir) => {
@@ -177,7 +179,7 @@ export default function HomePage() {
       {/* About Us Section */}
       {aboutActive && (
       <section data-testid="about-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
-        <span ref={setBgRef(0)} className="section-bg-word section-bg-word--left" aria-hidden="true">من نحن</span>
+        <span ref={setBgRef(0)} className="section-bg-word section-bg-word--left" aria-hidden="true">{t("home.bg.about")}</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Text block - all on the right side */}
           <div className="flex justify-start mt-12 md:mt-16">
@@ -221,7 +223,7 @@ export default function HomePage() {
       {/* Services Overview */}
       {servicesActive && (
       <section data-testid="services-section" className="services-section py-28 md:py-36 relative overflow-hidden">
-        <span ref={setBgRef(1)} className="section-bg-word section-bg-word--right" aria-hidden="true">خدماتنا</span>
+        <span ref={setBgRef(1)} className="section-bg-word section-bg-word--right" aria-hidden="true">{t("home.bg.services")}</span>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 mt-24 md:mt-28">
@@ -260,7 +262,7 @@ export default function HomePage() {
 
                 {/* CTA */}
                 <span className="service-cta relative z-10 inline-flex items-center gap-1.5 text-[#f47424] font-semibold text-[0.85rem]">
-                  <span className="service-cta-text">اكتشف المزيد</span>
+                  <span className="service-cta-text">{t("home.discover_more")}</span>
                   <ArrowLeft size={15} className="service-cta-arrow" />
                 </span>
 
@@ -276,7 +278,7 @@ export default function HomePage() {
       {/* Why KUN */}
       {whyActive && (
       <section data-testid="why-kun-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
-        <span ref={setBgRef(2)} className="section-bg-word section-bg-word--left" aria-hidden="true">لماذا كن</span>
+        <span ref={setBgRef(2)} className="section-bg-word section-bg-word--left" aria-hidden="true">{t("home.bg.why")}</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10 mt-16 md:mt-20">
             <div>
@@ -323,7 +325,7 @@ export default function HomePage() {
       {/* Target Audience - Dark themed */}
       {audienceActive && (
       <section data-testid="audience-section" className="py-24 md:py-32 bg-[#0A1128] relative overflow-hidden">
-        <span ref={setBgRef(3)} className="section-bg-word section-bg-word--right section-bg-word--dark" aria-hidden="true">عملاؤنا</span>
+        <span ref={setBgRef(3)} className="section-bg-word section-bg-word--right section-bg-word--dark" aria-hidden="true">{t("home.bg.audience")}</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16 md:mb-20">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5">{audienceBlock.title}</h2>
@@ -368,7 +370,7 @@ export default function HomePage() {
       {/* Image Gallery */}
       {galleryActive && (
       <section data-testid="gallery-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
-        <span ref={setBgRef(4)} className="section-bg-word section-bg-word--left" aria-hidden="true">مساحاتنا</span>
+        <span ref={setBgRef(4)} className="section-bg-word section-bg-word--left" aria-hidden="true">{t("home.bg.gallery")}</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center justify-between mb-10 mt-16 md:mt-20 relative z-10">
             <div>
@@ -413,7 +415,7 @@ export default function HomePage() {
       {/* Final CTA */}
       {finalCtaActive && (
       <section data-testid="final-cta-section" className="py-28 md:py-36 bg-[#EDF0F4] relative overflow-hidden">
-        <span ref={setBgRef(5)} className="section-bg-word section-bg-word--center" style={{ top: '15%' }} aria-hidden="true">تواصل</span>
+        <span ref={setBgRef(5)} className="section-bg-word section-bg-word--center" style={{ top: '15%' }} aria-hidden="true">{t("home.bg.contact")}</span>
         <div className="max-w-3xl mx-auto px-4 relative z-10">
           <div className="text-center relative z-10 mt-16 md:mt-20">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-6">

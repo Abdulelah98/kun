@@ -16,6 +16,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { ContentProvider } from "@/contexts/ContentContext";
 import { BrandingProvider } from "@/contexts/BrandingContext";
+import { LanguageProvider, useLanguage } from "@/contexts/LanguageContext";
 import AdminLogin from "@/pages/admin/Login";
 import AdminLayout from "@/pages/admin/AdminLayout";
 import Dashboard from "@/pages/admin/Dashboard";
@@ -39,9 +40,15 @@ function ScrollToTop() {
   return null;
 }
 
+function LocalizedToaster() {
+  const { dir } = useLanguage();
+  return <Toaster position="top-center" dir={dir} />;
+}
+
 function PublicLayout({ children }) {
+  const { lang, dir } = useLanguage();
   return (
-    <div dir="rtl" lang="ar" className="font-cairo">
+    <div dir={dir} lang={lang} className="font-cairo">
       <Navbar />
       {children}
       <Footer />
@@ -55,8 +62,9 @@ function App() {
       <ThemeProvider>
         <BrandingProvider>
           <AuthProvider>
-            <ContentProvider>
-              <ScrollToTop />
+            <LanguageProvider>
+              <ContentProvider>
+                <ScrollToTop />
           <Routes>
             {/* Public routes */}
             <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
@@ -84,8 +92,9 @@ function App() {
               <Route path="users" element={<Users />} />
             </Route>
           </Routes>
-          <Toaster position="top-center" dir="rtl" />
-            </ContentProvider>
+          <LocalizedToaster />
+              </ContentProvider>
+            </LanguageProvider>
           </AuthProvider>
         </BrandingProvider>
       </ThemeProvider>

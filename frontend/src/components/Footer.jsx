@@ -1,10 +1,21 @@
 import { Link } from "react-router-dom";
 import { Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
 import { useBranding } from "@/contexts/BrandingContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Footer() {
   const branding = useBranding();
+  const { t } = useLanguage();
   const LOGO_URL = branding.logo_primary;
+
+  const links = [
+    { label: t("nav.home"), path: "/" },
+    { label: t("nav.spaces"), path: "/spaces" },
+    { label: t("nav.business"), path: "/business" },
+    { label: t("nav.pod"), path: "/pod" },
+    { label: t("nav.about"), path: "/about" },
+  ];
+
   return (
     <footer data-testid="main-footer" className="bg-gray-900 text-white pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -13,21 +24,15 @@ export default function Footer() {
           <div>
             <img src={LOGO_URL} alt="KUN" className="h-10 mb-4 brightness-0 invert" />
             <p className="text-gray-400 text-sm leading-relaxed">
-              رائدون في توفير مساحات العمل المشتركة في الرياض. نقدم بيئة عمل احترافية وتعاونية لتحقيق أهدافك.
+              {t("footer.brand_description")}
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-bold text-lg mb-4">روابط سريعة</h4>
+            <h4 className="font-bold text-lg mb-4">{t("footer.quick_links")}</h4>
             <ul className="space-y-2">
-              {[
-                { label: "الرئيسية", path: "/" },
-                { label: "المساحات", path: "/spaces" },
-                { label: "خدمات الأعمال", path: "/business" },
-                { label: "البود الذكي", path: "/pod" },
-                { label: "من نحن", path: "/about" },
-              ].map((link) => (
+              {links.map((link) => (
                 <li key={link.path}>
                   <Link
                     to={link.path}
@@ -43,7 +48,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-bold text-lg mb-4">تواصل معنا</h4>
+            <h4 className="font-bold text-lg mb-4">{t("footer.contact_us")}</h4>
             <div className="space-y-3 text-sm text-gray-400">
               <a href="mailto:info@kunws.com" className="flex items-center gap-2 hover:text-[#f47424] transition-colors">
                 <Mail size={16} />
@@ -55,7 +60,7 @@ export default function Footer() {
               </a>
               <div className="flex items-center gap-2">
                 <MapPin size={16} />
-                المملكة العربية السعودية، الرياض
+                {t("footer.location")}
               </div>
               <div className="flex gap-3 pt-2">
                 <a
@@ -82,7 +87,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 pt-6 text-center text-gray-500 text-xs">
-          2025 &copy; KUN - جميع الحقوق محفوظة
+          2025 {t("footer.rights")}
         </div>
       </div>
     </footer>
