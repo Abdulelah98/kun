@@ -1,37 +1,38 @@
-<analysis>**original_problem_statement**: Create a modern, high-conversion bilingual (Arabic-first) website for a brand called KUN, which provides workspace solutions, business services, and smart pods. PRODUCT REQUIREMENTS include a highly polished UI with premium hover effects, animations, responsive design, and a full advanced Admin Dashboard (CMS + Booking System) to dynamically control all website content, manage 3 types of bookings (Shared Offices, Private Offices, Meeting Rooms), handle contact messages, and send email notifications.
+<analysis>**original_problem_statement**: Create a modern, high-conversion bilingual (Arabic-first) website for a brand called KUN, which provides workspace solutions, business services, and smart pods. PRODUCT REQUIREMENTS include a highly polished UI with premium hover effects, animations, responsive design, and a full advanced Admin Dashboard (CMS + Booking System) to dynamically control all website content, manage 3 types of bookings, handle contact messages, and send email notifications.
 
-**User's preferred language**: Arabic (You MUST automatically detect the user's primary language from their messages inside the <trajectory> tag and INSTRUCT next agent to respond in the user's preferred language only. The user exclusively communicates in Arabic, so all responses, plans, and interactions MUST be in Arabic).
+**User's preferred language**: Arabic (⚠️ INSTRUCT NEXT AGENT: You MUST respond, plan, and execute all communication exclusively in Arabic).
 
 **what currently exists?** 
-A fully functional, responsive Arabic-first frontend and a FastAPI + MongoDB backend. The Admin Dashboard features a WordPress-style page-based CMS with drag-and-drop reordering, Media Library (object storage), Navy Dark/Light theme toggling, Availability control system for bookings, and a newly added Dynamic Branding System to control site-wide colors and logos. The public-facing website is 100% dynamically wired to the backend CMS and branding settings.
+A functional full-stack app (React/FastAPI/MongoDB) featuring an Admin CMS. The foundational Bilingual (AR/EN) support has been successfully implemented on the , , and . This includes a dedicated , an  dictionary, dynamic fallback handling, and RTL/LTR layout logical mirroring (via /).
 
 **Last working item**: 
-    - Last item agent was working: The agent successfully implemented a Dynamic Branding system but the user questioned its business value. The agent agreed and proposed higher-value features (WhatsApp floating widget, Google Analytics/Pixel, or finishing the Resend email notifications). The agent is now waiting for the user's strategic decision on what to build next.
-    - Status: USER VERIFICATION PENDING
+    - Last item agent was working: The agent provided the Admin Panel login link and credentials to the user. Prior to that, the agent successfully fixed an LTR/RTL layout issue with CSS background word positioning based on user feedback.
+    - Status: NOT STARTED (The immediate next step is to continue the Bilingual rollout to the remaining public pages).
     - Agent Testing Done: Y
-    - Which testing method agent to use? Screenshot tool / backend testing via curl (depending on user's choice of feature).
+    - Which testing method agent to use? Screenshot tool for UI visual checks, and  once the complete bilingual rollout is finished.
     - User Testing Done: N
 
 **All Pending/In progress Issue list**:  
-None. All UI and CMS issues reported in the session were resolved.
+None at this moment.
 
 **In progress Task List**: 
-  - Task 1: Resend Email Notifications
-     - Where to resume: Await user's response to see if they want to prioritize this task and provide the API key.
-     - What will be achieved with this? Admins will receive instant email alerts when a user submits a booking or a contact form.
-     - Status: BLOCKED
-     - Should Test frontend/backend/both after fix? Backend.
-     - Blocked on something: User providing the Resend API key.
+  - Task 1: Implement Bilingual Support (AR/EN toggle) on the remaining public pages.
+     - Where to resume: Iterate through  (specifically , , , , , and ).
+     - What will be achieved with this? Complete bilingual support across the entire frontend. Replace hardcoded Arabic text with dictionary mappings from  and ensure dynamic CMS blocks fetch the  or  payload based on the active language.
+     - Status: IN PROGRESS
+     - Should Test frontend/backend/both after fix? Both (Mainly Frontend rendering, but testing dynamic CMS fetches).
+     - Blocked on something: No. Ready to be worked on.
 
 **Upcoming and Future Tasks**
-- Task 1: High-Value Conversion Features (WhatsApp floating button, Google Analytics, Promo Codes) — *Priority: P0 (Pending user choice from the last prompt).*
-- Task 2: Implement Bilingual Support (English version toggle) on the main user-facing site. Content blocks already have an  JSON structure prepared in the database. (Priority: P1)
-- Task 3: Integrate direct electronic payments (e.g., Stripe) for booking desks/offices. (Priority: P2)
+- Task 1: Resend Email Notifications — *Priority: P1 (Blocked: Needs User API Key)*
+- Task 2: High-Value Conversion Features (WhatsApp floating button, Google Analytics, Promo Codes) — *Priority: P2*
+- Task 3: Integrate direct electronic payments (e.g., Stripe) for booking desks/offices — *Priority: P2*
 
 **Completed work in this session**
-- Fixed Admin Dashboard Light Theme visibility issues by implementing scoped CSS overrides () for hardcoded text/bg classes. (DONE)
-- Fixed CMS editor rendering blank fields by injecting  into the admin forms for all sections (Spaces, Business, Pod, Navbar, Footer) so admins can see and edit the live text. (DONE)
-- Built Dynamic Branding System: Created  endpoints,  for dynamic CSS variable injection, and an Admin Branding Page with color/media pickers to control site colors and logos. (DONE)
+- Base Bilingual Toggle implementation: Added , , and . (DONE)
+- Context integration: Updated  to detect and serve the correct language CMS nodes. (DONE)
+- Component translation: Replaced hardcoded text in , , and . (DONE)
+- Logical CSS Mirroring: Refactored  classes in  to use logical properties (/) so background decorations automatically swap positions when direction changes from  to . (DONE)
 
 **Earlier issues found/mentioned but not fixed**
 None.
@@ -45,61 +46,55 @@ None.
 
 
 **Key Technical Concepts**
-React (Frontend), FastAPI (Backend), MongoDB, Tailwind CSS, Shadcn UI, Dynamic CSS Variables (injected via React Context), Object Storage ().
+React Context for Global State (Branding, Content, Language), FastAPI, MongoDB, Tailwind CSS, Shadcn UI, Logical CSS Properties for RTL/LTR.
 
 **key DB schema**
-- : 
-- : 
+- : . The context now correctly serves  when the language is set to English.
 
 **changes in tech stack**
-- Introduced dynamic CSS custom properties (CSS variables) via  to allow instant site-wide theme color updates without rebuilding.
+None.
 
 **All files of reference** 
--  (Created: Injects custom CSS properties based on DB settings)
--  (Created: Admin UI for changing colors/logos)
--  (Updated: Added all default content for all pages so CMS pre-fills them)
--  (Updated: Merges database values with  fallback)
--  (Updated: Added smart  overrides for Light mode fixes)
--  &  (Added  endpoints)
+-  (New: Manages AR/EN state, dir, and localStorage)
+-  (New: Static translations for hardcoded UI elements)
+-  (New: Fallback data for English CMS)
+-  (Updated: Fetches correct language from CMS)
+-  (Updated: Language toggle globe added)
+-  (Updated: Hardcoded text mapped to i18n, tested in both modes)
+-  (Updated: Used  instead of / for dynamic RTL/LTR layout matching).
+-  (Updated: Tracked new milestone)
 
 **Areas that need refactoring**: 
-None currently. Codebase is clean and modular.
+None currently.
 
 **key api endpoints**
--  (Fetches dynamic colors and logos)
--  (Updates branding config)
--  (Fetches all CMS blocks)
+-  (Fetches translation blocks)
+- 
 
 **Critical Info for New Agent** 
-- **Language**: User ONLY speaks Arabic. All communications must be in Arabic.
-- **Pending Decision**: The agent's last message presented the user with strategic options (WhatsApp integration vs Resend vs Analytics). Read the user's next message to determine which path they chose and proceed accordingly.
-- **Branding Implementation**: Site colors are no longer hardcoded Tailwind classes (like ). They are powered by , , etc., managed by .
+- **Communication Constraint**: The user ONLY communicates in Arabic. All plans, outputs, and questions MUST be in Arabic.
+- **RTL/LTR Handling**: Do not use physical CSS properties like  or  for positioning items that should mirror depending on the language. Use logical properties ( / ).
+- **Translation Strategy**: Use the  dictionary () for static UI strings (like Book Now, Read More) and use  variables for CMS-driven content.
 
 **documents and test reports created in this job** 
 - 
-- 
 
 **Last 10 User Messages and any pending HUMAN messages** 
-- User: Please use ask_human tool and confirm your plan now.
-- User: فيه رابط للادمن جديد؟ (Is there a new admin link?) -> Agent provided the link.
-- User: Uploaded image showing UI issues in the Admin Light Theme. -> Agent fixed via CSS overrides.
-- User: Uploaded image showing the CMS editor fields were blank. -> Agent fixed by injecting default content.
-- User: طبقها على كل الصفحات زي مثلا المساحات... (Apply the pre-fill fix to all pages like Spaces). -> Agent extracted and applied defaults to all sections.
-- User: ضيف خانة الالوان اقدر اتحكم بالالوان... ولوحة التحكم... (Add color and logo controls in admin). -> Agent built the Branding system.
-- User: التعديلات ذي ما احتاجها في شي ممكن اضيفه يسوي قيمه؟ (I didn't really need these edits, is there something I can add that creates actual value?)
-- Agent: Proposed high-value features (WhatsApp, Analytics, Promo codes) vs finishing Resend, asking the user to choose.
-- *Pending Human Message*: Waiting for the user to select which feature to build next.
+- User: 1-b, 2-b, 3-b (Confirmation of previous plan) -> Completed. Agent implemented Bilingual HomePage.
+- User: بالنسبة لعناوين السكشن لما يتغير اللغه مفروض يتغير مكانه ايضا من اليسار لليمين والعكس (When language changes, section titles must mirror positions) -> Completed. Agent fixed CSS logical properties.
+- User: عطيني رابط لوحة الادمن (Give me the admin panel link) -> Completed. Agent provided URL and credentials.
+- *Pending Human Message*: None. Proceed to plan the translation of the remaining pages using the  tool (in Arabic).
 
 **Project Health Check:**
-- All features are fully functional. Dynamic branding works smoothly without breaking layouts.
+All systems functioning correctly. Bilingual toggle tested and fully operational on HomePage.
 
 **3rd Party Integrations** 
--  Auth & MongoDB (Implemented)
--  Object Storage (Implemented)
+-  Auth & MongoDB 
+-  Object Storage 
 - Resend (Emails) - *Pending User Input (API Key)*
 
 **Testing status**
-  - Testing agent used after significant changes: NO (Main agent self-tested extensively via screenshot tool and curl).
+  - Testing agent used after significant changes: NO (Main agent self-tested extensively via screenshot tool; recommend  once all remaining pages are fully translated).
   - Troubleshoot agent used after agent stuck in loop: NO
   - Test files created: None
   - Known regressions: None
@@ -109,12 +104,13 @@ None currently. Codebase is clean and modular.
 - **Password**: 
 
 **What agent forgot to execute**
-N/A. Agent correctly paused implementation to align with the user on high-value business logic.
+N/A. 
 
 **Debugging checklist for current issue**
-    Issue: Waiting on User's strategic choice.
+    Issue: Implementing Full Bilingual (AR/EN) Support on remaining pages.
     Next Steps:
-    1. Read the user's response to determine if they want to implement WhatsApp, Analytics, or Resend.
-    2. If WhatsApp: Implement a floating widget component () and inject it into .
-    3. If Resend: Ask for the API key again (if not provided), call  for Resend (if needed again), and implement backend dispatch routes.
-    4. Provide updates and confirm testing via the screenshot tool.</analysis>
+    1. Propose to the user (in Arabic) that you will now roll out the bilingual support to the rest of the pages (Spaces, Services, Business, Pod, About, Contact).
+    2. Import  and  into each remaining page.
+    3. Replace any hardcoded Arabic string with the  helper. Add corresponding keys to .
+    4. Ensure any CMS data pulls use  or  depending on the state.
+    5. Test thoroughly with  (frontend flow) once all pages are complete to ensure no regressions.</analysis>
