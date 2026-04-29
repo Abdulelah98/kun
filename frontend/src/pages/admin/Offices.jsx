@@ -24,6 +24,7 @@ const EMPTY = {
   capacity: 1,
   price: 0,
   currency: "ريال/شهر",
+  currency_en: "SAR/month",
   available: true,
   reserved_until: "",
   image: "",
@@ -136,37 +137,68 @@ export default function Offices() {
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent dir="rtl" className="bg-[#0F2537] border-white/10 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent dir="rtl" className="bg-[#0F2537] border-white/10 text-white max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle className="text-right">{editing ? "تعديل مكتب" : "مكتب جديد"}</DialogTitle></DialogHeader>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Field label="الاسم (عربي)" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
-            <Field label="الاسم (إنجليزي)" value={form.name_en} onChange={(v) => setForm({ ...form, name_en: v })} />
-            <Field label="السعة" type="number" value={form.capacity} onChange={(v) => setForm({ ...form, capacity: v })} />
-            <Field label="السعر" type="number" value={form.price} onChange={(v) => setForm({ ...form, price: v })} />
-            <Field label="العملة/الوحدة" value={form.currency} onChange={(v) => setForm({ ...form, currency: v })} />
-            <Field label="الترتيب" type="number" value={form.order} onChange={(v) => setForm({ ...form, order: v })} />
-            <Field label="محجوز حتى (YYYY-MM-DD)" value={form.reserved_until || ""} onChange={(v) => setForm({ ...form, reserved_until: v })} />
-            <div className="md:col-span-2">
-              <Label className="text-white/70">الصورة الرئيسية</Label>
-              <div className="mt-2"><MediaPicker value={form.image} onChange={(v) => setForm({ ...form, image: v })} label="اختيار الصورة" /></div>
+
+          {/* Bilingual content - Arabic */}
+          <section className="bg-white/[0.02] border border-white/10 rounded-xl p-4 mb-4">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="inline-flex items-center justify-center w-6 h-6 rounded text-[10px] font-bold bg-[#f47424]/20 text-[#f47424]">AR</span>
+              <h3 className="text-sm font-bold text-white">المحتوى العربي</h3>
             </div>
-            <div className="md:col-span-2">
-              <Label className="text-white/70">صور إضافية</Label>
-              <div className="mt-2"><MediaPicker value={Array.isArray(form.images) ? form.images : []} onChange={(v) => setForm({ ...form, images: v })} multiple label="أضف صور" /></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Field label="الاسم" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
+              <Field label="العملة/الوحدة" value={form.currency} onChange={(v) => setForm({ ...form, currency: v })} />
+              <div className="md:col-span-2">
+                <Label className="text-white/70">الوصف</Label>
+                <Textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="bg-white/[0.04] border-white/10 text-white mt-1" />
+              </div>
             </div>
-            <div className="md:col-span-2">
-              <Label className="text-white/70">الوصف</Label>
-              <Textarea rows={2} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="bg-white/[0.04] border-white/10 text-white mt-1" />
+          </section>
+
+          {/* Bilingual content - English */}
+          <section className="bg-white/[0.02] border border-white/10 rounded-xl p-4 mb-4">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="inline-flex items-center justify-center w-6 h-6 rounded text-[10px] font-bold bg-[#f47424]/20 text-[#f47424]">EN</span>
+              <h3 className="text-sm font-bold text-white">English content</h3>
             </div>
-            <div className="flex items-center gap-3">
-              <Switch checked={form.available} onCheckedChange={(v) => setForm({ ...form, available: v })} />
-              <Label className="text-white/80">متاح للحجز</Label>
+            <div dir="ltr" className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Field label="Name" value={form.name_en} onChange={(v) => setForm({ ...form, name_en: v })} />
+              <Field label="Currency / unit" value={form.currency_en} onChange={(v) => setForm({ ...form, currency_en: v })} />
+              <div className="md:col-span-2">
+                <Label className="text-white/70">Description</Label>
+                <Textarea rows={3} value={form.description_en} onChange={(e) => setForm({ ...form, description_en: e.target.value })} className="bg-white/[0.04] border-white/10 text-white mt-1" />
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <Switch checked={form.active} onCheckedChange={(v) => setForm({ ...form, active: v })} />
-              <Label className="text-white/80">نشط (معروض)</Label>
+          </section>
+
+          {/* Shared fields */}
+          <section className="bg-white/[0.02] border border-white/10 rounded-xl p-4">
+            <h3 className="text-sm font-bold text-white mb-3">إعدادات مشتركة</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Field label="السعة" type="number" value={form.capacity} onChange={(v) => setForm({ ...form, capacity: v })} />
+              <Field label="السعر" type="number" value={form.price} onChange={(v) => setForm({ ...form, price: v })} />
+              <Field label="الترتيب" type="number" value={form.order} onChange={(v) => setForm({ ...form, order: v })} />
+              <Field label="محجوز حتى (YYYY-MM-DD)" value={form.reserved_until || ""} onChange={(v) => setForm({ ...form, reserved_until: v })} />
+              <div className="md:col-span-2">
+                <Label className="text-white/70">الصورة الرئيسية</Label>
+                <div className="mt-2"><MediaPicker value={form.image} onChange={(v) => setForm({ ...form, image: v })} label="اختيار الصورة" /></div>
+              </div>
+              <div className="md:col-span-2">
+                <Label className="text-white/70">صور إضافية</Label>
+                <div className="mt-2"><MediaPicker value={Array.isArray(form.images) ? form.images : []} onChange={(v) => setForm({ ...form, images: v })} multiple label="أضف صور" /></div>
+              </div>
+              <div className="flex items-center gap-3">
+                <Switch checked={form.available} onCheckedChange={(v) => setForm({ ...form, available: v })} />
+                <Label className="text-white/80">متاح للحجز</Label>
+              </div>
+              <div className="flex items-center gap-3">
+                <Switch checked={form.active} onCheckedChange={(v) => setForm({ ...form, active: v })} />
+                <Label className="text-white/80">نشط (معروض)</Label>
+              </div>
             </div>
-          </div>
+          </section>
+
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)} className="border-white/10 bg-transparent text-white">إلغاء</Button>
             <Button onClick={save} disabled={saving} className="bg-[#f47424] hover:bg-[#f47424]/90" data-testid="office-save-btn">

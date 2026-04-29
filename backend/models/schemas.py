@@ -22,6 +22,7 @@ class OfficeIn(BaseModel):
     capacity: int
     price: float
     currency: str = "ريال/شهر"
+    currency_en: Optional[str] = ""
     available: bool = True
     reserved_until: Optional[str] = None
     image: Optional[str] = ""
@@ -40,6 +41,7 @@ class OfficeOut(OfficeIn):
 class SharedDesksDoc(BaseModel):
     price: float = 800
     currency: str = "ريال/شهر"
+    currency_en: str = ""
     total_seats: int = 30
     available_seats: int = 12
     occupied_seats: int = 18
@@ -56,6 +58,7 @@ class MeetingRoomIn(BaseModel):
     capacity: int
     price: float
     currency: str = "ريال/ساعة"
+    currency_en: Optional[str] = ""
     image: Optional[str] = ""
     images: List[str] = Field(default_factory=list)
     description: Optional[str] = ""

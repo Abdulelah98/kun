@@ -172,6 +172,12 @@ function GalleryDialog({ open, onOpenChange, images, title, startIndex = 0, t, d
 
 export default function SpacesPage() {
  const { t, dir, isRtl } = useLanguage();
+ // Pick localized field — falls back to AR if EN is empty
+ const pick = (item, key) => {
+ if (!item) return "";
+ if (isRtl) return item[key] || "";
+ return item[`${key}_en`] || item[key] || "";
+ };
  const [offices, setOffices] = useState([]);
  const [sharedDesks, setSharedDesks] = useState(null);
  const [meetingRooms, setMeetingRooms] = useState([]);
@@ -471,8 +477,8 @@ export default function SpacesPage() {
  <div className="relative">
  <HoverGallery
  images={imgs}
- alt={office.name}
- onOpen={(i) => openGallery(imgs, office.name, i)}
+ alt={pick(office, "name")}
+ onOpen={(i) => openGallery(imgs, pick(office, "name"), i)}
  t={t}
  />
  <div
@@ -487,7 +493,7 @@ export default function SpacesPage() {
  </div>
  </div>
  <div className="p-5">
- <h3 className="text-lg font-bold text-white mb-2">{office.name}</h3>
+ <h3 className="text-lg font-bold text-white mb-2">{pick(office, "name")}</h3>
  <div className="flex items-center gap-4 text-sm text-gray-400 mb-5">
  <span className="flex items-center gap-1"><Users size={14} /> {office.capacity} {t("common.persons")}</span>
  </div>
@@ -521,16 +527,16 @@ export default function SpacesPage() {
  onClick={() => setSelectedRoom(room)}
  className={`flex gap-4 p-4 rounded-xl border cursor-pointer transition-all duration-300 ${selectedRoom?.id === room.id ? "border-[#f47424] bg-orange-50/50" : "border-gray-100 hover:border-gray-200"}`}
  >
- <img src={resolveMediaUrl(room.image)} alt={room.name} className="w-24 h-24 md:w-32 md:h-32 rounded-lg object-cover flex-shrink-0" />
+ <img src={resolveMediaUrl(room.image)} alt={pick(room, "name")} className="w-24 h-24 md:w-32 md:h-32 rounded-lg object-cover flex-shrink-0" />
  <div className="flex-1">
- <h3 className="text-lg font-bold text-gray-900 mb-1">{room.name}</h3>
+ <h3 className="text-lg font-bold text-gray-900 mb-1">{pick(room, "name")}</h3>
  <div className="flex flex-wrap gap-3 text-sm text-gray-500 mb-2">
  <span className="flex items-center gap-1"><Users size={14} /> {room.capacity} {t("common.persons")}</span>
  </div>
  {room.price ? (
  <div className="inline-flex items-baseline gap-1 text-[#f47424] font-bold text-base mb-2">
  <span>{room.price}</span>
- <span className="text-xs font-semibold opacity-90">{room.currency || (isRtl ? "ريال/ساعة" : "SAR/hour")}</span>
+ <span className="text-xs font-semibold opacity-90">{pick(room, "currency") || (isRtl ? "ريال/ساعة" : "SAR/hour")}</span>
  </div>
  ) : null}
  {selectedRoom?.id === room.id && (

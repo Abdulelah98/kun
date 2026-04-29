@@ -44,16 +44,41 @@ export default function SharedDesks() {
       <p className="text-white/50 text-sm mb-6">إعدادات عرض المساحة المشتركة</p>
 
       <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6 space-y-5">
+        {/* Numeric & shared fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Row label="السعر"><Input type="number" value={form.price} onChange={(e) => setF("price", e.target.value)} className="bg-white/[0.04] border-white/10 text-white" /></Row>
-          <Row label="الوحدة"><Input value={form.currency} onChange={(e) => setF("currency", e.target.value)} className="bg-white/[0.04] border-white/10 text-white" /></Row>
           <Row label="إجمالي المقاعد"><Input type="number" value={form.total_seats} onChange={(e) => setF("total_seats", e.target.value)} className="bg-white/[0.04] border-white/10 text-white" /></Row>
           <Row label="المقاعد المتاحة"><Input type="number" value={form.available_seats} onChange={(e) => setF("available_seats", e.target.value)} className="bg-white/[0.04] border-white/10 text-white" /></Row>
           <Row label="المقاعد المشغولة"><Input type="number" value={form.occupied_seats} onChange={(e) => setF("occupied_seats", e.target.value)} className="bg-white/[0.04] border-white/10 text-white" /></Row>
         </div>
         <Row label="الصورة"><div className="mt-2"><MediaPicker value={form.image} onChange={(v) => setF("image", v)} label="اختيار الصورة" /></div></Row>
-        <Row label="الوصف (عربي)"><Textarea rows={3} value={form.description} onChange={(e) => setF("description", e.target.value)} className="bg-white/[0.04] border-white/10 text-white" /></Row>
-        <Row label="الوصف (إنجليزي)"><Textarea rows={3} value={form.description_en} onChange={(e) => setF("description_en", e.target.value)} className="bg-white/[0.04] border-white/10 text-white" /></Row>
+
+        {/* Arabic content */}
+        <section className="bg-white/[0.02] border border-white/10 rounded-xl p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="inline-flex items-center justify-center w-6 h-6 rounded text-[10px] font-bold bg-[#f47424]/20 text-[#f47424]">AR</span>
+            <h3 className="text-sm font-bold text-white">المحتوى العربي</h3>
+          </div>
+          <Row label="الوحدة"><Input value={form.currency || ""} onChange={(e) => setF("currency", e.target.value)} className="bg-white/[0.04] border-white/10 text-white" /></Row>
+          <div className="mt-3">
+            <Row label="الوصف"><Textarea rows={3} value={form.description || ""} onChange={(e) => setF("description", e.target.value)} className="bg-white/[0.04] border-white/10 text-white" /></Row>
+          </div>
+        </section>
+
+        {/* English content */}
+        <section className="bg-white/[0.02] border border-white/10 rounded-xl p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="inline-flex items-center justify-center w-6 h-6 rounded text-[10px] font-bold bg-[#f47424]/20 text-[#f47424]">EN</span>
+            <h3 className="text-sm font-bold text-white">English content</h3>
+          </div>
+          <div dir="ltr">
+            <Row label="Currency / unit"><Input value={form.currency_en || ""} onChange={(e) => setF("currency_en", e.target.value)} className="bg-white/[0.04] border-white/10 text-white" /></Row>
+            <div className="mt-3">
+              <Row label="Description"><Textarea rows={3} value={form.description_en || ""} onChange={(e) => setF("description_en", e.target.value)} className="bg-white/[0.04] border-white/10 text-white" /></Row>
+            </div>
+          </div>
+        </section>
+
         <div className="flex items-center gap-3">
           <Switch checked={form.active} onCheckedChange={(v) => setF("active", v)} />
           <Label className="text-white/80">نشط (معروض)</Label>
