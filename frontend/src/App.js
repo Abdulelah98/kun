@@ -17,6 +17,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import { ContentProvider } from "@/contexts/ContentContext";
 import { BrandingProvider } from "@/contexts/BrandingContext";
 import { LanguageProvider, useLanguage } from "@/contexts/LanguageContext";
+import { SettingsProvider } from "@/contexts/SettingsContext";
 import AdminLogin from "@/pages/admin/Login";
 import AdminLayout from "@/pages/admin/AdminLayout";
 import Dashboard from "@/pages/admin/Dashboard";
@@ -63,6 +64,7 @@ function App() {
         <BrandingProvider>
           <AuthProvider>
             <LanguageProvider>
+              <SettingsProvider>
               <ContentProvider>
                 <ScrollToTop />
           <Routes>
@@ -94,6 +96,7 @@ function App() {
           </Routes>
           <LocalizedToaster />
               </ContentProvider>
+              </SettingsProvider>
             </LanguageProvider>
           </AuthProvider>
         </BrandingProvider>

@@ -49,6 +49,16 @@ async def get_meeting_rooms():
     return await cursor.to_list(length=200)
 
 
+@router.get("/settings")
+async def get_public_settings():
+    """Public, read-only site settings (contact info, social links, map data).
+    Read by Footer and ContactPage to render correct values from the admin panel.
+    """
+    db = get_db()
+    doc = await db.settings.find_one({"key": "site"}, {"_id": 0, "key": 0})
+    return doc or SiteSettings().model_dump()
+
+
 @router.get("/content/{key}")
 async def get_content_block(key: str):
     db = get_db()

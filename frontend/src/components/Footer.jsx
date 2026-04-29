@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
-import { Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import { Instagram, Twitter, Linkedin, Mail, Phone, MapPin } from "lucide-react";
 import { useBranding } from "@/contexts/BrandingContext";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useSettings } from "@/contexts/SettingsContext";
 
 export default function Footer() {
   const branding = useBranding();
-  const { t } = useLanguage();
+  const { t, isRtl } = useLanguage();
+  const settings = useSettings();
   const LOGO_URL = branding.logo_primary;
 
   const links = [
@@ -15,6 +17,12 @@ export default function Footer() {
     { label: t("nav.pod"), path: "/pod" },
     { label: t("nav.about"), path: "/about" },
   ];
+
+  const phone = settings.phone || "0535420969";
+  const phoneTel = `+966${phone.replace(/^0/, "").replace(/\s/g, "")}`;
+  const email = settings.email || "info@kun.com";
+  const address = isRtl ? settings.address_ar : settings.address_en;
+  const social = settings.social || {};
 
   return (
     <footer data-testid="main-footer" className="bg-gray-900 text-white pt-16 pb-8">
@@ -50,37 +58,41 @@ export default function Footer() {
           <div>
             <h4 className="font-bold text-lg mb-4">{t("footer.contact_us")}</h4>
             <div className="space-y-3 text-sm text-gray-400">
-              <a href="mailto:info@kunws.com" className="flex items-center gap-2 hover:text-[#f47424] transition-colors">
+              <a href={`mailto:${email}`} className="flex items-center gap-2 hover:text-[#f47424] transition-colors">
                 <Mail size={16} />
-                info@kunws.com
+                {email}
               </a>
-              <a href="tel:+966535420969" className="flex items-center gap-2 hover:text-[#f47424] transition-colors">
+              <a href={`tel:${phoneTel}`} className="flex items-center gap-2 hover:text-[#f47424] transition-colors">
                 <Phone size={16} />
-                +966 53 542 0969
+                {phone}
               </a>
-              <div className="flex items-center gap-2">
-                <MapPin size={16} />
-                {t("footer.location")}
-              </div>
+              {address && (
+                <div className="flex items-center gap-2">
+                  <MapPin size={16} />
+                  {address}
+                </div>
+              )}
               <div className="flex gap-3 pt-2">
-                <a
-                  href="https://instagram.com/kun__work"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-testid="footer-instagram"
-                  className="text-gray-400 hover:text-[#f47424] transition-colors"
-                >
-                  <Instagram size={20} />
-                </a>
-                <a
-                  href="https://twitter.com/Kun__sa"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-testid="footer-twitter"
-                  className="text-gray-400 hover:text-[#f47424] transition-colors"
-                >
-                  <Twitter size={20} />
-                </a>
+                {social.instagram && (
+                  <a href={social.instagram} target="_blank" rel="noopener noreferrer" data-testid="footer-instagram" className="text-gray-400 hover:text-[#f47424] transition-colors">
+                    <Instagram size={20} />
+                  </a>
+                )}
+                {social.twitter && (
+                  <a href={social.twitter} target="_blank" rel="noopener noreferrer" data-testid="footer-twitter" className="text-gray-400 hover:text-[#f47424] transition-colors">
+                    <Twitter size={20} />
+                  </a>
+                )}
+                {social.linkedin && (
+                  <a href={social.linkedin} target="_blank" rel="noopener noreferrer" data-testid="footer-linkedin" className="text-gray-400 hover:text-[#f47424] transition-colors">
+                    <Linkedin size={20} />
+                  </a>
+                )}
+                {social.snapchat && (
+                  <a href={social.snapchat} target="_blank" rel="noopener noreferrer" data-testid="footer-snapchat" className="text-gray-400 hover:text-[#f47424] transition-colors text-xs font-bold border border-current rounded px-1.5 py-0.5">
+                    SC
+                  </a>
+                )}
               </div>
             </div>
           </div>

@@ -8,6 +8,7 @@ import axios from "axios";
 import { Mail, Phone, MapPin, MessageCircle, Instagram, Twitter, Send, Clock } from "lucide-react";
 import { useContent } from "@/contexts/ContentContext";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useSettings } from "@/contexts/SettingsContext";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -24,7 +25,13 @@ export default function ContactPage() {
   const header = useContent("contact_header");
   const info = useContent("contact_info");
   const formT = useContent("contact_form");
+  const settings = useSettings();
   const { t, isRtl, dir } = useLanguage();
+  const social = settings.social || {};
+  // Settings values take precedence over CMS contact_info
+  const displayPhone = settings.phone || info.phone_value || "";
+  const displayEmail = settings.email || info.email_value || "";
+  const displayAddress = (isRtl ? settings.address_ar : settings.address_en) || info.address_value || "";
 
   const [formData, setFormData] = useState({
     name: "",
@@ -53,7 +60,7 @@ export default function ContactPage() {
     }
   };
 
-  const phoneDigits = (info.phone_value || "").replace(/[^0-9+]/g, "");
+  const phoneDigits = (displayPhone || "").replace(/[^0-9+]/g, "");
 
   return (
     <main data-testid="contact-page" className="pt-16">
@@ -163,28 +170,28 @@ export default function ContactPage() {
               <div className="bg-[#EDF0F4] rounded-xl p-6 border border-gray-100">
                 <h3 className="font-bold text-gray-900 mb-5">{t("contact.info_title")}</h3>
                 <div className="space-y-4">
-                  {info.email_value && (
-                    <a href={`mailto:${info.email_value}`} className="flex items-center gap-3 text-gray-600 hover:text-[#f47424] transition-colors">
+                  {displayEmail && (
+                    <a href={`mailto:${displayEmail}`} className="flex items-center gap-3 text-gray-600 hover:text-[#f47424] transition-colors">
                       <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
                         <Mail className="w-5 h-5 text-[#f47424]" />
                       </div>
-                      <span className="text-sm">{info.email_value}</span>
+                      <span className="text-sm">{displayEmail}</span>
                     </a>
                   )}
-                  {info.phone_value && (
+                  {displayPhone && (
                     <a href={`tel:${phoneDigits}`} className="flex items-center gap-3 text-gray-600 hover:text-[#f47424] transition-colors">
                       <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
                         <Phone className="w-5 h-5 text-[#f47424]" />
                       </div>
-                      <span className="text-sm">{info.phone_value}</span>
+                      <span className="text-sm">{displayPhone}</span>
                     </a>
                   )}
-                  {info.address_value && (
+                  {displayAddress && (
                     <div className="flex items-center gap-3 text-gray-600">
                       <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
                         <MapPin className="w-5 h-5 text-[#f47424]" />
                       </div>
-                      <span className="text-sm whitespace-pre-line">{info.address_value}</span>
+                      <span className="text-sm whitespace-pre-line">{displayAddress}</span>
                     </div>
                   )}
                   {info.working_hours_value && (
@@ -199,46 +206,42 @@ export default function ContactPage() {
               </div>
 
               {/* WhatsApp */}
-              <a
-                href={`https://wa.me/${phoneDigits.replace("+", "")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-testid="whatsapp-button"
-                className="flex items-center gap-3 bg-green-50 border border-green-200 rounded-xl p-5 hover:bg-green-100 transition-colors"
-              >
-                <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
-                  <MessageCircle className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <p className="font-bold text-green-800 text-sm">{t("contact.whatsapp_title")}</p>
-                  <p className="text-green-600 text-xs">{t("contact.whatsapp_subtitle")}</p>
-                </div>
-              </a>
+              {settings.whatsapp && (
+                <a
+                  href={`https://wa.me/${(settings.whatsapp || "").replace(/[^0-9]/g, "").replace(/^0/, "966")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-testid="whatsapp-button"
+                  className="flex items-center gap-3 bg-green-50 border border-green-200 rounded-xl p-5 hover:bg-green-100 transition-colors"
+                >
+                  <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                    <MessageCircle className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-green-800 text-sm">{t("contact.whatsapp_title")}</p>
+                    <p className="text-green-600 text-xs">{t("contact.whatsapp_subtitle")}</p>
+                  </div>
+                </a>
+              )}
 
               {/* Social */}
-              <div className="bg-[#EDF0F4] rounded-xl p-6 border border-gray-100">
-                <h3 className="font-bold text-gray-900 mb-4">{t("contact.follow_us")}</h3>
-                <div className="flex gap-3">
-                  <a
-                    href="https://instagram.com/kun__work"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-testid="contact-instagram"
-                    className="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-[#f47424] hover:border-[#f47424] transition-all"
-                  >
-                    <Instagram size={18} />
-                  </a>
-                  <a
-                    href="https://twitter.com/Kun__sa"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-testid="contact-twitter"
-                    className="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-[#f47424] hover:border-[#f47424] transition-all"
-                  >
-                    <Twitter size={18} />
-                  </a>
+              {(social.instagram || social.twitter || social.linkedin || social.snapchat) && (
+                <div className="bg-[#EDF0F4] rounded-xl p-6 border border-gray-100">
+                  <h3 className="font-bold text-gray-900 mb-4">{t("contact.follow_us")}</h3>
+                  <div className="flex gap-3">
+                    {social.instagram && (
+                      <a href={social.instagram} target="_blank" rel="noopener noreferrer" data-testid="contact-instagram" className="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-[#f47424] hover:border-[#f47424] transition-all">
+                        <Instagram size={18} />
+                      </a>
+                    )}
+                    {social.twitter && (
+                      <a href={social.twitter} target="_blank" rel="noopener noreferrer" data-testid="contact-twitter" className="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-[#f47424] hover:border-[#f47424] transition-all">
+                        <Twitter size={18} />
+                      </a>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -246,16 +249,29 @@ export default function ContactPage() {
 
       {/* Google Map */}
       <section data-testid="map-section" className="h-[400px] w-full">
-        <iframe
-          src={`https://maps.google.com/maps?q=24.8478721,46.6660527&hl=${isRtl ? "ar" : "en"}&z=17&t=m&output=embed`}
-          width="100%"
-          height="100%"
-          style={{ border: 0 }}
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title="KUN Coworking space"
-        />
+        {settings.map_embed ? (
+          <iframe
+            src={settings.map_embed}
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="KUN Coworking space"
+          />
+        ) : (
+          <iframe
+            src={`https://maps.google.com/maps?q=${settings.map_lat || 24.8478721},${settings.map_lng || 46.6660527}&hl=${isRtl ? "ar" : "en"}&z=17&t=m&output=embed`}
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="KUN Coworking space"
+          />
+        )}
       </section>
     </main>
   );
