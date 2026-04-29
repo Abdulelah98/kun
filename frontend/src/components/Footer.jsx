@@ -98,8 +98,20 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-6 text-center text-gray-500 text-xs">
-          2025 {t("footer.rights")}
+        <div className="border-t border-gray-800 pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-gray-500 text-xs">
+          <span>2025 {t("footer.rights")}</span>
+          <span className="flex items-center gap-1.5">
+            {isRtl ? "تطوير" : "Developed by"}
+            <a
+              href="https://ilogic.com.sa"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="developer-credit"
+              className="font-semibold text-gray-300 hover:text-[#f47424] transition-colors"
+            >
+              {isRtl ? "آي لوجيك" : "iLogic"}
+            </a>
+          </span>
         </div>
       </div>
     </footer>
