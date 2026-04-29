@@ -14,667 +14,667 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 // Build hourly slots between start and end (HH:MM inclusive of start, exclusive of end)
 function buildSlots(start, end, stepMin = 60) {
-  if (!start || !end) return [];
-  const [sh, sm] = start.split(":").map(Number);
-  const [eh, em] = end.split(":").map(Number);
-  const startTotal = sh * 60 + sm;
-  const endTotal = eh * 60 + em;
-  const slots = [];
-  for (let t = startTotal; t + stepMin <= endTotal; t += stepMin) {
-    const h = String(Math.floor(t / 60)).padStart(2, "0");
-    const m = String(t % 60).padStart(2, "0");
-    slots.push(`${h}:${m}`);
-  }
-  return slots;
+ if (!start || !end) return [];
+ const [sh, sm] = start.split(":").map(Number);
+ const [eh, em] = end.split(":").map(Number);
+ const startTotal = sh * 60 + sm;
+ const endTotal = eh * 60 + em;
+ const slots = [];
+ for (let t = startTotal; t + stepMin <= endTotal; t += stepMin) {
+ const h = String(Math.floor(t / 60)).padStart(2, "0");
+ const m = String(t % 60).padStart(2, "0");
+ slots.push(`${h}:${m}`);
+ }
+ return slots;
 }
 
 // Reusable hover-cycling gallery used for office cards
 function HoverGallery({ images, alt, onOpen }) {
-  const imgs = images && images.length ? images : [];
-  const [idx, setIdx] = useState(0);
-  const timerRef = useRef(null);
+ const imgs = images && images.length ? images : [];
+ const [idx, setIdx] = useState(0);
+ const timerRef = useRef(null);
 
-  const start = () => {
-    if (imgs.length <= 1) return;
-    if (timerRef.current) return;
-    timerRef.current = setInterval(() => {
-      setIdx((i) => (i + 1) % imgs.length);
-    }, 1100);
-  };
-  const stop = () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-    setIdx(0);
-  };
+ const start = () => {
+ if (imgs.length <= 1) return;
+ if (timerRef.current) return;
+ timerRef.current = setInterval(() => {
+ setIdx((i) => (i + 1) % imgs.length);
+ }, 1100);
+ };
+ const stop = () => {
+ if (timerRef.current) {
+ clearInterval(timerRef.current);
+ timerRef.current = null;
+ }
+ setIdx(0);
+ };
 
-  useEffect(() => () => timerRef.current && clearInterval(timerRef.current), []);
+ useEffect(() => () => timerRef.current && clearInterval(timerRef.current), []);
 
-  return (
-    <div
-      className="relative h-48 overflow-hidden group/gallery"
-      onMouseEnter={start}
-      onMouseLeave={stop}
-    >
-      {imgs.map((src, i) => (
-        <img
-          key={i}
-          src={src}
-          alt={`${alt} ${i + 1}`}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-            i === idx ? "opacity-100" : "opacity-0"
-          }`}
-          draggable={false}
-        />
-      ))}
-      {imgs.length > 1 && (
-        <>
-          {/* Expand button - opens full gallery */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onOpen && onOpen(0);
-            }}
-            className="absolute top-3 end-3 z-10 w-9 h-9 rounded-full bg-black/55 backdrop-blur-sm text-white flex items-center justify-center opacity-0 group-hover/gallery:opacity-100 transition-opacity duration-300 hover:bg-black/75"
-            data-testid="gallery-open-btn"
-            aria-label={t ? t("spaces.gallery_open_aria") : "View all photos"}
-          >
-            <Expand size={16} />
-          </button>
-          {/* Dots */}
-          <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
-            {imgs.map((_, i) => (
-              <span
-                key={i}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === idx ? "w-5 bg-white" : "w-1.5 bg-white/50"
-                }`}
-              />
-            ))}
-          </div>
-          {/* Count badge */}
-          <div className="absolute bottom-3 end-3 z-10 text-[10px] font-bold px-2 py-0.5 rounded-full bg-black/55 backdrop-blur-sm text-white">
-            {imgs.length} {t ? t("spaces.gallery_count") : "photos"}
-          </div>
-        </>
-      )}
-    </div>
-  );
+ return (
+ <div
+ className="relative h-48 overflow-hidden group/gallery"
+ onMouseEnter={start}
+ onMouseLeave={stop}
+ >
+ {imgs.map((src, i) => (
+ <img
+ key={i}
+ src={src}
+ alt={`${alt} ${i + 1}`}
+ className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+ i === idx ? "opacity-100" : "opacity-0"
+ }`}
+ draggable={false}
+ />
+ ))}
+ {imgs.length > 1 && (
+ <>
+ {/* Expand button - opens full gallery */}
+ <button
+ type="button"
+ onClick={(e) => {
+ e.stopPropagation();
+ onOpen && onOpen(0);
+ }}
+ className="absolute top-3 end-3 z-10 w-9 h-9 rounded-full bg-black/55 backdrop-blur-sm text-white flex items-center justify-center opacity-0 group-hover/gallery:opacity-100 transition-opacity duration-300 hover:bg-black/75"
+ data-testid="gallery-open-btn"
+ aria-label={t ? t("spaces.gallery_open_aria") : "View all photos"}
+ >
+ <Expand size={16} />
+ </button>
+ {/* Dots */}
+ <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
+ {imgs.map((_, i) => (
+ <span
+ key={i}
+ className={`h-1.5 rounded-full transition-all duration-300 ${
+ i === idx ? "w-5 bg-white" : "w-1.5 bg-white/50"
+ }`}
+ />
+ ))}
+ </div>
+ {/* Count badge */}
+ <div className="absolute bottom-3 end-3 z-10 text-[10px] font-bold px-2 py-0.5 rounded-full bg-black/55 backdrop-blur-sm text-white">
+ {imgs.length} {t ? t("spaces.gallery_count") : "photos"}
+ </div>
+ </>
+ )}
+ </div>
+ );
 }
 
 // Lightbox dialog for browsing all images of a space
 function GalleryDialog({ open, onOpenChange, images, title, startIndex = 0, t, dir = "rtl" }) {
-  const [idx, setIdx] = useState(startIndex);
-  useEffect(() => { if (open) setIdx(startIndex); }, [open, startIndex]);
-  if (!images || images.length === 0) return null;
+ const [idx, setIdx] = useState(startIndex);
+ useEffect(() => { if (open) setIdx(startIndex); }, [open, startIndex]);
+ if (!images || images.length === 0) return null;
 
-  const prev = () => setIdx((i) => (i - 1 + images.length) % images.length);
-  const next = () => setIdx((i) => (i + 1) % images.length);
+ const prev = () => setIdx((i) => (i - 1 + images.length) % images.length);
+ const next = () => setIdx((i) => (i + 1) % images.length);
 
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl p-0 bg-black border-0 overflow-hidden" dir={dir}>
-        <DialogHeader className="sr-only">
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{(t ? t("spaces.gallery_dialog_desc") : "Gallery for")} {title}</DialogDescription>
-        </DialogHeader>
-        <div className="relative aspect-[16/10] bg-black">
-          <img
-            src={images[idx]}
-            alt={`${title} ${idx + 1}`}
-            className="w-full h-full object-contain"
-            data-testid="gallery-active-img"
-          />
-          {images.length > 1 && (
-            <>
-              <button
-                type="button"
-                onClick={prev}
-                data-testid="gallery-prev-btn"
-                className={`absolute top-1/2 -translate-y-1/2 ${dir === "rtl" ? "right-4" : "left-4"} w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur text-white flex items-center justify-center transition-colors`}
-                aria-label={t ? t("spaces.gallery_prev_aria") : "Previous"}
-              >
-                {dir === "rtl" ? <ChevronRight size={22} /> : <ChevronLeft size={22} />}
-              </button>
-              <button
-                type="button"
-                onClick={next}
-                data-testid="gallery-next-btn"
-                className={`absolute top-1/2 -translate-y-1/2 ${dir === "rtl" ? "left-4" : "right-4"} w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur text-white flex items-center justify-center transition-colors`}
-                aria-label={t ? t("spaces.gallery_next_aria") : "Next"}
-              >
-                {dir === "rtl" ? <ChevronLeft size={22} /> : <ChevronRight size={22} />}
-              </button>
-              <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-                {images.map((_, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => setIdx(i)}
-                    className={`h-1.5 rounded-full transition-all ${i === idx ? "w-8 bg-white" : "w-2 bg-white/40 hover:bg-white/60"}`}
-                    aria-label={`${i + 1}`}
-                  />
-                ))}
-              </div>
-            </>
-          )}
-          <div className="absolute top-4 end-4 text-xs font-bold px-3 py-1 rounded-full bg-black/60 text-white">
-            {title} — {idx + 1} / {images.length}
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
+ return (
+ <Dialog open={open} onOpenChange={onOpenChange}>
+ <DialogContent className="max-w-4xl p-0 bg-black border-0 overflow-hidden" dir={dir}>
+ <DialogHeader className="sr-only">
+ <DialogTitle>{title}</DialogTitle>
+ <DialogDescription>{(t ? t("spaces.gallery_dialog_desc") : "Gallery for")} {title}</DialogDescription>
+ </DialogHeader>
+ <div className="relative aspect-[16/10] bg-black">
+ <img
+ src={images[idx]}
+ alt={`${title} ${idx + 1}`}
+ className="w-full h-full object-contain"
+ data-testid="gallery-active-img"
+ />
+ {images.length > 1 && (
+ <>
+ <button
+ type="button"
+ onClick={prev}
+ data-testid="gallery-prev-btn"
+ className={`absolute top-1/2 -translate-y-1/2 ${dir === "rtl" ? "right-4" : "left-4"} w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur text-white flex items-center justify-center transition-colors`}
+ aria-label={t ? t("spaces.gallery_prev_aria") : "Previous"}
+ >
+ {dir === "rtl" ? <ChevronRight size={22} /> : <ChevronLeft size={22} />}
+ </button>
+ <button
+ type="button"
+ onClick={next}
+ data-testid="gallery-next-btn"
+ className={`absolute top-1/2 -translate-y-1/2 ${dir === "rtl" ? "left-4" : "right-4"} w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur text-white flex items-center justify-center transition-colors`}
+ aria-label={t ? t("spaces.gallery_next_aria") : "Next"}
+ >
+ {dir === "rtl" ? <ChevronLeft size={22} /> : <ChevronRight size={22} />}
+ </button>
+ <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+ {images.map((_, i) => (
+ <button
+ key={i}
+ type="button"
+ onClick={() => setIdx(i)}
+ className={`h-1.5 rounded-full transition-all ${i === idx ? "w-8 bg-white" : "w-2 bg-white/40 hover:bg-white/60"}`}
+ aria-label={`${i + 1}`}
+ />
+ ))}
+ </div>
+ </>
+ )}
+ <div className="absolute top-4 end-4 text-xs font-bold px-3 py-1 rounded-full bg-black/60 text-white">
+ {title} {idx + 1} / {images.length}
+ </div>
+ </div>
+ </DialogContent>
+ </Dialog>
+ );
 }
 
 export default function SpacesPage() {
-  const { t, dir } = useLanguage();
-  const [offices, setOffices] = useState([]);
-  const [sharedDesks, setSharedDesks] = useState(null);
-  const [meetingRooms, setMeetingRooms] = useState([]);
-  const [deskCount, setDeskCount] = useState(1);
-  const [selectedDate, setSelectedDate] = useState(undefined);
-  const [selectedRoom, setSelectedRoom] = useState(null);
-  const [selectedTime, setSelectedTime] = useState("");
-  const [bookingDialog, setBookingDialog] = useState({ open: false, type: "", data: null });
-  const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
-  const [submitting, setSubmitting] = useState(false);
-  const [galleryOpen, setGalleryOpen] = useState(false);
-  const [galleryData, setGalleryData] = useState({ images: [], title: "", startIndex: 0 });
-  const [availability, setAvailability] = useState(null);
-  const [bookedSlots, setBookedSlots] = useState([]);
+ const { t, dir } = useLanguage();
+ const [offices, setOffices] = useState([]);
+ const [sharedDesks, setSharedDesks] = useState(null);
+ const [meetingRooms, setMeetingRooms] = useState([]);
+ const [deskCount, setDeskCount] = useState(1);
+ const [selectedDate, setSelectedDate] = useState(undefined);
+ const [selectedRoom, setSelectedRoom] = useState(null);
+ const [selectedTime, setSelectedTime] = useState("");
+ const [bookingDialog, setBookingDialog] = useState({ open: false, type: "", data: null });
+ const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
+ const [submitting, setSubmitting] = useState(false);
+ const [galleryOpen, setGalleryOpen] = useState(false);
+ const [galleryData, setGalleryData] = useState({ images: [], title: "", startIndex: 0 });
+ const [availability, setAvailability] = useState(null);
+ const [bookedSlots, setBookedSlots] = useState([]);
 
-  const openGallery = (images, title, startIndex = 0) => {
-    setGalleryData({ images, title, startIndex });
-    setGalleryOpen(true);
-  };
+ const openGallery = (images, title, startIndex = 0) => {
+ setGalleryData({ images, title, startIndex });
+ setGalleryOpen(true);
+ };
 
-  useEffect(() => {
-    axios.get(`${API}/offices`).then((r) => setOffices(r.data)).catch(() => {});
-    axios.get(`${API}/shared-desks`).then((r) => setSharedDesks(r.data)).catch(() => {});
-    axios.get(`${API}/meeting-rooms`).then((r) => setMeetingRooms(r.data)).catch(() => {});
-    axios.get(`${API}/availability`).then((r) => setAvailability(r.data)).catch(() => {});
-  }, []);
+ useEffect(() => {
+ axios.get(`${API}/offices`).then((r) => setOffices(r.data)).catch(() => {});
+ axios.get(`${API}/shared-desks`).then((r) => setSharedDesks(r.data)).catch(() => {});
+ axios.get(`${API}/meeting-rooms`).then((r) => setMeetingRooms(r.data)).catch(() => {});
+ axios.get(`${API}/availability`).then((r) => setAvailability(r.data)).catch(() => {});
+ }, []);
 
-  // Load booked slots whenever room/date changes
-  useEffect(() => {
-    if (!selectedRoom || !selectedDate) {
-      setBookedSlots([]);
-      return;
-    }
-    const date = selectedDate.toISOString().split("T")[0];
-    axios
-      .get(`${API}/booked-slots`, { params: { room_id: selectedRoom.id, date } })
-      .then((r) => setBookedSlots(r.data.booked || []))
-      .catch(() => setBookedSlots([]));
-    setSelectedTime("");
-  }, [selectedRoom, selectedDate]);
+ // Load booked slots whenever room/date changes
+ useEffect(() => {
+ if (!selectedRoom || !selectedDate) {
+ setBookedSlots([]);
+ return;
+ }
+ const date = selectedDate.toISOString().split("T")[0];
+ axios
+ .get(`${API}/booked-slots`, { params: { room_id: selectedRoom.id, date } })
+ .then((r) => setBookedSlots(r.data.booked || []))
+ .catch(() => setBookedSlots([]));
+ setSelectedTime("");
+ }, [selectedRoom, selectedDate]);
 
-  // Derived: slots grid based on availability
-  const timeSlots = availability
-    ? (availability.all_day
-        ? buildSlots("00:00", "24:00", availability.slot_minutes || 60)
-        : buildSlots(availability.start_time, availability.end_time, availability.slot_minutes || 60))
-    : ["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"];
+ // Derived: slots grid based on availability
+ const timeSlots = availability
+ ? (availability.all_day
+ ? buildSlots("00:00", "24:00", availability.slot_minutes || 60)
+ : buildSlots(availability.start_time, availability.end_time, availability.slot_minutes || 60))
+ : ["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"];
 
-  const isDateDisabled = (date) => {
-    if (!date) return false;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    if (date < today) return true;
-    if (!availability) return false;
-    const dow = date.getDay(); // 0=Sun..6=Sat (matches backend)
-    if (!(availability.working_days || []).includes(dow)) return true;
-    const iso = date.toISOString().split("T")[0];
-    if ((availability.blocked_dates || []).includes(iso)) return true;
-    return false;
-  };
+ const isDateDisabled = (date) => {
+ if (!date) return false;
+ const today = new Date();
+ today.setHours(0, 0, 0, 0);
+ if (date < today) return true;
+ if (!availability) return false;
+ const dow = date.getDay(); // 0=Sun..6=Sat (matches backend)
+ if (!(availability.working_days || []).includes(dow)) return true;
+ const iso = date.toISOString().split("T")[0];
+ if ((availability.blocked_dates || []).includes(iso)) return true;
+ return false;
+ };
 
-  // Admin-blocked slots for selected date
-  const adminBlockedForDate = (() => {
-    if (!availability || !selectedDate) return [];
-    const iso = selectedDate.toISOString().split("T")[0];
-    return (availability.blocked_slots || []).filter((s) => s.date === iso).map((s) => s.slot);
-  })();
+ // Admin-blocked slots for selected date
+ const adminBlockedForDate = (() => {
+ if (!availability || !selectedDate) return [];
+ const iso = selectedDate.toISOString().split("T")[0];
+ return (availability.blocked_slots || []).filter((s) => s.date === iso).map((s) => s.slot);
+ })();
 
-  const openBooking = (type, data) => {
-    setBookingDialog({ open: true, type, data });
-    setFormData({ name: "", phone: "", email: "" });
-  };
+ const openBooking = (type, data) => {
+ setBookingDialog({ open: true, type, data });
+ setFormData({ name: "", phone: "", email: "" });
+ };
 
-  const handleSubmit = async () => {
-    if (!formData.name || !formData.phone || !formData.email) {
-      toast.error(t("book.fill_all_fields"));
-      return;
-    }
-    setSubmitting(true);
-    try {
-      let endpoint = "";
-      let body = { ...formData };
-      if (bookingDialog.type === "desk") {
-        endpoint = "/bookings/desk";
-        body.num_desks = deskCount;
-      } else if (bookingDialog.type === "office") {
-        endpoint = "/bookings/office";
-        body.office_id = bookingDialog.data.id;
-      } else if (bookingDialog.type === "meeting") {
-        endpoint = "/bookings/meeting-room";
-        body.room_id = selectedRoom?.id;
-        body.date = selectedDate?.toISOString().split("T")[0];
-        body.time_slot = selectedTime;
-      }
-      const res = await axios.post(`${API}${endpoint}`, body);
-      toast.success(res.data.message);
-      setBookingDialog({ open: false, type: "", data: null });
-    } catch {
-      toast.error(t("common.try_again"));
-    } finally {
-      setSubmitting(false);
-    }
-  };
+ const handleSubmit = async () => {
+ if (!formData.name || !formData.phone || !formData.email) {
+ toast.error(t("book.fill_all_fields"));
+ return;
+ }
+ setSubmitting(true);
+ try {
+ let endpoint = "";
+ let body = { ...formData };
+ if (bookingDialog.type === "desk") {
+ endpoint = "/bookings/desk";
+ body.num_desks = deskCount;
+ } else if (bookingDialog.type === "office") {
+ endpoint = "/bookings/office";
+ body.office_id = bookingDialog.data.id;
+ } else if (bookingDialog.type === "meeting") {
+ endpoint = "/bookings/meeting-room";
+ body.room_id = selectedRoom?.id;
+ body.date = selectedDate?.toISOString().split("T")[0];
+ body.time_slot = selectedTime;
+ }
+ const res = await axios.post(`${API}${endpoint}`, body);
+ toast.success(res.data.message);
+ setBookingDialog({ open: false, type: "", data: null });
+ } catch {
+ toast.error(t("common.try_again"));
+ } finally {
+ setSubmitting(false);
+ }
+ };
 
-  return (
-    <main data-testid="spaces-page" className="pt-16">
-      {/* Header - Dark navy */}
-      <section className="bg-[#0A1128] py-24 md:py-32 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-4">{t("spaces.eyebrow")}</p>
-          <h1 data-testid="spaces-title" className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-5 leading-[1.2]">
-            {t("spaces.title")}
-          </h1>
-          <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">
-            {t("spaces.subtitle")}
-          </p>
-        </div>
-      </section>
+ return (
+ <main data-testid="spaces-page" className="pt-16">
+ {/* Header - Dark navy */}
+ <section className="bg-[#0A1128] py-24 md:py-32 relative overflow-hidden">
+ <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+ <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-4">{t("spaces.eyebrow")}</p>
+ <h1 data-testid="spaces-title" className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-5 leading-[1.2]">
+ {t("spaces.title")}
+ </h1>
+ <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">
+ {t("spaces.subtitle")}
+ </p>
+ </div>
+ </section>
 
-      {/* Shared Desks */}
-      {sharedDesks && (
-        <section data-testid="shared-desks-section" className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10">{t("spaces.shared_desks_title")}</h2>
+ {/* Shared Desks */}
+ {sharedDesks && (
+ <section data-testid="shared-desks-section" className="py-20 bg-white">
+ <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10">{t("spaces.shared_desks_title")}</h2>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              {/* Hero image + availability + booking */}
-              <div className="lg:col-span-8 relative rounded-2xl overflow-hidden min-h-[380px] md:min-h-[520px]">
-                <img
-                  src={resolveMediaUrl(sharedDesks.image)}
-                  alt={t("spaces.shared_desks_alt")}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                <div className="absolute bottom-0 right-0 left-0 p-6 md:p-8 text-white">
-                  <div className="flex flex-wrap gap-3 mb-5">
-                    <div className="bg-white/10 backdrop-blur-md rounded-lg px-4 py-2.5 border border-white/20">
-                      <p className="text-[11px] text-gray-300">{t("spaces.available_seats")}</p>
-                      <p className="text-lg font-bold text-green-400">{sharedDesks.available_seats}</p>
-                    </div>
-                    <div className="bg-white/10 backdrop-blur-md rounded-lg px-4 py-2.5 border border-white/20">
-                      <p className="text-[11px] text-gray-300">{t("spaces.occupied_seats")}</p>
-                      <p className="text-lg font-bold text-red-400">{sharedDesks.occupied_seats}</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-                    <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-lg border border-white/20">
-                      <button
-                        data-testid="desk-decrease"
-                        onClick={() => setDeskCount(Math.max(1, deskCount - 1))}
-                        className="p-2 hover:text-[#f47424] transition-colors"
-                      >
-                        <Minus size={18} />
-                      </button>
-                      <span data-testid="desk-count" className="text-lg font-bold min-w-[2rem] text-center">{deskCount}</span>
-                      <button
-                        data-testid="desk-increase"
-                        onClick={() => setDeskCount(Math.min(sharedDesks.available_seats, deskCount + 1))}
-                        className="p-2 hover:text-[#f47424] transition-colors"
-                      >
-                        <Plus size={18} />
-                      </button>
-                    </div>
-                    <Button
-                      data-testid="desk-book-button"
-                      onClick={() => openBooking("desk", sharedDesks)}
-                      className="bg-[#f47424] text-white hover:bg-[#d9641d] font-bold px-8 py-3 rounded-md"
-                    >
-                      {t("spaces.book_shared_desk")}
-                    </Button>
-                  </div>
-                </div>
-              </div>
+ <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+ {/* Hero image + availability + booking */}
+ <div className="lg:col-span-8 relative rounded-2xl overflow-hidden min-h-[380px] md:min-h-[520px]">
+ <img
+ src={resolveMediaUrl(sharedDesks.image)}
+ alt={t("spaces.shared_desks_alt")}
+ className="absolute inset-0 w-full h-full object-cover"
+ />
+ <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+ <div className="absolute bottom-0 right-0 left-0 p-6 md:p-8 text-white">
+ <div className="flex flex-wrap gap-3 mb-5">
+ <div className="bg-white/10 backdrop-blur-md rounded-lg px-4 py-2.5 border border-white/20">
+ <p className="text-[11px] text-gray-300">{t("spaces.available_seats")}</p>
+ <p className="text-lg font-bold text-green-400">{sharedDesks.available_seats}</p>
+ </div>
+ <div className="bg-white/10 backdrop-blur-md rounded-lg px-4 py-2.5 border border-white/20">
+ <p className="text-[11px] text-gray-300">{t("spaces.occupied_seats")}</p>
+ <p className="text-lg font-bold text-red-400">{sharedDesks.occupied_seats}</p>
+ </div>
+ </div>
+ <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+ <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-lg border border-white/20">
+ <button
+ data-testid="desk-decrease"
+ onClick={() => setDeskCount(Math.max(1, deskCount - 1))}
+ className="p-2 hover:text-[#f47424] transition-colors"
+ >
+ <Minus size={18} />
+ </button>
+ <span data-testid="desk-count" className="text-lg font-bold min-w-[2rem] text-center">{deskCount}</span>
+ <button
+ data-testid="desk-increase"
+ onClick={() => setDeskCount(Math.min(sharedDesks.available_seats, deskCount + 1))}
+ className="p-2 hover:text-[#f47424] transition-colors"
+ >
+ <Plus size={18} />
+ </button>
+ </div>
+ <Button
+ data-testid="desk-book-button"
+ onClick={() => openBooking("desk", sharedDesks)}
+ className="bg-[#f47424] text-white hover:bg-[#d9641d] font-bold px-8 py-3 rounded-md"
+ >
+ {t("spaces.book_shared_desk")}
+ </Button>
+ </div>
+ </div>
+ </div>
 
-              {/* Pricing + Features panel */}
-              <div
-                data-testid="shared-desks-features-panel"
-                className="lg:col-span-4 relative rounded-2xl overflow-hidden bg-[#0A1128] p-6 md:p-7 text-white flex flex-col"
-              >
-                {/* Decorative glow */}
-                <div className="pointer-events-none absolute -top-24 -left-24 w-64 h-64 rounded-full bg-[#f47424]/15 blur-3xl" />
-                <div className="pointer-events-none absolute -bottom-20 -right-20 w-56 h-56 rounded-full bg-[#f47424]/10 blur-3xl" />
+ {/* Pricing + Features panel */}
+ <div
+ data-testid="shared-desks-features-panel"
+ className="lg:col-span-4 relative rounded-2xl overflow-hidden bg-[#0A1128] p-6 md:p-7 text-white flex flex-col"
+ >
+ {/* Decorative glow */}
+ <div className="pointer-events-none absolute -top-24 -left-24 w-64 h-64 rounded-full bg-[#f47424]/15 blur-3xl" />
+ <div className="pointer-events-none absolute -bottom-20 -right-20 w-56 h-56 rounded-full bg-[#f47424]/10 blur-3xl" />
 
-                {/* Price badge */}
-                <div
-                  data-testid="shared-desks-price-badge"
-                  className="inline-flex items-center self-start gap-2 bg-[#f47424] text-white px-4 py-2 rounded-lg shadow-lg shadow-[#f47424]/30 mb-6"
-                >
-                  <span className="text-xs font-semibold tracking-wider opacity-90">{t("spaces.price_start_badge")}</span>
-                  <span className="text-xl md:text-2xl font-black leading-none">{t("spaces.shared_desks_price")} {t("spaces.price_currency")}</span>
-                  <span className="text-xs font-semibold opacity-90">{t("spaces.price_per_month")}</span>
-                </div>
+ {/* Price badge */}
+ <div
+ data-testid="shared-desks-price-badge"
+ className="inline-flex items-center self-start gap-2 bg-[#f47424] text-white px-4 py-2 rounded-lg shadow-lg shadow-[#f47424]/30 mb-6"
+ >
+ <span className="text-xs font-semibold tracking-wider opacity-90">{t("spaces.price_start_badge")}</span>
+ <span className="text-xl md:text-2xl font-black leading-none">{t("spaces.shared_desks_price")} {t("spaces.price_currency")}</span>
+ <span className="text-xs font-semibold opacity-90">{t("spaces.price_per_month")}</span>
+ </div>
 
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-2">{t("spaces.what_you_get_eyebrow")}</p>
-                <h3 className="text-xl md:text-2xl font-bold mb-5">{t("spaces.what_you_get_title")}</h3>
+ <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-2">{t("spaces.what_you_get_eyebrow")}</p>
+ <h3 className="text-xl md:text-2xl font-bold mb-5">{t("spaces.what_you_get_title")}</h3>
 
-                <ul className="space-y-3.5 relative z-10">
-                  {[
-                    { icon: Briefcase, text: t("spaces.shared_feat_1") },
-                    { icon: Wifi, text: t("spaces.shared_feat_2") },
-                    { icon: Coffee, text: t("spaces.shared_feat_3") },
-                    { icon: Printer, text: t("spaces.shared_feat_4") },
-                    { icon: CalendarClock, text: t("spaces.shared_feat_5") },
-                    { icon: LayoutGrid, text: t("spaces.shared_feat_6") },
-                  ].map((item, i) => {
-                    const Icon = item.icon;
-                    return (
-                      <li
-                        key={i}
-                        data-testid={`shared-desks-feature-${i}`}
-                        className="flex items-center gap-3 group/item"
-                      >
-                        <span className="flex-shrink-0 w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[#f47424] group-hover/item:bg-[#f47424] group-hover/item:text-white group-hover/item:border-[#f47424] transition-all duration-300">
-                          <Icon size={16} />
-                        </span>
-                        <span className="text-sm md:text-[15px] text-gray-100 leading-snug">{item.text}</span>
-                        <CheckCircle size={14} className="ms-auto text-[#f47424]/70" />
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
+ <ul className="space-y-3.5 relative z-10">
+ {[
+ { icon: Briefcase, text: t("spaces.shared_feat_1") },
+ { icon: Wifi, text: t("spaces.shared_feat_2") },
+ { icon: Coffee, text: t("spaces.shared_feat_3") },
+ { icon: Printer, text: t("spaces.shared_feat_4") },
+ { icon: CalendarClock, text: t("spaces.shared_feat_5") },
+ { icon: LayoutGrid, text: t("spaces.shared_feat_6") },
+ ].map((item, i) => {
+ const Icon = item.icon;
+ return (
+ <li
+ key={i}
+ data-testid={`shared-desks-feature-${i}`}
+ className="flex items-center gap-3 group/item"
+ >
+ <span className="flex-shrink-0 w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[#f47424] group-hover/item:bg-[#f47424] group-hover/item:text-white group-hover/item:border-[#f47424] transition-all duration-300">
+ <Icon size={16} />
+ </span>
+ <span className="text-sm md:text-[15px] text-gray-100 leading-snug">{item.text}</span>
+ <CheckCircle size={14} className="ms-auto text-[#f47424]/70" />
+ </li>
+ );
+ })}
+ </ul>
+ </div>
+ </div>
+ </div>
+ </section>
+ )}
 
-      {/* Private Offices */}
-      <section data-testid="offices-section" className="py-20 bg-[#EDF0F4]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10">{t("spaces.private_offices_title")}</h2>
+ {/* Private Offices */}
+ <section data-testid="offices-section" className="py-20 bg-[#EDF0F4]">
+ <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10">{t("spaces.private_offices_title")}</h2>
 
-          {/* Pricing + Features banner */}
-          <div
-            data-testid="offices-features-panel"
-            className="relative rounded-2xl overflow-hidden bg-[#0A1128] p-7 md:p-10 text-white mb-10"
-          >
-            {/* Decorative glows */}
-            <div className="pointer-events-none absolute -top-28 -right-28 w-80 h-80 rounded-full bg-[#f47424]/15 blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-28 -left-28 w-72 h-72 rounded-full bg-[#f47424]/10 blur-3xl" />
+ {/* Pricing + Features banner */}
+ <div
+ data-testid="offices-features-panel"
+ className="relative rounded-2xl overflow-hidden bg-[#0A1128] p-7 md:p-10 text-white mb-10"
+ >
+ {/* Decorative glows */}
+ <div className="pointer-events-none absolute -top-28 -right-28 w-80 h-80 rounded-full bg-[#f47424]/15 blur-3xl" />
+ <div className="pointer-events-none absolute -bottom-28 -left-28 w-72 h-72 rounded-full bg-[#f47424]/10 blur-3xl" />
 
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-              {/* Price + Heading */}
-              <div className="lg:col-span-1">
-                <div
-                  data-testid="offices-price-badge"
-                  className="inline-flex items-center gap-2 bg-[#f47424] text-white px-5 py-3 rounded-lg shadow-lg shadow-[#f47424]/30 mb-6"
-                >
-                  <span className="text-xs font-semibold tracking-wider opacity-90">{t("spaces.price_start_badge")}</span>
-                  <span className="text-2xl md:text-3xl font-black leading-none">{t("spaces.private_offices_price")} {t("spaces.price_currency")}</span>
-                  <span className="text-xs font-semibold opacity-90">{t("spaces.price_per_month")}</span>
-                </div>
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-2">{t("spaces.what_you_get_eyebrow")}</p>
-                <h3 className="text-xl md:text-2xl font-bold leading-tight">{t("spaces.what_you_get_title")}</h3>
-              </div>
+ <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+ {/* Price + Heading */}
+ <div className="lg:col-span-1">
+ <div
+ data-testid="offices-price-badge"
+ className="inline-flex items-center gap-2 bg-[#f47424] text-white px-5 py-3 rounded-lg shadow-lg shadow-[#f47424]/30 mb-6"
+ >
+ <span className="text-xs font-semibold tracking-wider opacity-90">{t("spaces.price_start_badge")}</span>
+ <span className="text-2xl md:text-3xl font-black leading-none">{t("spaces.private_offices_price")} {t("spaces.price_currency")}</span>
+ <span className="text-xs font-semibold opacity-90">{t("spaces.price_per_month")}</span>
+ </div>
+ <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-2">{t("spaces.what_you_get_eyebrow")}</p>
+ <h3 className="text-xl md:text-2xl font-bold leading-tight">{t("spaces.what_you_get_title")}</h3>
+ </div>
 
-              {/* Features grid */}
-              <ul className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3.5">
-                {[
-                  { icon: Building2, text: t("spaces.private_feat_1") },
-                  { icon: Wifi, text: t("spaces.private_feat_2") },
-                  { icon: Coffee, text: t("spaces.private_feat_3") },
-                  { icon: Printer, text: t("spaces.private_feat_4") },
-                  { icon: MapPin, text: t("spaces.private_feat_5") },
-                  { icon: ConciergeBell, text: t("spaces.private_feat_6") },
-                  { icon: Presentation, text: t("spaces.private_feat_7") },
-                  { icon: Headset, text: t("spaces.private_feat_8") },
-                ].map((item, i) => {
-                  const Icon = item.icon;
-                  return (
-                    <li
-                      key={i}
-                      data-testid={`offices-feature-${i}`}
-                      className="flex items-center gap-3 group/item"
-                    >
-                      <span className="flex-shrink-0 w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[#f47424] group-hover/item:bg-[#f47424] group-hover/item:text-white group-hover/item:border-[#f47424] transition-all duration-300">
-                        <Icon size={16} />
-                      </span>
-                      <span className="text-sm md:text-[15px] text-gray-100 leading-snug">{item.text}</span>
-                      <CheckCircle size={14} className="ms-auto text-[#f47424]/70" />
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          </div>
+ {/* Features grid */}
+ <ul className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3.5">
+ {[
+ { icon: Building2, text: t("spaces.private_feat_1") },
+ { icon: Wifi, text: t("spaces.private_feat_2") },
+ { icon: Coffee, text: t("spaces.private_feat_3") },
+ { icon: Printer, text: t("spaces.private_feat_4") },
+ { icon: MapPin, text: t("spaces.private_feat_5") },
+ { icon: ConciergeBell, text: t("spaces.private_feat_6") },
+ { icon: Presentation, text: t("spaces.private_feat_7") },
+ { icon: Headset, text: t("spaces.private_feat_8") },
+ ].map((item, i) => {
+ const Icon = item.icon;
+ return (
+ <li
+ key={i}
+ data-testid={`offices-feature-${i}`}
+ className="flex items-center gap-3 group/item"
+ >
+ <span className="flex-shrink-0 w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[#f47424] group-hover/item:bg-[#f47424] group-hover/item:text-white group-hover/item:border-[#f47424] transition-all duration-300">
+ <Icon size={16} />
+ </span>
+ <span className="text-sm md:text-[15px] text-gray-100 leading-snug">{item.text}</span>
+ <CheckCircle size={14} className="ms-auto text-[#f47424]/70" />
+ </li>
+ );
+ })}
+ </ul>
+ </div>
+ </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {offices.map((office) => {
-              const imgs = (office.images && office.images.length ? office.images : [office.image]).map(resolveMediaUrl);
-              return (
-                <div
-                  key={office.id}
-                  data-testid={`office-card-${office.id}`}
-                  className="group bg-[#0A1128] rounded-xl border border-white/10 overflow-hidden transition-all duration-300 hover:border-[#f47424]/40 hover:shadow-[0_10px_40px_rgba(10,17,40,0.25)] hover:-translate-y-1"
-                >
-                  <div className="relative">
-                    <HoverGallery
-                      images={imgs}
-                      alt={office.name}
-                      onOpen={(i) => openGallery(imgs, office.name, i)}
-                      t={t}
-                    />
-                    <div
-                      className={`absolute top-3 start-3 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold shadow-sm ${
-                        office.available
-                          ? "bg-green-500 text-white"
-                          : "bg-red-500 text-white"
-                      }`}
-                    >
-                      <span className={`inline-block w-1.5 h-1.5 rounded-full bg-white ${office.available ? "animate-pulse" : ""}`} />
-                      {office.available ? t("spaces.available_now") : `${t("spaces.reserved_until")} ${office.reserved_until}`}
-                    </div>
-                  </div>
-                  <div className="p-5">
-                    <h3 className="text-lg font-bold text-white mb-2">{office.name}</h3>
-                    <div className="flex items-center gap-4 text-sm text-gray-400 mb-5">
-                      <span className="flex items-center gap-1"><Users size={14} /> {office.capacity} {t("common.persons")}</span>
-                    </div>
-                    <Button
-                      data-testid={`office-book-${office.id}`}
-                      onClick={() => office.available && openBooking("office", office)}
-                      disabled={!office.available}
-                      className={`w-full text-sm font-bold rounded-md py-2.5 ${office.available ? "bg-[#f47424] text-white hover:bg-[#d9641d]" : "bg-white/10 text-gray-500 cursor-not-allowed"}`}
-                    >
-                      {office.available ? t("spaces.book_office_btn") : t("spaces.reserved_label")}
-                    </Button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+ <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+ {offices.map((office) => {
+ const imgs = (office.images && office.images.length ? office.images : [office.image]).map(resolveMediaUrl);
+ return (
+ <div
+ key={office.id}
+ data-testid={`office-card-${office.id}`}
+ className="group bg-[#0A1128] rounded-xl border border-white/10 overflow-hidden transition-all duration-300 hover:border-[#f47424]/40 hover:shadow-[0_10px_40px_rgba(10,17,40,0.25)] hover:-translate-y-1"
+ >
+ <div className="relative">
+ <HoverGallery
+ images={imgs}
+ alt={office.name}
+ onOpen={(i) => openGallery(imgs, office.name, i)}
+ t={t}
+ />
+ <div
+ className={`absolute top-3 start-3 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold shadow-sm ${
+ office.available
+ ? "bg-green-500 text-white"
+ : "bg-red-500 text-white"
+ }`}
+ >
+ <span className={`inline-block w-1.5 h-1.5 rounded-full bg-white ${office.available ? "animate-pulse" : ""}`} />
+ {office.available ? t("spaces.available_now") : `${t("spaces.reserved_until")} ${office.reserved_until}`}
+ </div>
+ </div>
+ <div className="p-5">
+ <h3 className="text-lg font-bold text-white mb-2">{office.name}</h3>
+ <div className="flex items-center gap-4 text-sm text-gray-400 mb-5">
+ <span className="flex items-center gap-1"><Users size={14} /> {office.capacity} {t("common.persons")}</span>
+ </div>
+ <Button
+ data-testid={`office-book-${office.id}`}
+ onClick={() => office.available && openBooking("office", office)}
+ disabled={!office.available}
+ className={`w-full text-sm font-bold rounded-md py-2.5 ${office.available ? "bg-[#f47424] text-white hover:bg-[#d9641d]" : "bg-white/10 text-gray-500 cursor-not-allowed"}`}
+ >
+ {office.available ? t("spaces.book_office_btn") : t("spaces.reserved_label")}
+ </Button>
+ </div>
+ </div>
+ );
+ })}
+ </div>
+ </div>
+ </section>
 
-      {/* Meeting Rooms */}
-      <section data-testid="meeting-rooms-section" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10">{t("spaces.meeting_rooms_title")}</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {/* Room Selection */}
-            <div className="space-y-6">
-              {meetingRooms.map((room) => (
-                <div
-                  key={room.id}
-                  data-testid={`meeting-room-${room.id}`}
-                  onClick={() => setSelectedRoom(room)}
-                  className={`flex gap-4 p-4 rounded-xl border cursor-pointer transition-all duration-300 ${selectedRoom?.id === room.id ? "border-[#f47424] bg-orange-50/50" : "border-gray-100 hover:border-gray-200"}`}
-                >
-                  <img src={resolveMediaUrl(room.image)} alt={room.name} className="w-24 h-24 md:w-32 md:h-32 rounded-lg object-cover flex-shrink-0" />
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-gray-900 mb-1">{room.name}</h3>
-                    <div className="flex flex-wrap gap-3 text-sm text-gray-500 mb-2">
-                      <span className="flex items-center gap-1"><Users size={14} /> {room.capacity} {t("common.persons")}</span>
-                    </div>
-                    {selectedRoom?.id === room.id && (
-                      <span className="inline-flex items-center gap-1 text-[#f47424] font-semibold text-xs">
-                        <CheckCircle size={14} /> {t("common.selected")}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
+ {/* Meeting Rooms */}
+ <section data-testid="meeting-rooms-section" className="py-20 bg-white">
+ <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10">{t("spaces.meeting_rooms_title")}</h2>
+ <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+ {/* Room Selection */}
+ <div className="space-y-6">
+ {meetingRooms.map((room) => (
+ <div
+ key={room.id}
+ data-testid={`meeting-room-${room.id}`}
+ onClick={() => setSelectedRoom(room)}
+ className={`flex gap-4 p-4 rounded-xl border cursor-pointer transition-all duration-300 ${selectedRoom?.id === room.id ? "border-[#f47424] bg-orange-50/50" : "border-gray-100 hover:border-gray-200"}`}
+ >
+ <img src={resolveMediaUrl(room.image)} alt={room.name} className="w-24 h-24 md:w-32 md:h-32 rounded-lg object-cover flex-shrink-0" />
+ <div className="flex-1">
+ <h3 className="text-lg font-bold text-gray-900 mb-1">{room.name}</h3>
+ <div className="flex flex-wrap gap-3 text-sm text-gray-500 mb-2">
+ <span className="flex items-center gap-1"><Users size={14} /> {room.capacity} {t("common.persons")}</span>
+ </div>
+ {selectedRoom?.id === room.id && (
+ <span className="inline-flex items-center gap-1 text-[#f47424] font-semibold text-xs">
+ <CheckCircle size={14} /> {t("common.selected")}
+ </span>
+ )}
+ </div>
+ </div>
+ ))}
+ </div>
 
-            {/* Calendar & Time Selection */}
-            <div className="bg-[#EDF0F4] rounded-xl border border-gray-100 p-6">
-              {selectedRoom ? (
-                <>
-                  <h3 className="font-bold text-gray-900 mb-4">{t("spaces.pick_date_time")}</h3>
-                  <div className="flex justify-center mb-6">
-                    <Calendar
-                      mode="single"
-                      selected={selectedDate}
-                      onSelect={setSelectedDate}
-                      disabled={isDateDisabled}
-                      className="rounded-xl border border-gray-200 bg-white"
-                      data-testid="meeting-calendar"
-                      classNames={{
-                        day_selected: "bg-[#f47424] text-white hover:bg-[#d9641d] focus:bg-[#d9641d] focus:text-white",
-                        day_today: "bg-orange-50 text-[#f47424] font-bold",
-                      }}
-                    />
-                  </div>
-                  {selectedDate && (
-                    <div data-testid="time-slots">
-                      <h4 className="font-semibold text-gray-800 mb-3">{t("spaces.available_times")}</h4>
-                      <div className="grid grid-cols-3 gap-2">
-                        {timeSlots.map((slot) => {
-                          const isBooked = bookedSlots.includes(slot);
-                          const isBlocked = adminBlockedForDate.includes(slot);
-                          const disabled = isBooked || isBlocked;
-                          return (
-                            <button
-                              key={slot}
-                              disabled={disabled}
-                              data-testid={`time-slot-${slot}`}
-                              onClick={() => !disabled && setSelectedTime(slot)}
-                              className={`py-2 rounded-md text-sm font-semibold transition-all relative ${
-                                disabled
-                                  ? "bg-gray-100 text-gray-400 cursor-not-allowed line-through"
-                                  : selectedTime === slot
-                                    ? "bg-[#f47424] text-white"
-                                    : "bg-white border border-gray-200 text-gray-700 hover:border-[#f47424] hover:text-[#f47424]"
-                              }`}
-                            >
-                              {slot}
-                              {isBooked && <span className="block text-[9px] font-normal opacity-70">{t("spaces.slot_booked")}</span>}
-                              {!isBooked && isBlocked && <span className="block text-[9px] font-normal opacity-70">{t("spaces.slot_blocked")}</span>}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-                  {selectedDate && selectedTime && (
-                    <Button
-                      data-testid="meeting-book-button"
-                      onClick={() => openBooking("meeting", selectedRoom)}
-                      className="w-full mt-6 bg-[#f47424] text-white hover:bg-[#d9641d] font-bold py-3 rounded-md"
-                    >
-                      {t("spaces.book_meeting_btn")}
-                    </Button>
-                  )}
-                </>
-              ) : (
-                <div className="flex flex-col items-center justify-center h-full text-center py-16 text-gray-400">
-                  <Clock size={40} className="mb-4" />
-                  <p className="font-semibold">{t("spaces.empty_state")}</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
+ {/* Calendar & Time Selection */}
+ <div className="bg-[#EDF0F4] rounded-xl border border-gray-100 p-6">
+ {selectedRoom ? (
+ <>
+ <h3 className="font-bold text-gray-900 mb-4">{t("spaces.pick_date_time")}</h3>
+ <div className="flex justify-center mb-6">
+ <Calendar
+ mode="single"
+ selected={selectedDate}
+ onSelect={setSelectedDate}
+ disabled={isDateDisabled}
+ className="rounded-xl border border-gray-200 bg-white"
+ data-testid="meeting-calendar"
+ classNames={{
+ day_selected: "bg-[#f47424] text-white hover:bg-[#d9641d] focus:bg-[#d9641d] focus:text-white",
+ day_today: "bg-orange-50 text-[#f47424] font-bold",
+ }}
+ />
+ </div>
+ {selectedDate && (
+ <div data-testid="time-slots">
+ <h4 className="font-semibold text-gray-800 mb-3">{t("spaces.available_times")}</h4>
+ <div className="grid grid-cols-3 gap-2">
+ {timeSlots.map((slot) => {
+ const isBooked = bookedSlots.includes(slot);
+ const isBlocked = adminBlockedForDate.includes(slot);
+ const disabled = isBooked || isBlocked;
+ return (
+ <button
+ key={slot}
+ disabled={disabled}
+ data-testid={`time-slot-${slot}`}
+ onClick={() => !disabled && setSelectedTime(slot)}
+ className={`py-2 rounded-md text-sm font-semibold transition-all relative ${
+ disabled
+ ? "bg-gray-100 text-gray-400 cursor-not-allowed line-through"
+ : selectedTime === slot
+ ? "bg-[#f47424] text-white"
+ : "bg-white border border-gray-200 text-gray-700 hover:border-[#f47424] hover:text-[#f47424]"
+ }`}
+ >
+ {slot}
+ {isBooked && <span className="block text-[9px] font-normal opacity-70">{t("spaces.slot_booked")}</span>}
+ {!isBooked && isBlocked && <span className="block text-[9px] font-normal opacity-70">{t("spaces.slot_blocked")}</span>}
+ </button>
+ );
+ })}
+ </div>
+ </div>
+ )}
+ {selectedDate && selectedTime && (
+ <Button
+ data-testid="meeting-book-button"
+ onClick={() => openBooking("meeting", selectedRoom)}
+ className="w-full mt-6 bg-[#f47424] text-white hover:bg-[#d9641d] font-bold py-3 rounded-md"
+ >
+ {t("spaces.book_meeting_btn")}
+ </Button>
+ )}
+ </>
+ ) : (
+ <div className="flex flex-col items-center justify-center h-full text-center py-16 text-gray-400">
+ <Clock size={40} className="mb-4" />
+ <p className="font-semibold">{t("spaces.empty_state")}</p>
+ </div>
+ )}
+ </div>
+ </div>
+ </div>
+ </section>
 
-      {/* Booking Dialog */}
-      <Dialog open={bookingDialog.open} onOpenChange={(open) => setBookingDialog({ ...bookingDialog, open })}>
-        <DialogContent
-          dir={dir}
-          className={`max-w-md p-0 overflow-hidden rounded-2xl border border-gray-100 ${dir === "rtl" ? "[&>button]:left-4 [&>button]:right-auto [&>button]:top-4" : "[&>button]:right-4 [&>button]:left-auto [&>button]:top-4"}`}
-        >
-          <div className="p-6 md:p-7">
-            <DialogHeader className={`${dir === "rtl" ? "pl-8" : "pr-8"} text-start`}>
-              <DialogTitle className="text-start text-xl font-bold text-gray-900">{t("book.dialog_title")}</DialogTitle>
-              <DialogDescription className="text-start text-sm text-gray-500 mt-1">
-                {t("book.dialog_description")}
-              </DialogDescription>
-            </DialogHeader>
+ {/* Booking Dialog */}
+ <Dialog open={bookingDialog.open} onOpenChange={(open) => setBookingDialog({ ...bookingDialog, open })}>
+ <DialogContent
+ dir={dir}
+ className={`max-w-md p-0 overflow-hidden rounded-2xl border border-gray-100 ${dir === "rtl" ? "[&>button]:left-4 [&>button]:right-auto [&>button]:top-4" : "[&>button]:right-4 [&>button]:left-auto [&>button]:top-4"}`}
+ >
+ <div className="p-6 md:p-7">
+ <DialogHeader className={`${dir === "rtl" ? "pl-8" : "pr-8"} text-start`}>
+ <DialogTitle className="text-start text-xl font-bold text-gray-900">{t("book.dialog_title")}</DialogTitle>
+ <DialogDescription className="text-start text-sm text-gray-500 mt-1">
+ {t("book.dialog_description")}
+ </DialogDescription>
+ </DialogHeader>
 
-            <div className="space-y-3 mt-6">
-              <Input
-                data-testid="booking-name"
-                placeholder={t("book.full_name")}
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="bg-gray-50 border-gray-200 text-start h-11"
-              />
-              <Input
-                data-testid="booking-phone"
-                placeholder={t("book.phone")}
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="bg-gray-50 border-gray-200 text-start h-11"
-              />
-              <Input
-                data-testid="booking-email"
-                placeholder={t("book.email")}
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="bg-gray-50 border-gray-200 text-start h-11"
-              />
-            </div>
+ <div className="space-y-3 mt-6">
+ <Input
+ data-testid="booking-name"
+ placeholder={t("book.full_name")}
+ value={formData.name}
+ onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+ className="bg-gray-50 border-gray-200 text-start h-11"
+ />
+ <Input
+ data-testid="booking-phone"
+ placeholder={t("book.phone")}
+ value={formData.phone}
+ onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+ className="bg-gray-50 border-gray-200 text-start h-11"
+ />
+ <Input
+ data-testid="booking-email"
+ placeholder={t("book.email")}
+ type="email"
+ value={formData.email}
+ onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+ className="bg-gray-50 border-gray-200 text-start h-11"
+ />
+ </div>
 
-            <p
-              data-testid="booking-helper-text"
-              className="text-xs text-gray-500 text-start mt-3 leading-relaxed"
-            >
-              {t("book.helper")}
-            </p>
+ <p
+ data-testid="booking-helper-text"
+ className="text-xs text-gray-500 text-start mt-3 leading-relaxed"
+ >
+ {t("book.helper")}
+ </p>
 
-            <Button
-              data-testid="booking-submit"
-              onClick={handleSubmit}
-              disabled={submitting}
-              className="w-full mt-5 bg-[#f47424] text-white hover:bg-[#d9641d] font-bold py-3 rounded-md h-12"
-            >
-              {submitting ? t("common.sending") : t("book.submit")}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+ <Button
+ data-testid="booking-submit"
+ onClick={handleSubmit}
+ disabled={submitting}
+ className="w-full mt-5 bg-[#f47424] text-white hover:bg-[#d9641d] font-bold py-3 rounded-md h-12"
+ >
+ {submitting ? t("common.sending") : t("book.submit")}
+ </Button>
+ </div>
+ </DialogContent>
+ </Dialog>
 
-      {/* Full-screen gallery */}
-      <GalleryDialog
-        open={galleryOpen}
-        onOpenChange={setGalleryOpen}
-        images={galleryData.images}
-        title={galleryData.title}
-        startIndex={galleryData.startIndex}
-        t={t}
-        dir={dir}
-      />
-    </main>
-  );
+ {/* Full-screen gallery */}
+ <GalleryDialog
+ open={galleryOpen}
+ onOpenChange={setGalleryOpen}
+ images={galleryData.images}
+ title={galleryData.title}
+ startIndex={galleryData.startIndex}
+ t={t}
+ dir={dir}
+ />
+ </main>
+ );
 }
