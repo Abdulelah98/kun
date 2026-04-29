@@ -313,7 +313,7 @@ export default function HomePage() {
             <div className="rounded-2xl overflow-hidden md:mt-24 lg:mt-32">
               <img
                 src={resolveMediaUrl(whyBlock.image)}
-                alt="مساحة عمل كن"
+                alt={whyBlock.title}
                 className="w-full h-80 md:h-[460px] object-cover"
               />
             </div>

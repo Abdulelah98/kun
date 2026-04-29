@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { Users, Clock, CheckCircle, XCircle, Minus, Plus, ChevronLeft, ChevronRight, Expand, Wifi, Coffee, Printer, CalendarClock, LayoutGrid, Briefcase, Building2, MapPin, ConciergeBell, Presentation, Headset } from "lucide-react";
 import { resolveMediaUrl } from "@/components/admin/MediaPicker";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -78,7 +79,7 @@ function HoverGallery({ images, alt, onOpen }) {
             }}
             className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-black/55 backdrop-blur-sm text-white flex items-center justify-center opacity-0 group-hover/gallery:opacity-100 transition-opacity duration-300 hover:bg-black/75"
             data-testid="gallery-open-btn"
-            aria-label="عرض كل الصور"
+            aria-label={t ? t("spaces.gallery_open_aria") : "View all photos"}
           >
             <Expand size={16} />
           </button>
@@ -95,7 +96,7 @@ function HoverGallery({ images, alt, onOpen }) {
           </div>
           {/* Count badge */}
           <div className="absolute bottom-3 right-3 z-10 text-[10px] font-bold px-2 py-0.5 rounded-full bg-black/55 backdrop-blur-sm text-white">
-            {imgs.length} صور
+            {imgs.length} {t ? t("spaces.gallery_count") : "photos"}
           </div>
         </>
       )}
@@ -104,7 +105,7 @@ function HoverGallery({ images, alt, onOpen }) {
 }
 
 // Lightbox dialog for browsing all images of a space
-function GalleryDialog({ open, onOpenChange, images, title, startIndex = 0 }) {
+function GalleryDialog({ open, onOpenChange, images, title, startIndex = 0, t, dir = "rtl" }) {
   const [idx, setIdx] = useState(startIndex);
   useEffect(() => { if (open) setIdx(startIndex); }, [open, startIndex]);
   if (!images || images.length === 0) return null;
@@ -114,10 +115,10 @@ function GalleryDialog({ open, onOpenChange, images, title, startIndex = 0 }) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl p-0 bg-black border-0 overflow-hidden" dir="rtl">
+      <DialogContent className="max-w-4xl p-0 bg-black border-0 overflow-hidden" dir={dir}>
         <DialogHeader className="sr-only">
           <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>معرض صور {title}</DialogDescription>
+          <DialogDescription>{(t ? t("spaces.gallery_dialog_desc") : "Gallery for")} {title}</DialogDescription>
         </DialogHeader>
         <div className="relative aspect-[16/10] bg-black">
           <img
@@ -133,7 +134,7 @@ function GalleryDialog({ open, onOpenChange, images, title, startIndex = 0 }) {
                 onClick={prev}
                 data-testid="gallery-prev-btn"
                 className="absolute top-1/2 -translate-y-1/2 right-4 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur text-white flex items-center justify-center transition-colors"
-                aria-label="السابق"
+                aria-label={t ? t("spaces.gallery_prev_aria") : "Previous"}
               >
                 <ChevronRight size={22} />
               </button>
@@ -142,7 +143,7 @@ function GalleryDialog({ open, onOpenChange, images, title, startIndex = 0 }) {
                 onClick={next}
                 data-testid="gallery-next-btn"
                 className="absolute top-1/2 -translate-y-1/2 left-4 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur text-white flex items-center justify-center transition-colors"
-                aria-label="التالي"
+                aria-label={t ? t("spaces.gallery_next_aria") : "Next"}
               >
                 <ChevronLeft size={22} />
               </button>
@@ -153,7 +154,7 @@ function GalleryDialog({ open, onOpenChange, images, title, startIndex = 0 }) {
                     type="button"
                     onClick={() => setIdx(i)}
                     className={`h-1.5 rounded-full transition-all ${i === idx ? "w-8 bg-white" : "w-2 bg-white/40 hover:bg-white/60"}`}
-                    aria-label={`الصورة ${i + 1}`}
+                    aria-label={`${i + 1}`}
                   />
                 ))}
               </div>
@@ -169,6 +170,7 @@ function GalleryDialog({ open, onOpenChange, images, title, startIndex = 0 }) {
 }
 
 export default function SpacesPage() {
+  const { t, dir } = useLanguage();
   const [offices, setOffices] = useState([]);
   const [sharedDesks, setSharedDesks] = useState(null);
   const [meetingRooms, setMeetingRooms] = useState([]);
@@ -244,7 +246,7 @@ export default function SpacesPage() {
 
   const handleSubmit = async () => {
     if (!formData.name || !formData.phone || !formData.email) {
-      toast.error("يرجى تعبئة جميع الحقول");
+      toast.error(t("book.fill_all_fields"));
       return;
     }
     setSubmitting(true);
@@ -267,7 +269,7 @@ export default function SpacesPage() {
       toast.success(res.data.message);
       setBookingDialog({ open: false, type: "", data: null });
     } catch {
-      toast.error("حدث خطأ، يرجى المحاولة مرة أخرى");
+      toast.error(t("common.try_again"));
     } finally {
       setSubmitting(false);
     }
@@ -278,12 +280,12 @@ export default function SpacesPage() {
       {/* Header - Dark navy */}
       <section className="bg-[#0A1128] py-24 md:py-32 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-4">المساحات</p>
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-4">{t("spaces.eyebrow")}</p>
           <h1 data-testid="spaces-title" className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-5 leading-[1.2]">
-            مساحات عمل تناسب طموحك
+            {t("spaces.title")}
           </h1>
           <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">
-            اختر المساحة المثالية لأعمالك من بين خيارات متنوعة ومرنة
+            {t("spaces.subtitle")}
           </p>
         </div>
       </section>
@@ -292,25 +294,25 @@ export default function SpacesPage() {
       {sharedDesks && (
         <section data-testid="shared-desks-section" className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10">المكاتب المشتركة</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10">{t("spaces.shared_desks_title")}</h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Hero image + availability + booking */}
               <div className="lg:col-span-8 relative rounded-2xl overflow-hidden min-h-[380px] md:min-h-[520px]">
                 <img
                   src={resolveMediaUrl(sharedDesks.image)}
-                  alt="المكاتب المشتركة"
+                  alt={t("spaces.shared_desks_alt")}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                 <div className="absolute bottom-0 right-0 left-0 p-6 md:p-8 text-white">
                   <div className="flex flex-wrap gap-3 mb-5">
                     <div className="bg-white/10 backdrop-blur-md rounded-lg px-4 py-2.5 border border-white/20">
-                      <p className="text-[11px] text-gray-300">المقاعد المتاحة</p>
+                      <p className="text-[11px] text-gray-300">{t("spaces.available_seats")}</p>
                       <p className="text-lg font-bold text-green-400">{sharedDesks.available_seats}</p>
                     </div>
                     <div className="bg-white/10 backdrop-blur-md rounded-lg px-4 py-2.5 border border-white/20">
-                      <p className="text-[11px] text-gray-300">المقاعد المحجوزة</p>
+                      <p className="text-[11px] text-gray-300">{t("spaces.occupied_seats")}</p>
                       <p className="text-lg font-bold text-red-400">{sharedDesks.occupied_seats}</p>
                     </div>
                   </div>
@@ -337,7 +339,7 @@ export default function SpacesPage() {
                       onClick={() => openBooking("desk", sharedDesks)}
                       className="bg-[#f47424] text-white hover:bg-[#d9641d] font-bold px-8 py-3 rounded-md"
                     >
-                      احجز مكتبك المشترك
+                      {t("spaces.book_shared_desk")}
                     </Button>
                   </div>
                 </div>
@@ -357,22 +359,22 @@ export default function SpacesPage() {
                   data-testid="shared-desks-price-badge"
                   className="inline-flex items-center self-start gap-2 bg-[#f47424] text-white px-4 py-2 rounded-lg shadow-lg shadow-[#f47424]/30 mb-6"
                 >
-                  <span className="text-xs font-semibold tracking-wider opacity-90">يبدأ من</span>
-                  <span className="text-xl md:text-2xl font-black leading-none">1,500 ريال</span>
-                  <span className="text-xs font-semibold opacity-90">/ شهرياً</span>
+                  <span className="text-xs font-semibold tracking-wider opacity-90">{t("spaces.price_start_badge")}</span>
+                  <span className="text-xl md:text-2xl font-black leading-none">{t("spaces.shared_desks_price")} {t("spaces.price_currency")}</span>
+                  <span className="text-xs font-semibold opacity-90">{t("spaces.price_per_month")}</span>
                 </div>
 
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-2">ما الذي تحصل عليه</p>
-                <h3 className="text-xl md:text-2xl font-bold mb-5">كل ما تحتاجه لإنتاجية بلا حدود</h3>
+                <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-2">{t("spaces.what_you_get_eyebrow")}</p>
+                <h3 className="text-xl md:text-2xl font-bold mb-5">{t("spaces.what_you_get_title")}</h3>
 
                 <ul className="space-y-3.5 relative z-10">
                   {[
-                    { icon: Briefcase, text: "مكتب مشترك (Hot Desk)" },
-                    { icon: Wifi, text: "إنترنت فائق السرعة غير محدود" },
-                    { icon: Coffee, text: "ضيافة غير محدودة (قهوة، شاي، مياه)" },
-                    { icon: Printer, text: "طباعة غير محدودة" },
-                    { icon: CalendarClock, text: "وصول مرن بالساعة أو اليوم" },
-                    { icon: LayoutGrid, text: "استخدام المناطق المشتركة" },
+                    { icon: Briefcase, text: t("spaces.shared_feat_1") },
+                    { icon: Wifi, text: t("spaces.shared_feat_2") },
+                    { icon: Coffee, text: t("spaces.shared_feat_3") },
+                    { icon: Printer, text: t("spaces.shared_feat_4") },
+                    { icon: CalendarClock, text: t("spaces.shared_feat_5") },
+                    { icon: LayoutGrid, text: t("spaces.shared_feat_6") },
                   ].map((item, i) => {
                     const Icon = item.icon;
                     return (
@@ -399,7 +401,7 @@ export default function SpacesPage() {
       {/* Private Offices */}
       <section data-testid="offices-section" className="py-20 bg-[#EDF0F4]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10">المكاتب الخاصة</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10">{t("spaces.private_offices_title")}</h2>
 
           {/* Pricing + Features banner */}
           <div
@@ -417,25 +419,25 @@ export default function SpacesPage() {
                   data-testid="offices-price-badge"
                   className="inline-flex items-center gap-2 bg-[#f47424] text-white px-5 py-3 rounded-lg shadow-lg shadow-[#f47424]/30 mb-6"
                 >
-                  <span className="text-xs font-semibold tracking-wider opacity-90">يبدأ من</span>
-                  <span className="text-2xl md:text-3xl font-black leading-none">3,500 ريال</span>
-                  <span className="text-xs font-semibold opacity-90">/ شهرياً</span>
+                  <span className="text-xs font-semibold tracking-wider opacity-90">{t("spaces.price_start_badge")}</span>
+                  <span className="text-2xl md:text-3xl font-black leading-none">{t("spaces.private_offices_price")} {t("spaces.price_currency")}</span>
+                  <span className="text-xs font-semibold opacity-90">{t("spaces.price_per_month")}</span>
                 </div>
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-2">ما الذي تحصل عليه</p>
-                <h3 className="text-xl md:text-2xl font-bold leading-tight">كل ما تحتاجه لإنتاجية بلا حدود</h3>
+                <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-2">{t("spaces.what_you_get_eyebrow")}</p>
+                <h3 className="text-xl md:text-2xl font-bold leading-tight">{t("spaces.what_you_get_title")}</h3>
               </div>
 
               {/* Features grid */}
               <ul className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3.5">
                 {[
-                  { icon: Building2, text: "مكتب خاص مجهز بالكامل" },
-                  { icon: Wifi, text: "إنترنت فائق السرعة غير محدود" },
-                  { icon: Coffee, text: "ضيافة غير محدودة (قهوة، شاي، مياه)" },
-                  { icon: Printer, text: "طباعة غير محدودة" },
-                  { icon: MapPin, text: "عنوان تجاري رسمي" },
-                  { icon: ConciergeBell, text: "خدمة استقبال وسكرتارية" },
-                  { icon: Presentation, text: "قاعات اجتماعات (ساعات شهرية)" },
-                  { icon: Headset, text: "دعم إداري وتشغيلي متكامل" },
+                  { icon: Building2, text: t("spaces.private_feat_1") },
+                  { icon: Wifi, text: t("spaces.private_feat_2") },
+                  { icon: Coffee, text: t("spaces.private_feat_3") },
+                  { icon: Printer, text: t("spaces.private_feat_4") },
+                  { icon: MapPin, text: t("spaces.private_feat_5") },
+                  { icon: ConciergeBell, text: t("spaces.private_feat_6") },
+                  { icon: Presentation, text: t("spaces.private_feat_7") },
+                  { icon: Headset, text: t("spaces.private_feat_8") },
                 ].map((item, i) => {
                   const Icon = item.icon;
                   return (
@@ -470,6 +472,7 @@ export default function SpacesPage() {
                       images={imgs}
                       alt={office.name}
                       onOpen={(i) => openGallery(imgs, office.name, i)}
+                      t={t}
                     />
                     <div
                       className={`absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold shadow-sm ${
@@ -479,13 +482,13 @@ export default function SpacesPage() {
                       }`}
                     >
                       <span className={`inline-block w-1.5 h-1.5 rounded-full bg-white ${office.available ? "animate-pulse" : ""}`} />
-                      {office.available ? "متاح الآن" : `محجوز حتى ${office.reserved_until}`}
+                      {office.available ? t("spaces.available_now") : `${t("spaces.reserved_until")} ${office.reserved_until}`}
                     </div>
                   </div>
                   <div className="p-5">
                     <h3 className="text-lg font-bold text-white mb-2">{office.name}</h3>
                     <div className="flex items-center gap-4 text-sm text-gray-400 mb-5">
-                      <span className="flex items-center gap-1"><Users size={14} /> {office.capacity} أشخاص</span>
+                      <span className="flex items-center gap-1"><Users size={14} /> {office.capacity} {t("common.persons")}</span>
                     </div>
                     <Button
                       data-testid={`office-book-${office.id}`}
@@ -493,7 +496,7 @@ export default function SpacesPage() {
                       disabled={!office.available}
                       className={`w-full text-sm font-bold rounded-md py-2.5 ${office.available ? "bg-[#f47424] text-white hover:bg-[#d9641d]" : "bg-white/10 text-gray-500 cursor-not-allowed"}`}
                     >
-                      {office.available ? "احجز هذا المكتب" : "محجوز"}
+                      {office.available ? t("spaces.book_office_btn") : t("spaces.reserved_label")}
                     </Button>
                   </div>
                 </div>
@@ -506,7 +509,7 @@ export default function SpacesPage() {
       {/* Meeting Rooms */}
       <section data-testid="meeting-rooms-section" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10">قاعات الاجتماعات</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10">{t("spaces.meeting_rooms_title")}</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             {/* Room Selection */}
             <div className="space-y-6">
@@ -521,11 +524,11 @@ export default function SpacesPage() {
                   <div className="flex-1">
                     <h3 className="text-lg font-bold text-gray-900 mb-1">{room.name}</h3>
                     <div className="flex flex-wrap gap-3 text-sm text-gray-500 mb-2">
-                      <span className="flex items-center gap-1"><Users size={14} /> {room.capacity} أشخاص</span>
+                      <span className="flex items-center gap-1"><Users size={14} /> {room.capacity} {t("common.persons")}</span>
                     </div>
                     {selectedRoom?.id === room.id && (
                       <span className="inline-flex items-center gap-1 text-[#f47424] font-semibold text-xs">
-                        <CheckCircle size={14} /> محدد
+                        <CheckCircle size={14} /> {t("common.selected")}
                       </span>
                     )}
                   </div>
@@ -537,7 +540,7 @@ export default function SpacesPage() {
             <div className="bg-[#EDF0F4] rounded-xl border border-gray-100 p-6">
               {selectedRoom ? (
                 <>
-                  <h3 className="font-bold text-gray-900 mb-4">اختر التاريخ والوقت</h3>
+                  <h3 className="font-bold text-gray-900 mb-4">{t("spaces.pick_date_time")}</h3>
                   <div className="flex justify-center mb-6">
                     <Calendar
                       mode="single"
@@ -554,7 +557,7 @@ export default function SpacesPage() {
                   </div>
                   {selectedDate && (
                     <div data-testid="time-slots">
-                      <h4 className="font-semibold text-gray-800 mb-3">الأوقات المتاحة</h4>
+                      <h4 className="font-semibold text-gray-800 mb-3">{t("spaces.available_times")}</h4>
                       <div className="grid grid-cols-3 gap-2">
                         {timeSlots.map((slot) => {
                           const isBooked = bookedSlots.includes(slot);
@@ -575,8 +578,8 @@ export default function SpacesPage() {
                               }`}
                             >
                               {slot}
-                              {isBooked && <span className="block text-[9px] font-normal opacity-70">محجوز</span>}
-                              {!isBooked && isBlocked && <span className="block text-[9px] font-normal opacity-70">مغلق</span>}
+                              {isBooked && <span className="block text-[9px] font-normal opacity-70">{t("spaces.slot_booked")}</span>}
+                              {!isBooked && isBlocked && <span className="block text-[9px] font-normal opacity-70">{t("spaces.slot_blocked")}</span>}
                             </button>
                           );
                         })}
@@ -589,14 +592,14 @@ export default function SpacesPage() {
                       onClick={() => openBooking("meeting", selectedRoom)}
                       className="w-full mt-6 bg-[#f47424] text-white hover:bg-[#d9641d] font-bold py-3 rounded-md"
                     >
-                      احجز القاعة
+                      {t("spaces.book_meeting_btn")}
                     </Button>
                   )}
                 </>
               ) : (
                 <div className="flex flex-col items-center justify-center h-full text-center py-16 text-gray-400">
                   <Clock size={40} className="mb-4" />
-                  <p className="font-semibold">اختر قاعة اجتماعات للبدء</p>
+                  <p className="font-semibold">{t("spaces.empty_state")}</p>
                 </div>
               )}
             </div>
@@ -607,47 +610,47 @@ export default function SpacesPage() {
       {/* Booking Dialog */}
       <Dialog open={bookingDialog.open} onOpenChange={(open) => setBookingDialog({ ...bookingDialog, open })}>
         <DialogContent
-          dir="rtl"
-          className="max-w-md p-0 overflow-hidden rounded-2xl border border-gray-100 [&>button]:left-4 [&>button]:right-auto [&>button]:top-4"
+          dir={dir}
+          className={`max-w-md p-0 overflow-hidden rounded-2xl border border-gray-100 ${dir === "rtl" ? "[&>button]:left-4 [&>button]:right-auto [&>button]:top-4" : "[&>button]:right-4 [&>button]:left-auto [&>button]:top-4"}`}
         >
           <div className="p-6 md:p-7">
-            <DialogHeader className="pl-8 text-right">
-              <DialogTitle className="text-right text-xl font-bold text-gray-900">طلب حجز</DialogTitle>
-              <DialogDescription className="text-right text-sm text-gray-500 mt-1">
-                يرجى تعبئة بياناتك وسنقوم بالتواصل معكم قريباً
+            <DialogHeader className={`${dir === "rtl" ? "pl-8 text-right" : "pr-8 text-left"}`}>
+              <DialogTitle className={`${dir === "rtl" ? "text-right" : "text-left"} text-xl font-bold text-gray-900`}>{t("book.dialog_title")}</DialogTitle>
+              <DialogDescription className={`${dir === "rtl" ? "text-right" : "text-left"} text-sm text-gray-500 mt-1`}>
+                {t("book.dialog_description")}
               </DialogDescription>
             </DialogHeader>
 
             <div className="space-y-3 mt-6">
               <Input
                 data-testid="booking-name"
-                placeholder="الاسم الكامل"
+                placeholder={t("book.full_name")}
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="bg-gray-50 border-gray-200 text-right h-11"
+                className={`bg-gray-50 border-gray-200 ${dir === "rtl" ? "text-right" : "text-left"} h-11`}
               />
               <Input
                 data-testid="booking-phone"
-                placeholder="رقم الهاتف"
+                placeholder={t("book.phone")}
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="bg-gray-50 border-gray-200 text-right h-11"
+                className={`bg-gray-50 border-gray-200 ${dir === "rtl" ? "text-right" : "text-left"} h-11`}
               />
               <Input
                 data-testid="booking-email"
-                placeholder="البريد الإلكتروني"
+                placeholder={t("book.email")}
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="bg-gray-50 border-gray-200 text-right h-11"
+                className={`bg-gray-50 border-gray-200 ${dir === "rtl" ? "text-right" : "text-left"} h-11`}
               />
             </div>
 
             <p
               data-testid="booking-helper-text"
-              className="text-xs text-gray-500 text-right mt-3 leading-relaxed"
+              className={`text-xs text-gray-500 ${dir === "rtl" ? "text-right" : "text-left"} mt-3 leading-relaxed`}
             >
-              سيتم التواصل معكم لتأكيد الحجز
+              {t("book.helper")}
             </p>
 
             <Button
@@ -656,7 +659,7 @@ export default function SpacesPage() {
               disabled={submitting}
               className="w-full mt-5 bg-[#f47424] text-white hover:bg-[#d9641d] font-bold py-3 rounded-md h-12"
             >
-              {submitting ? "جاري الإرسال..." : "إرسال طلب"}
+              {submitting ? t("common.sending") : t("book.submit")}
             </Button>
           </div>
         </DialogContent>
@@ -669,6 +672,8 @@ export default function SpacesPage() {
         images={galleryData.images}
         title={galleryData.title}
         startIndex={galleryData.startIndex}
+        t={t}
+        dir={dir}
       />
     </main>
   );

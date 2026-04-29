@@ -1,43 +1,41 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Scale, Users, Building, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { Scale, Users, Building, ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useContent } from "@/contexts/ContentContext";
 
-const businessServices = [
-  {
-    icon: Scale,
-    title: "الخدمات القانونية",
-    desc: "نقدم استشارات قانونية شاملة تشمل تأسيس الشركات، صياغة العقود، والتمثيل القانوني لحماية مصالح عملك.",
-    features: ["تأسيس الشركات والمؤسسات", "صياغة ومراجعة العقود", "الاستشارات القانونية", "التمثيل أمام الجهات الحكومية"],
-    image: "https://images.unsplash.com/photo-1746021375246-7dc8ab0583f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwzfHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85",
-  },
-  {
-    icon: Users,
-    title: "الموارد البشرية",
-    desc: "حلول متكاملة لإدارة الموارد البشرية من التوظيف وإدارة الرواتب إلى تطوير الكفاءات وبناء فرق العمل.",
-    features: ["التوظيف واستقطاب الكفاءات", "إدارة الرواتب والمزايا", "تطوير الموظفين", "إدارة شؤون العاملين"],
-    image: "https://images.unsplash.com/photo-1637665662134-db459c1bbb46?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBvZmZpY2UlMjBtZWV0aW5nJTIwcm9vbXxlbnwwfHx8fDE3NzYyNTc2OTV8MA&ixlib=rb-4.1.0&q=85",
-  },
-  {
-    icon: Building,
-    title: "حلول مساحات العمل",
-    desc: "تصميم وتجهيز مساحات العمل وفق أحدث المعايير العالمية مع حلول مرنة تتكيف مع نمو أعمالك.",
-    features: ["تصميم وتجهيز المكاتب", "حلول مرنة للتوسع", "إدارة المرافق", "خدمات الدعم التقني"],
-    image: "https://images.unsplash.com/photo-1770993151375-0dee97eda931?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBtZWV0aW5nJTIwcm9vbSUyMGdsYXNzJTIwb2ZmaWNlfGVufDB8fHx8MTc3NjI1NzY4OHww&ixlib=rb-4.1.0&q=85",
-  },
+const SERVICE_ICONS = [Scale, Users, Building];
+const FEATURE_KEY_GROUPS = [
+  ["business.legal_f1", "business.legal_f2", "business.legal_f3", "business.legal_f4"],
+  ["business.hr_f1", "business.hr_f2", "business.hr_f3", "business.hr_f4"],
+  ["business.spaces_f1", "business.spaces_f2", "business.spaces_f3", "business.spaces_f4"],
+];
+
+const SERVICE_IMAGES = [
+  "https://images.unsplash.com/photo-1746021375246-7dc8ab0583f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwzfHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85",
+  "https://images.unsplash.com/photo-1637665662134-db459c1bbb46?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBvZmZpY2UlMjBtZWV0aW5nJTIwcm9vbXxlbnwwfHx8fDE3NzYyNTc2OTV8MA&ixlib=rb-4.1.0&q=85",
+  "https://images.unsplash.com/photo-1770993151375-0dee97eda931?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBtZWV0aW5nJTIwcm9vbSUyMGdsYXNzJTIwb2ZmaWNlfGVufDB8fHx8MTc3NjI1NzY4OHww&ixlib=rb-4.1.0&q=85",
 ];
 
 export default function BusinessPage() {
+  const header = useContent("business_header");
+  const services = useContent("business_services");
+  const { t, isRtl } = useLanguage();
+  const Arrow = isRtl ? ArrowLeft : ArrowRight;
+
+  const items = services.items || [];
+
   return (
     <main data-testid="business-page" className="pt-16">
       {/* Header - Dark navy */}
       <section className="bg-[#0A1128] py-24 md:py-32 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-4">خدمات الأعمال</p>
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-4">{header.eyebrow}</p>
           <h1 data-testid="business-title" className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-5 leading-[1.2]">
-            خدمات أعمال متكاملة
+            {header.title}
           </h1>
           <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">
-            حلول احترافية لدعم نمو مشروعك وتسهيل أعمالك
+            {header.subtitle}
           </p>
         </div>
       </section>
@@ -45,43 +43,48 @@ export default function BusinessPage() {
       {/* Services */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
-          {businessServices.map((s, i) => (
-            <div
-              key={i}
-              data-testid={`business-service-${i}`}
-              className={`grid grid-cols-1 md:grid-cols-2 gap-12 items-center`}
-            >
-              <div className={`${i % 2 !== 0 ? "md:order-2" : ""}`}>
-                <div className="w-14 h-14 rounded-lg bg-orange-50 flex items-center justify-center mb-6">
-                  <s.icon className="w-7 h-7 text-[#f47424]" />
+          {items.map((s, i) => {
+            const Icon = SERVICE_ICONS[i % SERVICE_ICONS.length];
+            const featureKeys = FEATURE_KEY_GROUPS[i] || FEATURE_KEY_GROUPS[0];
+            const image = s.image || SERVICE_IMAGES[i % SERVICE_IMAGES.length];
+            return (
+              <div
+                key={i}
+                data-testid={`business-service-${i}`}
+                className={`grid grid-cols-1 md:grid-cols-2 gap-12 items-center`}
+              >
+                <div className={`${i % 2 !== 0 ? "md:order-2" : ""}`}>
+                  <div className="w-14 h-14 rounded-lg bg-orange-50 flex items-center justify-center mb-6">
+                    <Icon className="w-7 h-7 text-[#f47424]" />
+                  </div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">{s.title}</h2>
+                  <p className="text-gray-500 leading-relaxed mb-6">{s.description}</p>
+                  <ul className="space-y-3 mb-8">
+                    {featureKeys.map((fk, fi) => (
+                      <li key={fi} className="flex items-center gap-3 text-gray-700">
+                        <CheckCircle2 className="w-5 h-5 text-[#f47424] flex-shrink-0" />
+                        <span className="text-sm font-medium">{t(fk)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link to="/contact">
+                    <Button
+                      data-testid={`business-cta-${i}`}
+                      className="bg-[#f47424] text-white hover:bg-[#d9641d] font-bold px-6 py-3 rounded-md"
+                    >
+                      <span className="flex items-center gap-2">
+                        {t("common.contact_us")}
+                        <Arrow size={16} />
+                      </span>
+                    </Button>
+                  </Link>
                 </div>
-                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">{s.title}</h2>
-                <p className="text-gray-500 leading-relaxed mb-6">{s.desc}</p>
-                <ul className="space-y-3 mb-8">
-                  {s.features.map((f, fi) => (
-                    <li key={fi} className="flex items-center gap-3 text-gray-700">
-                      <CheckCircle2 className="w-5 h-5 text-[#f47424] flex-shrink-0" />
-                      <span className="text-sm font-medium">{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link to="/contact">
-                  <Button
-                    data-testid={`business-cta-${i}`}
-                    className="bg-[#f47424] text-white hover:bg-[#d9641d] font-bold px-6 py-3 rounded-md"
-                  >
-                    <span className="flex items-center gap-2">
-                      تواصل معنا
-                      <ArrowLeft size={16} />
-                    </span>
-                  </Button>
-                </Link>
+                <div className={`rounded-2xl overflow-hidden ${i % 2 !== 0 ? "md:order-1" : ""}`}>
+                  <img src={image} alt={s.title} className="w-full h-72 md:h-[380px] object-cover" />
+                </div>
               </div>
-              <div className={`rounded-2xl overflow-hidden ${i % 2 !== 0 ? "md:order-1" : ""}`}>
-                <img src={s.image} alt={s.title} className="w-full h-72 md:h-[380px] object-cover" />
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
     </main>

@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { LayoutGrid, Briefcase, Podcast, ArrowLeft } from "lucide-react";
+import { LayoutGrid, Briefcase, Podcast, ArrowLeft, ArrowRight } from "lucide-react";
 import { useContent } from "@/contexts/ContentContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { resolveMediaUrl } from "@/components/admin/MediaPicker";
 
 const FALLBACK_ICONS = [LayoutGrid, Briefcase, Podcast];
@@ -10,6 +11,8 @@ export default function ServicesPage() {
   const header = useContent("services_page_header");
   const services = useContent("services_page_items");
   const items = services.items || [];
+  const { t, isRtl } = useLanguage();
+  const Arrow = isRtl ? ArrowLeft : ArrowRight;
 
   return (
     <main data-testid="services-page" className="pt-16">
@@ -35,7 +38,7 @@ export default function ServicesPage() {
               <div
                 key={i}
                 data-testid={`service-detail-${i}`}
-                className={`grid grid-cols-1 md:grid-cols-2 gap-12 items-center ${i % 2 !== 0 ? "md:direction-ltr" : ""}`}
+                className={`grid grid-cols-1 md:grid-cols-2 gap-12 items-center`}
               >
                 <div className={`${i % 2 !== 0 ? "md:order-2" : ""}`}>
                   <div className="w-14 h-14 rounded-lg bg-orange-50 flex items-center justify-center mb-6">
@@ -50,8 +53,8 @@ export default function ServicesPage() {
                         className="bg-[#f47424] text-white hover:bg-[#d9641d] font-bold px-6 py-3 rounded-md"
                       >
                         <span className="flex items-center gap-2">
-                          اكتشف المزيد
-                          <ArrowLeft size={16} />
+                          {t("common.discover_more")}
+                          <Arrow size={16} />
                         </span>
                       </Button>
                     </Link>

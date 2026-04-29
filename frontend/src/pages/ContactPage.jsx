@@ -7,22 +7,24 @@ import { toast } from "sonner";
 import axios from "axios";
 import { Mail, Phone, MapPin, MessageCircle, Instagram, Twitter, Send, Clock } from "lucide-react";
 import { useContent } from "@/contexts/ContentContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
-const serviceOptions = [
-  { value: "spaces", label: "المساحات" },
-  { value: "private_office", label: "مكتب خاص" },
-  { value: "meeting_room", label: "قاعة اجتماعات" },
-  { value: "business_services", label: "خدمات الأعمال" },
-  { value: "pod", label: "البود الذكي" },
-  { value: "other", label: "أخرى" },
+const SERVICE_OPTION_KEYS = [
+  { value: "spaces", labelKey: "contact.service.spaces" },
+  { value: "private_office", labelKey: "contact.service.private_office" },
+  { value: "meeting_room", labelKey: "contact.service.meeting_room" },
+  { value: "business_services", labelKey: "contact.service.business_services" },
+  { value: "pod", labelKey: "contact.service.pod" },
+  { value: "other", labelKey: "contact.service.other" },
 ];
 
 export default function ContactPage() {
   const header = useContent("contact_header");
   const info = useContent("contact_info");
   const formT = useContent("contact_form");
+  const { t, isRtl, dir } = useLanguage();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -36,22 +38,23 @@ export default function ContactPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.phone || !formData.email || !formData.service_type) {
-      toast.error("يرجى تعبئة جميع الحقول المطلوبة");
+      toast.error(t("contact.fill_required"));
       return;
     }
     setSubmitting(true);
     try {
       await axios.post(`${API}/contact`, formData);
-      toast.success(formT.success_message || "تم إرسال طلبك بنجاح! سنتواصل معك قريباً");
+      toast.success(formT.success_message || t("contact.success_default"));
       setFormData({ name: "", phone: "", email: "", service_type: "", message: "" });
     } catch {
-      toast.error("حدث خطأ، يرجى المحاولة مرة أخرى");
+      toast.error(t("common.try_again"));
     } finally {
       setSubmitting(false);
     }
   };
 
   const phoneDigits = (info.phone_value || "").replace(/[^0-9+]/g, "");
+  const textAlign = isRtl ? "text-right" : "text-left";
 
   return (
     <main data-testid="contact-page" className="pt-16">
@@ -83,10 +86,10 @@ export default function ContactPage() {
                     <label className="block text-sm font-semibold text-gray-700 mb-2">{formT.name_label} *</label>
                     <Input
                       data-testid="contact-name"
-                      placeholder="أدخل اسمك"
+                      placeholder={t("contact.placeholder_name")}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="bg-gray-50 border-gray-200 h-12 text-right"
+                      className={`bg-gray-50 border-gray-200 h-12 ${textAlign}`}
                     />
                   </div>
                   <div>
@@ -96,7 +99,7 @@ export default function ContactPage() {
                       placeholder="05xxxxxxxx"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="bg-gray-50 border-gray-200 h-12 text-right"
+                      className={`bg-gray-50 border-gray-200 h-12 ${textAlign}`}
                     />
                   </div>
                 </div>
@@ -106,10 +109,10 @@ export default function ContactPage() {
                     <Input
                       data-testid="contact-email"
                       type="email"
-                      placeholder="email@example.com"
+                      placeholder={t("contact.placeholder_email")}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="bg-gray-50 border-gray-200 h-12 text-right"
+                      className={`bg-gray-50 border-gray-200 h-12 ${textAlign}`}
                     />
                   </div>
                   <div>
@@ -117,15 +120,15 @@ export default function ContactPage() {
                     <Select
                       value={formData.service_type}
                       onValueChange={(val) => setFormData({ ...formData, service_type: val })}
-                      dir="rtl"
+                      dir={dir}
                     >
                       <SelectTrigger data-testid="contact-service-select" className="bg-gray-50 border-gray-200 h-12">
-                        <SelectValue placeholder="اختر الخدمة" />
+                        <SelectValue placeholder={t("contact.placeholder_service")} />
                       </SelectTrigger>
                       <SelectContent>
-                        {serviceOptions.map((opt) => (
+                        {SERVICE_OPTION_KEYS.map((opt) => (
                           <SelectItem key={opt.value} value={opt.value} data-testid={`service-option-${opt.value}`}>
-                            {opt.label}
+                            {t(opt.labelKey)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -136,10 +139,10 @@ export default function ContactPage() {
                   <label className="block text-sm font-semibold text-gray-700 mb-2">{formT.message_label}</label>
                   <Textarea
                     data-testid="contact-message"
-                    placeholder="اكتب رسالتك هنا..."
+                    placeholder={t("contact.placeholder_message")}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="bg-gray-50 border-gray-200 min-h-[120px] text-right"
+                    className={`bg-gray-50 border-gray-200 min-h-[120px] ${textAlign}`}
                   />
                 </div>
                 <Button
@@ -149,7 +152,7 @@ export default function ContactPage() {
                   className="bg-[#f47424] text-white hover:bg-[#d9641d] font-bold px-8 py-3 rounded-md text-base h-12"
                 >
                   <span className="flex items-center gap-2">
-                    {submitting ? "جاري الإرسال..." : (formT.submit_text || "إرسال الطلب")}
+                    {submitting ? t("common.sending") : (formT.submit_text || t("common.send"))}
                     <Send size={16} />
                   </span>
                 </Button>
@@ -159,7 +162,7 @@ export default function ContactPage() {
             {/* Contact Info */}
             <div className="lg:col-span-2 space-y-6">
               <div className="bg-[#EDF0F4] rounded-xl p-6 border border-gray-100">
-                <h3 className="font-bold text-gray-900 mb-5">معلومات التواصل</h3>
+                <h3 className="font-bold text-gray-900 mb-5">{t("contact.info_title")}</h3>
                 <div className="space-y-4">
                   {info.email_value && (
                     <a href={`mailto:${info.email_value}`} className="flex items-center gap-3 text-gray-600 hover:text-[#f47424] transition-colors">
@@ -208,14 +211,14 @@ export default function ContactPage() {
                   <MessageCircle className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="font-bold text-green-800 text-sm">تواصل عبر واتساب</p>
-                  <p className="text-green-600 text-xs">رد سريع خلال دقائق</p>
+                  <p className="font-bold text-green-800 text-sm">{t("contact.whatsapp_title")}</p>
+                  <p className="text-green-600 text-xs">{t("contact.whatsapp_subtitle")}</p>
                 </div>
               </a>
 
               {/* Social */}
               <div className="bg-[#EDF0F4] rounded-xl p-6 border border-gray-100">
-                <h3 className="font-bold text-gray-900 mb-4">تابعنا</h3>
+                <h3 className="font-bold text-gray-900 mb-4">{t("contact.follow_us")}</h3>
                 <div className="flex gap-3">
                   <a
                     href="https://instagram.com/kun__work"
@@ -245,14 +248,14 @@ export default function ContactPage() {
       {/* Google Map */}
       <section data-testid="map-section" className="h-[400px] w-full">
         <iframe
-          src="https://maps.google.com/maps?q=24.8478721,46.6660527&hl=ar&z=17&t=m&output=embed"
+          src={`https://maps.google.com/maps?q=24.8478721,46.6660527&hl=${isRtl ? "ar" : "en"}&z=17&t=m&output=embed`}
           width="100%"
           height="100%"
           style={{ border: 0 }}
           allowFullScreen=""
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
-          title="موقع كن - KUN Coworking space"
+          title="KUN Coworking space"
         />
       </section>
     </main>

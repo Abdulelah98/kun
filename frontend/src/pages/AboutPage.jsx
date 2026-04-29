@@ -1,5 +1,6 @@
 import { Eye, Target, Heart, Handshake } from "lucide-react";
 import { useContent } from "@/contexts/ContentContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { resolveMediaUrl } from "@/components/admin/MediaPicker";
 
 const VALUE_ICONS = [Eye, Target, Heart, Handshake];
@@ -7,6 +8,7 @@ const VALUE_ICONS = [Eye, Target, Heart, Handshake];
 export default function AboutPage() {
   const header = useContent("about_main");
   const values = useContent("about_values");
+  const { t } = useLanguage();
 
   const bodyParagraphs = (header.body || "").split(/\n\n+/).filter(Boolean);
 
@@ -20,7 +22,7 @@ export default function AboutPage() {
             {header.title}
           </h1>
           <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">
-            رائدون في توفير مساحات العمل المشتركة في الرياض
+            {t("about.subtitle")}
           </p>
         </div>
       </section>
@@ -30,7 +32,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">من نحن</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">{t("about.who_we_are")}</h2>
               <div className="space-y-4 text-gray-600 leading-relaxed">
                 {bodyParagraphs.map((p, i) => (
                   <p key={i}>{p}</p>
@@ -40,7 +42,7 @@ export default function AboutPage() {
             <div className="rounded-2xl overflow-hidden">
               <img
                 src={resolveMediaUrl(header.image)}
-                alt="مساحة عمل كن"
+                alt={header.title}
                 className="w-full h-72 md:h-[400px] object-cover"
               />
             </div>
@@ -53,7 +55,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">{values.title}</h2>
-            <p className="text-gray-500 text-base md:text-lg">المبادئ التي نؤمن بها ونعمل وفقها</p>
+            <p className="text-gray-500 text-base md:text-lg">{t("about.values_subtitle")}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {(values.items || []).map((v, i) => {
