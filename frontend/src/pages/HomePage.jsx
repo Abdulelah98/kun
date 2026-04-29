@@ -183,15 +183,15 @@ export default function HomePage() {
       <section data-testid="about-section" className="py-20 md:py-28 bg-white relative overflow-hidden">
         <span ref={setBgRef(0)} className="section-bg-word section-bg-word--left" aria-hidden="true">{t("home.bg.about")}</span>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Text block - all on the right side */}
-          <div className="flex justify-start mt-12 md:mt-16">
-            <div className="w-full md:max-w-2xl text-right">
-              <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-gray-900 tracking-tight leading-[1.55] mb-6">
+          {/* Text block - centered for both languages */}
+          <div className="flex justify-center mt-12 md:mt-16">
+            <div className="w-full max-w-3xl text-center">
+              <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-gray-900 tracking-tight leading-[1.3] mb-6">
                 {about.title_line1}
                 <br />
                 <span className="inline-block mt-2">{about.title_line2} <span className="text-[#f47424]">{about.title_highlight}</span></span>
               </h2>
-              <p className="text-gray-600 text-base md:text-[1.05rem] leading-[2]">
+              <p className="text-gray-600 text-base md:text-[1.05rem] leading-[1.85]">
                 <span className="font-bold text-gray-900">{about.brand_word}</span> {about.body}
               </p>
             </div>

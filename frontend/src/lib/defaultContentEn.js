@@ -33,16 +33,19 @@ export const DEFAULT_CONTENT_EN = {
       {
         title: "Spaces",
         description: "Shared and private offices, plus fully equipped meeting rooms.",
+        image: "/assets/logos/spaces.svg",
         link: "/spaces",
       },
       {
         title: "Business Services",
         description: "Legal, HR, and integrated business solutions to grow your venture.",
+        image: "/assets/logos/business.svg",
         link: "/business",
       },
       {
         title: "Smart Pod",
         description: "Soundproof smart pods for higher focus and productivity.",
+        image: "/assets/logos/pod.svg",
         link: "/pod",
       },
     ],
@@ -50,6 +53,8 @@ export const DEFAULT_CONTENT_EN = {
   home_why: {
     title: "Why choose KUN?",
     subtitle: "Real advantages that make a tangible difference in your daily work.",
+    image:
+      "https://images.unsplash.com/photo-1772751541531-e084e8f56630?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBjb3dvcmtpbmclMjBzcGFjZSUyMGJyaWdodHxlbnwwfHx8fDE3NzYyNTc2Nzl8MA&ixlib=rb-4.1.0&q=85",
     items: [
       { title: "High scaling flexibility", description: "Grow or downsize your team easily without long-term commitments." },
       { title: "Lower operating costs", description: "Pay only for what you need, no heavy fixed expenses." },
@@ -70,6 +75,14 @@ export const DEFAULT_CONTENT_EN = {
   },
   home_gallery: {
     title: "Discover our spaces",
+    images: [
+      "https://images.unsplash.com/photo-1765366417046-f46361a7f26f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBjb3dvcmtpbmclMjBzcGFjZSUyMGJyaWdodHxlbnwwfHx8fDE3NzYyNTc2Nzl8MA&ixlib=rb-4.1.0&q=85",
+      "https://images.unsplash.com/photo-1772751541531-e084e8f56630?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBjb3dvcmtpbmclMjBzcGFjZSUyMGJyaWdodHxlbnwwfHx8fDE3NzYyNTc2Nzl8MA&ixlib=rb-4.1.0&q=85",
+      "https://images.unsplash.com/photo-1770993151375-0dee97eda931?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBtZWV0aW5nJTIwcm9vbSUyMGdsYXNzJTIwb2ZmaWNlfGVufDB8fHx8MTc3NjI1NzY4OHww&ixlib=rb-4.1.0&q=85",
+      "https://images.unsplash.com/photo-1637665662134-db459c1bbb46?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBvZmZpY2UlMjBtZWV0aW5nJTIwcm9vbXxlbnwwfHx8fDE3NzYyNTc2OTV8MA&ixlib=rb-4.1.0&q=85",
+      "https://images.unsplash.com/photo-1746021451691-4385f318ec13?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85",
+      "https://static.prod-images.emergentagent.com/jobs/5a4c12ca-bf7c-43dd-b928-467b4172e275/images/8bd54b2ba1b5f87de79c099636bfb4d644c3a7e5c60f7bb9ac0579b12f6dd2e1.png",
+    ],
   },
   home_final_cta: {
     title: "Start today and elevate the way you work",
@@ -83,6 +96,8 @@ export const DEFAULT_CONTENT_EN = {
     title: "Get to know KUN",
     body:
       "Welcome to KUN — Riyadh's leading provider of coworking spaces. We believe a professional, collaborative environment produces creative work.\n\nBecause your success matters most to us, we offer first-class office spaces designed to meet your needs, achieve your goals, and suit projects of all types and sizes.\n\nOur offices are designed to deliver the best professional, collaborative work environment, located in the north of Riyadh and crafted with creativity and care so your work is always at its best.",
+    image:
+      "https://images.unsplash.com/photo-1765366417046-f46361a7f26f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBjb3dvcmtpbmclMjBzcGFjZSUyMGJyaWdodHxlbnwwfHx8fDE3NzYyNTc2Nzl8MA&ixlib=rb-4.1.0&q=85",
   },
   about_values: {
     title: "Our values",
@@ -106,18 +121,21 @@ export const DEFAULT_CONTENT_EN = {
         title: "Spaces",
         description:
           "Shared offices, private offices and fully equipped meeting rooms. A professional environment that meets all your needs with flexible subscription options.",
+        image: "https://images.unsplash.com/photo-1765366417046-f46361a7f26f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBjb3dvcmtpbmclMjBzcGFjZSUyMGJyaWdodHxlbnwwfHx8fDE3NzYyNTc2Nzl8MA&ixlib=rb-4.1.0&q=85",
         link: "/spaces",
       },
       {
         title: "Business Services",
         description:
           "Integrated legal services, HR management and business solutions designed to support your project's growth at the highest professional standards.",
+        image: "https://images.unsplash.com/photo-1746021375246-7dc8ab0583f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwzfHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85",
         link: "/business",
       },
       {
         title: "Smart Pod",
         description:
           "Soundproof work pods equipped with the latest technology — ideal for important calls and high-focus work.",
+        image: "https://static.prod-images.emergentagent.com/jobs/5a4c12ca-bf7c-43dd-b928-467b4172e275/images/8bd54b2ba1b5f87de79c099636bfb4d644c3a7e5c60f7bb9ac0579b12f6dd2e1.png",
         link: "/pod",
       },
     ],
@@ -190,16 +208,22 @@ export const DEFAULT_CONTENT_EN = {
         title: "Legal Services",
         description:
           "Comprehensive legal counsel including company formation, contract drafting and legal representation to protect your business interests.",
+        image:
+          "https://images.unsplash.com/photo-1746021375246-7dc8ab0583f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwzfHxtb2Rlcm4lMjBwcml2YXRlJTIwb2ZmaWNlJTIwd29ya3NwYWNlfGVufDB8fHx8MTc3NjI1Nzk0OHww&ixlib=rb-4.1.0&q=85",
       },
       {
         title: "Human Resources",
         description:
           "End-to-end HR solutions, from talent acquisition and payroll to people development and team building.",
+        image:
+          "https://images.unsplash.com/photo-1637665662134-db459c1bbb46?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBvZmZpY2UlMjBtZWV0aW5nJTIwcm9vbXxlbnwwfHx8fDE3NzYyNTc2OTV8MA&ixlib=rb-4.1.0&q=85",
       },
       {
         title: "Workspace solutions",
         description:
           "Designing and equipping workspaces to the highest international standards with flexible solutions that scale with you.",
+        image:
+          "https://images.unsplash.com/photo-1770993151375-0dee97eda931?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBtZWV0aW5nJTIwcm9vbSUyMGdsYXNzJTIwb2ZmaWNlfGVufDB8fHx8MTc3NjI1NzY4OHww&ixlib=rb-4.1.0&q=85",
       },
     ],
   },
@@ -210,6 +234,8 @@ export const DEFAULT_CONTENT_EN = {
     title: "Your private space for focus & productivity",
     subtitle:
       "Smart, soundproofed work pods equipped with the latest tech — ideal for important calls, virtual meetings and deep-focus work.",
+    hero_image:
+      "https://static.prod-images.emergentagent.com/jobs/5a4c12ca-bf7c-43dd-b928-467b4172e275/images/8bd54b2ba1b5f87de79c099636bfb4d644c3a7e5c60f7bb9ac0579b12f6dd2e1.png",
   },
   pod_features: {
     title: "Smart Pod features",
