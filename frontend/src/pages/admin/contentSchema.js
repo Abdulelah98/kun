@@ -352,6 +352,23 @@ export const PAGE_BLOCKS = [
       { key: "success_message", label: "رسالة النجاح", type: "text" },
     ],
   },
+  {
+    key: "contact_form_services",
+    page: "contact",
+    title: "خيارات قائمة 'نوع الخدمة'",
+    description: "الخيارات التي تظهر في قائمة 'نوع الخدمة' داخل نموذج التواصل. أضف/احذف/عدّل أي خيار.",
+    fields: [
+      {
+        key: "items",
+        label: "الخيارات",
+        type: "list",
+        itemSchema: [
+          { key: "value", label: "المعرّف الداخلي (بالإنجليزية، بدون مسافات)", type: "text", help: "مثال: spaces, private_office — يحفظ مع الطلب" },
+          { key: "label", label: "النص الظاهر للزائر", type: "text", help: "مثال: 'المساحات' في AR، 'Spaces' في EN" },
+        ],
+      },
+    ],
+  },
 
   // ==================== GLOBAL ====================
   {

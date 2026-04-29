@@ -12,7 +12,7 @@ import { useSettings } from "@/contexts/SettingsContext";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
-const SERVICE_OPTION_KEYS = [
+const FALLBACK_SERVICE_OPTIONS = [
   { value: "spaces", labelKey: "contact.service.spaces" },
   { value: "private_office", labelKey: "contact.service.private_office" },
   { value: "meeting_room", labelKey: "contact.service.meeting_room" },
@@ -25,6 +25,7 @@ export default function ContactPage() {
   const header = useContent("contact_header");
   const info = useContent("contact_info");
   const formT = useContent("contact_form");
+  const formServices = useContent("contact_form_services");
   const settings = useSettings();
   const { t, isRtl, dir } = useLanguage();
   const social = settings.social || {};
@@ -32,6 +33,11 @@ export default function ContactPage() {
   const displayPhone = settings.phone || info.phone_value || "";
   const displayEmail = settings.email || info.email_value || "";
   const displayAddress = (isRtl ? settings.address_ar : settings.address_en) || info.address_value || "";
+
+  // Build the service options: prefer CMS items, fallback to static i18n
+  const serviceOptions = formServices?.items?.length
+    ? formServices.items.filter((it) => it && it.value).map((it) => ({ value: it.value, label: it.label || it.value }))
+    : FALLBACK_SERVICE_OPTIONS.map((o) => ({ value: o.value, label: t(o.labelKey) }));
 
   const [formData, setFormData] = useState({
     name: "",
@@ -132,9 +138,9 @@ export default function ContactPage() {
                         <SelectValue placeholder={t("contact.placeholder_service")} />
                       </SelectTrigger>
                       <SelectContent>
-                        {SERVICE_OPTION_KEYS.map((opt) => (
+                        {serviceOptions.map((opt) => (
                           <SelectItem key={opt.value} value={opt.value} data-testid={`service-option-${opt.value}`}>
-                            {t(opt.labelKey)}
+                            {opt.label}
                           </SelectItem>
                         ))}
                       </SelectContent>
