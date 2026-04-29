@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import axios from "axios";
-import { Mail, Phone, MapPin, MessageCircle, Instagram, Twitter, Send, Clock } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle, Instagram, Twitter, Linkedin, Send, Clock } from "lucide-react";
 import { useContent } from "@/contexts/ContentContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSettings } from "@/contexts/SettingsContext";
@@ -218,8 +218,8 @@ export default function ContactPage() {
                     <MessageCircle className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="font-bold text-green-800 text-sm">{t("contact.whatsapp_title")}</p>
-                    <p className="text-green-600 text-xs">{t("contact.whatsapp_subtitle")}</p>
+                    <p className="font-bold text-green-800 text-sm">{info.whatsapp_title || t("contact.whatsapp_title")}</p>
+                    <p className="text-green-600 text-xs">{info.whatsapp_subtitle || t("contact.whatsapp_subtitle")}</p>
                   </div>
                 </a>
               )}
@@ -227,8 +227,8 @@ export default function ContactPage() {
               {/* Social */}
               {(social.instagram || social.twitter || social.linkedin || social.snapchat) && (
                 <div className="bg-[#EDF0F4] rounded-xl p-6 border border-gray-100">
-                  <h3 className="font-bold text-gray-900 mb-4">{t("contact.follow_us")}</h3>
-                  <div className="flex gap-3">
+                  <h3 className="font-bold text-gray-900 mb-4">{info.social_title || t("contact.follow_us")}</h3>
+                  <div className="flex gap-3 flex-wrap">
                     {social.instagram && (
                       <a href={social.instagram} target="_blank" rel="noopener noreferrer" data-testid="contact-instagram" className="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-[#f47424] hover:border-[#f47424] transition-all">
                         <Instagram size={18} />
@@ -237,6 +237,16 @@ export default function ContactPage() {
                     {social.twitter && (
                       <a href={social.twitter} target="_blank" rel="noopener noreferrer" data-testid="contact-twitter" className="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-[#f47424] hover:border-[#f47424] transition-all">
                         <Twitter size={18} />
+                      </a>
+                    )}
+                    {social.linkedin && (
+                      <a href={social.linkedin} target="_blank" rel="noopener noreferrer" data-testid="contact-linkedin" className="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-[#f47424] hover:border-[#f47424] transition-all">
+                        <Linkedin size={18} />
+                      </a>
+                    )}
+                    {social.snapchat && (
+                      <a href={social.snapchat} target="_blank" rel="noopener noreferrer" data-testid="contact-snapchat" className="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-[#f47424] hover:border-[#f47424] transition-all text-xs font-bold">
+                        SC
                       </a>
                     )}
                   </div>

@@ -332,6 +332,9 @@ export const PAGE_BLOCKS = [
       { key: "email_value", label: "البريد الإلكتروني", type: "text" },
       { key: "working_hours_label", label: "تسمية ساعات العمل", type: "text" },
       { key: "working_hours_value", label: "ساعات العمل", type: "text" },
+      { key: "whatsapp_title", label: "عنوان كرت الواتساب", type: "text", help: 'مثال: "تواصل عبر واتساب"' },
+      { key: "whatsapp_subtitle", label: "الوصف تحت عنوان الواتساب", type: "text", help: 'مثال: "رد سريع خلال دقائق"' },
+      { key: "social_title", label: "عنوان كرت السوشال ميديا", type: "text", help: 'مثال: "تابعنا"' },
     ],
   },
   {
