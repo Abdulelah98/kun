@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
+import { ar as arLocale } from "date-fns/locale";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { toast } from "sonner";
@@ -170,7 +171,7 @@ function GalleryDialog({ open, onOpenChange, images, title, startIndex = 0, t, d
 }
 
 export default function SpacesPage() {
- const { t, dir } = useLanguage();
+ const { t, dir, isRtl } = useLanguage();
  const [offices, setOffices] = useState([]);
  const [sharedDesks, setSharedDesks] = useState(null);
  const [meetingRooms, setMeetingRooms] = useState([]);
@@ -526,6 +527,12 @@ export default function SpacesPage() {
  <div className="flex flex-wrap gap-3 text-sm text-gray-500 mb-2">
  <span className="flex items-center gap-1"><Users size={14} /> {room.capacity} {t("common.persons")}</span>
  </div>
+ {room.price ? (
+ <div className="inline-flex items-baseline gap-1 text-[#f47424] font-bold text-base mb-2">
+ <span>{room.price}</span>
+ <span className="text-xs font-semibold opacity-90">{room.currency || (isRtl ? "ريال/ساعة" : "SAR/hour")}</span>
+ </div>
+ ) : null}
  {selectedRoom?.id === room.id && (
  <span className="inline-flex items-center gap-1 text-[#f47424] font-semibold text-xs">
  <CheckCircle size={14} /> {t("common.selected")}
@@ -547,11 +554,25 @@ export default function SpacesPage() {
  selected={selectedDate}
  onSelect={setSelectedDate}
  disabled={isDateDisabled}
- className="rounded-xl border border-gray-200 bg-white"
+ dir={dir}
+ locale={isRtl ? arLocale : undefined}
+ className="rounded-xl border border-gray-200 bg-white p-4"
  data-testid="meeting-calendar"
  classNames={{
- day_selected: "bg-[#f47424] text-white hover:bg-[#d9641d] focus:bg-[#d9641d] focus:text-white",
- day_today: "bg-orange-50 text-[#f47424] font-bold",
+ caption: "flex justify-center pt-1 relative items-center mb-2",
+ caption_label: "text-base font-bold text-gray-900",
+ nav: "space-x-1 flex items-center",
+ nav_button: "h-8 w-8 inline-flex items-center justify-center rounded-md border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:text-[#f47424] hover:border-[#f47424] transition-colors",
+ nav_button_previous: "absolute left-1",
+ nav_button_next: "absolute right-1",
+ head_cell: "text-gray-500 rounded-md w-9 font-semibold text-[0.75rem] uppercase",
+ row: "flex w-full mt-1",
+ cell: "relative p-0 text-center text-sm h-9 w-9",
+ day: "h-9 w-9 p-0 font-medium text-gray-800 rounded-md hover:bg-orange-50 hover:text-[#f47424] transition-colors",
+ day_selected: "bg-[#f47424] !text-white hover:bg-[#d9641d] focus:bg-[#d9641d] focus:!text-white font-bold",
+ day_today: "bg-orange-50 text-[#f47424] font-bold ring-1 ring-[#f47424]/30",
+ day_outside: "text-gray-300 opacity-60",
+ day_disabled: "text-gray-300 opacity-50 cursor-not-allowed line-through",
  }}
  />
  </div>
