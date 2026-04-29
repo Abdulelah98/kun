@@ -77,7 +77,7 @@ function HoverGallery({ images, alt, onOpen }) {
               e.stopPropagation();
               onOpen && onOpen(0);
             }}
-            className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-black/55 backdrop-blur-sm text-white flex items-center justify-center opacity-0 group-hover/gallery:opacity-100 transition-opacity duration-300 hover:bg-black/75"
+            className="absolute top-3 end-3 z-10 w-9 h-9 rounded-full bg-black/55 backdrop-blur-sm text-white flex items-center justify-center opacity-0 group-hover/gallery:opacity-100 transition-opacity duration-300 hover:bg-black/75"
             data-testid="gallery-open-btn"
             aria-label={t ? t("spaces.gallery_open_aria") : "View all photos"}
           >
@@ -95,7 +95,7 @@ function HoverGallery({ images, alt, onOpen }) {
             ))}
           </div>
           {/* Count badge */}
-          <div className="absolute bottom-3 right-3 z-10 text-[10px] font-bold px-2 py-0.5 rounded-full bg-black/55 backdrop-blur-sm text-white">
+          <div className="absolute bottom-3 end-3 z-10 text-[10px] font-bold px-2 py-0.5 rounded-full bg-black/55 backdrop-blur-sm text-white">
             {imgs.length} {t ? t("spaces.gallery_count") : "photos"}
           </div>
         </>
@@ -133,19 +133,19 @@ function GalleryDialog({ open, onOpenChange, images, title, startIndex = 0, t, d
                 type="button"
                 onClick={prev}
                 data-testid="gallery-prev-btn"
-                className="absolute top-1/2 -translate-y-1/2 right-4 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur text-white flex items-center justify-center transition-colors"
+                className={`absolute top-1/2 -translate-y-1/2 ${dir === "rtl" ? "right-4" : "left-4"} w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur text-white flex items-center justify-center transition-colors`}
                 aria-label={t ? t("spaces.gallery_prev_aria") : "Previous"}
               >
-                <ChevronRight size={22} />
+                {dir === "rtl" ? <ChevronRight size={22} /> : <ChevronLeft size={22} />}
               </button>
               <button
                 type="button"
                 onClick={next}
                 data-testid="gallery-next-btn"
-                className="absolute top-1/2 -translate-y-1/2 left-4 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur text-white flex items-center justify-center transition-colors"
+                className={`absolute top-1/2 -translate-y-1/2 ${dir === "rtl" ? "left-4" : "right-4"} w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur text-white flex items-center justify-center transition-colors`}
                 aria-label={t ? t("spaces.gallery_next_aria") : "Next"}
               >
-                <ChevronLeft size={22} />
+                {dir === "rtl" ? <ChevronLeft size={22} /> : <ChevronRight size={22} />}
               </button>
               <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
                 {images.map((_, i) => (
@@ -160,7 +160,7 @@ function GalleryDialog({ open, onOpenChange, images, title, startIndex = 0, t, d
               </div>
             </>
           )}
-          <div className="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-black/60 text-white">
+          <div className="absolute top-4 end-4 text-xs font-bold px-3 py-1 rounded-full bg-black/60 text-white">
             {title} — {idx + 1} / {images.length}
           </div>
         </div>
@@ -387,7 +387,7 @@ export default function SpacesPage() {
                           <Icon size={16} />
                         </span>
                         <span className="text-sm md:text-[15px] text-gray-100 leading-snug">{item.text}</span>
-                        <CheckCircle size={14} className="ml-auto text-[#f47424]/70" />
+                        <CheckCircle size={14} className="ms-auto text-[#f47424]/70" />
                       </li>
                     );
                   })}
@@ -450,7 +450,7 @@ export default function SpacesPage() {
                         <Icon size={16} />
                       </span>
                       <span className="text-sm md:text-[15px] text-gray-100 leading-snug">{item.text}</span>
-                      <CheckCircle size={14} className="ml-auto text-[#f47424]/70" />
+                      <CheckCircle size={14} className="ms-auto text-[#f47424]/70" />
                     </li>
                   );
                 })}
@@ -475,7 +475,7 @@ export default function SpacesPage() {
                       t={t}
                     />
                     <div
-                      className={`absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold shadow-sm ${
+                      className={`absolute top-3 start-3 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold shadow-sm ${
                         office.available
                           ? "bg-green-500 text-white"
                           : "bg-red-500 text-white"
@@ -614,9 +614,9 @@ export default function SpacesPage() {
           className={`max-w-md p-0 overflow-hidden rounded-2xl border border-gray-100 ${dir === "rtl" ? "[&>button]:left-4 [&>button]:right-auto [&>button]:top-4" : "[&>button]:right-4 [&>button]:left-auto [&>button]:top-4"}`}
         >
           <div className="p-6 md:p-7">
-            <DialogHeader className={`${dir === "rtl" ? "pl-8 text-right" : "pr-8 text-left"}`}>
-              <DialogTitle className={`${dir === "rtl" ? "text-right" : "text-left"} text-xl font-bold text-gray-900`}>{t("book.dialog_title")}</DialogTitle>
-              <DialogDescription className={`${dir === "rtl" ? "text-right" : "text-left"} text-sm text-gray-500 mt-1`}>
+            <DialogHeader className={`${dir === "rtl" ? "pl-8" : "pr-8"} text-start`}>
+              <DialogTitle className="text-start text-xl font-bold text-gray-900">{t("book.dialog_title")}</DialogTitle>
+              <DialogDescription className="text-start text-sm text-gray-500 mt-1">
                 {t("book.dialog_description")}
               </DialogDescription>
             </DialogHeader>
@@ -627,14 +627,14 @@ export default function SpacesPage() {
                 placeholder={t("book.full_name")}
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className={`bg-gray-50 border-gray-200 ${dir === "rtl" ? "text-right" : "text-left"} h-11`}
+                className="bg-gray-50 border-gray-200 text-start h-11"
               />
               <Input
                 data-testid="booking-phone"
                 placeholder={t("book.phone")}
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className={`bg-gray-50 border-gray-200 ${dir === "rtl" ? "text-right" : "text-left"} h-11`}
+                className="bg-gray-50 border-gray-200 text-start h-11"
               />
               <Input
                 data-testid="booking-email"
@@ -642,13 +642,13 @@ export default function SpacesPage() {
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className={`bg-gray-50 border-gray-200 ${dir === "rtl" ? "text-right" : "text-left"} h-11`}
+                className="bg-gray-50 border-gray-200 text-start h-11"
               />
             </div>
 
             <p
               data-testid="booking-helper-text"
-              className={`text-xs text-gray-500 ${dir === "rtl" ? "text-right" : "text-left"} mt-3 leading-relaxed`}
+              className="text-xs text-gray-500 text-start mt-3 leading-relaxed"
             >
               {t("book.helper")}
             </p>

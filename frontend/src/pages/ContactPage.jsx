@@ -54,7 +54,6 @@ export default function ContactPage() {
   };
 
   const phoneDigits = (info.phone_value || "").replace(/[^0-9+]/g, "");
-  const textAlign = isRtl ? "text-right" : "text-left";
 
   return (
     <main data-testid="contact-page" className="pt-16">
@@ -89,7 +88,7 @@ export default function ContactPage() {
                       placeholder={t("contact.placeholder_name")}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className={`bg-gray-50 border-gray-200 h-12 ${textAlign}`}
+                      className="bg-gray-50 border-gray-200 h-12 text-start"
                     />
                   </div>
                   <div>
@@ -99,7 +98,7 @@ export default function ContactPage() {
                       placeholder="05xxxxxxxx"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className={`bg-gray-50 border-gray-200 h-12 ${textAlign}`}
+                      className="bg-gray-50 border-gray-200 h-12 text-start"
                     />
                   </div>
                 </div>
@@ -112,7 +111,7 @@ export default function ContactPage() {
                       placeholder={t("contact.placeholder_email")}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className={`bg-gray-50 border-gray-200 h-12 ${textAlign}`}
+                      className="bg-gray-50 border-gray-200 h-12 text-start"
                     />
                   </div>
                   <div>
@@ -142,7 +141,7 @@ export default function ContactPage() {
                     placeholder={t("contact.placeholder_message")}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className={`bg-gray-50 border-gray-200 min-h-[120px] ${textAlign}`}
+                    className="bg-gray-50 border-gray-200 min-h-[120px] text-start"
                   />
                 </div>
                 <Button

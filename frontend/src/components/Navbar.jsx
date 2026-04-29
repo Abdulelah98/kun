@@ -49,7 +49,7 @@ export default function Navbar() {
       data-testid="main-navbar"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className={`fixed top-0 right-0 left-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
         transparent && !hovered
           ? "bg-transparent border-b border-transparent"
           : "backdrop-blur-2xl bg-white/85 border-b border-gray-100 shadow-[0_1px_20px_rgba(0,0,0,0.04)]"
@@ -85,14 +85,14 @@ export default function Navbar() {
               >
                 {link.label}
                 {link.children && <ChevronDown size={14} className="mt-0.5 opacity-60" />}
-                <span className={`absolute bottom-0 right-0 h-[2px] transition-all duration-300 ${
+                <span className={`absolute bottom-0 start-0 h-[2px] transition-all duration-300 ${
                   location.pathname === link.path || (link.children && link.children.some(c => location.pathname === c.path))
                     ? "w-full bg-[#f47424]"
                     : "w-0 group-hover:w-full bg-[#f47424]"
                 }`} />
               </Link>
               {link.children && (
-                <div className="absolute top-full right-0 pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                <div className="absolute top-full start-0 pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                   <div className="bg-white/95 backdrop-blur-xl rounded-xl border border-gray-100 shadow-[0_12px_40px_rgba(0,0,0,0.08)] py-2 min-w-[190px]">
                     {link.children.map((child) => (
                       <Link
@@ -100,7 +100,7 @@ export default function Navbar() {
                         to={child.path}
                         data-testid={`nav-link-${child.path.replace("/", "")}`}
                         className={`block px-5 py-2.5 text-sm font-medium transition-all duration-200 ${
-                          location.pathname === child.path ? "text-[#f47424] bg-orange-50" : "text-gray-600 hover:text-[#f47424] hover:bg-gray-50 hover:pr-6"
+                          location.pathname === child.path ? "text-[#f47424] bg-orange-50" : "text-gray-600 hover:text-[#f47424] hover:bg-gray-50 hover:ps-6"
                         }`}
                       >
                         {child.label}

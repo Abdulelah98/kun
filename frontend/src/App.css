@@ -63,17 +63,20 @@ html {
     z-index: 2;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: center;
     height: 100%;
-    text-align: center;
-    padding: 10vh 6% 4rem 4rem;
+    text-align: start;
+    padding-block: 10vh 4rem;
+    padding-inline-start: 6%;
+    padding-inline-end: 4rem;
 }
 
 @media (max-width: 768px) {
     .hero-content {
         align-items: center;
         padding: 12vh 1rem 2rem 1rem;
+        text-align: center;
     }
 }
 
@@ -115,7 +118,7 @@ html {
 .hero-glass-box {
     background:
         linear-gradient(
-            to right,
+            to var(--kun-grad-dir, right),
             rgba(0, 0, 0, 0.18) 0%,
             rgba(0, 0, 0, 0.12) 35%,
             rgba(0, 0, 0, 0.05) 70%,
@@ -125,6 +128,10 @@ html {
     -webkit-backdrop-filter: blur(3px);
     border: 1px solid rgba(255, 255, 255, 0.05);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+[dir="rtl"] .hero-glass-box {
+    --kun-grad-dir: left;
 }
 
 .hero-glass-box::before {
@@ -305,7 +312,7 @@ html {
     content: '';
     position: absolute;
     bottom: -2px;
-    right: 0;
+    inset-inline-start: 0;
     width: 0;
     height: 1.5px;
     background: #f47424;

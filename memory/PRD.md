@@ -4,6 +4,7 @@
 Build a modern, high-conversion bilingual (Arabic-first) website for KUN workspace brand providing workspace solutions, business services, and smart pods. Second phase expanded into a full advanced Admin Dashboard (CMS + Booking System) to dynamically control all content, manage 3 types of bookings (Shared Desks, Private Offices, Meeting Rooms), and handle contact messages.
 
 ## Recent Updates
+- **2026-04-29**: Comprehensive LTR layout review for English mode. Hero glass box now anchors to start side (right in AR, left in EN). Why-KUN/Audience/About cards switch icon position based on direction (icon on right in AR, left in EN). All hardcoded `text-right`/`right-0`/`pr-x`/`pl-x`/`ml-auto` directional classes replaced with logical equivalents (`text-start`/`start-0`/`ps-x`/`pe-x`/`ms-auto`). Pod hero gradient and HomePage CTA arrows flip with direction. Map iframe uses `hl=en` in English mode. Navbar dropdown and underlines anchored to start edge.
 - **2026-04-29**: Bilingual rollout completed for all public pages (Spaces, Services, Business, Pod, About, Contact). EN defaults expanded in `defaultContentEn.js`, static UI strings in `i18n.js`. CMS still drives both AR/EN where needed.
 - **2026-04-29**: Fixed Object Storage upload flow — added `EMERGENT_LLM_KEY`, `APP_NAME`, `JWT_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` to `backend/.env`. Image uploads in admin Media Library now succeed and are served through `/api/media/file/...`.
 

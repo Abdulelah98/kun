@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   Shield,
   ArrowLeft,
+  ArrowRight,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -29,7 +30,8 @@ export default function HomePage() {
   const galleryRef = useRef(null);
   const bgWordsRef = useRef([]);
   const scrollPosRef = useRef({ last: 0, offsets: {} });
-  const { t } = useLanguage();
+  const { t, isRtl } = useLanguage();
+  const ArrowCta = isRtl ? ArrowLeft : ArrowRight;
 
   // CMS content
   const hero = useContent("home_hero");
@@ -118,11 +120,11 @@ export default function HomePage() {
         <div className="hero-gradient-overlay" />
         <div className="hero-content">
           <div className="hero-glass-box relative overflow-hidden rounded-2xl px-14 sm:px-16 md:px-20 lg:px-24 py-14 md:py-20 lg:py-24 max-w-[66rem]">
-            {/* Brand shape - bottom left decorative element */}
+            {/* Brand shape - bottom (start side) decorative element */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 654.02 1091.59"
-              className="absolute bottom-5 left-5 w-[120px] md:w-[180px] h-auto pointer-events-none select-none"
+              className={`absolute bottom-5 ${isRtl ? "right-5" : "left-5"} w-[120px] md:w-[180px] h-auto pointer-events-none select-none`}
               style={{ opacity: 0.06 }}
               aria-hidden="true"
             >
@@ -263,11 +265,11 @@ export default function HomePage() {
                 {/* CTA */}
                 <span className="service-cta relative z-10 inline-flex items-center gap-1.5 text-[#f47424] font-semibold text-[0.85rem]">
                   <span className="service-cta-text">{t("home.discover_more")}</span>
-                  <ArrowLeft size={15} className="service-cta-arrow" />
+                  <ArrowCta size={15} className="service-cta-arrow" />
                 </span>
 
                 {/* Bottom accent line */}
-                <div className="service-accent-line absolute bottom-0 right-0 h-[3px] bg-gradient-to-l from-[#f47424] to-[#f4942f] w-0 z-10" />
+                <div className="service-accent-line absolute bottom-0 start-0 h-[3px] bg-gradient-to-r from-[#f47424] to-[#f4942f] w-0 z-10" />
               </Link>
             ))}
           </div>
@@ -289,22 +291,22 @@ export default function HomePage() {
                   <div
                     key={i}
                     data-testid={`why-item-${i}`}
-                    className="why-card group relative flex items-center gap-5 bg-white rounded-[20px] border border-gray-100 py-5 pr-6 pl-5 md:pr-7 md:pl-6 shadow-[0_1px_2px_rgba(16,24,40,0.04)] hover:shadow-[0_12px_32px_rgba(244,116,36,0.12)] hover:-translate-y-[3px] transition-all duration-300 ease-out overflow-hidden"
+                    className="why-card group relative flex items-center gap-5 bg-white rounded-[20px] border border-gray-100 py-5 ps-5 pe-6 md:ps-6 md:pe-7 shadow-[0_1px_2px_rgba(16,24,40,0.04)] hover:shadow-[0_12px_32px_rgba(244,116,36,0.12)] hover:-translate-y-[3px] transition-all duration-300 ease-out overflow-hidden"
                     style={{ animation: `whyCardFadeIn 0.6s ${0.1 + i * 0.08}s both ease-out` }}
                   >
-                    <span className="absolute right-0 top-4 bottom-4 w-[3px] rounded-full bg-[#f47424] opacity-80 group-hover:opacity-100 group-hover:top-3 group-hover:bottom-3 transition-all duration-300" />
+                    <span className="absolute start-0 top-4 bottom-4 w-[3px] rounded-full bg-[#f47424] opacity-80 group-hover:opacity-100 group-hover:top-3 group-hover:bottom-3 transition-all duration-300" />
 
-                    <div className="flex-1 text-right order-1 min-w-0">
+                    <div className="why-icon-box flex-shrink-0 w-[54px] h-[54px] md:w-[58px] md:h-[58px] rounded-[14px] bg-[#f47424]/10 flex items-center justify-center transition-all duration-300 group-hover:bg-[#f47424]/15 group-hover:scale-[1.05]">
+                      <item.icon className="w-6 h-6 md:w-[26px] md:h-[26px] text-[#f47424]" strokeWidth={2} />
+                    </div>
+
+                    <div className="flex-1 text-start min-w-0">
                       <h3 className="text-[1.05rem] md:text-[1.1rem] font-bold text-gray-900 leading-tight mb-1.5 tracking-tight">
                         {item.title}
                       </h3>
                       <p className="text-gray-500 text-[0.85rem] md:text-[0.9rem] leading-[1.7]">
                         {item.desc}
                       </p>
-                    </div>
-
-                    <div className="why-icon-box order-2 flex-shrink-0 w-[54px] h-[54px] md:w-[58px] md:h-[58px] rounded-[14px] bg-[#f47424]/10 flex items-center justify-center transition-all duration-300 group-hover:bg-[#f47424]/15 group-hover:scale-[1.05]">
-                      <item.icon className="w-6 h-6 md:w-[26px] md:h-[26px] text-[#f47424]" strokeWidth={2} />
                     </div>
                   </div>
                 ))}
@@ -347,12 +349,12 @@ export default function HomePage() {
                   className={`audience-card group relative ${layoutClass} rounded-2xl p-6 md:p-7 bg-[#0F1A33] border border-white/[0.06] overflow-hidden transition-all duration-300 hover:border-[#f47424]/30 hover:-translate-y-1`}
                 >
                   <div className="flex items-center gap-5">
-                    {/* Icon on left (visually) - rendered first in RTL = appears left */}
-                    <div className="order-2 flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-xl flex items-center justify-center bg-[#f47424]/5 border border-[#f47424]/20 transition-all duration-300 group-hover:bg-[#f47424]/10 group-hover:scale-105">
+                    {/* Icon at start side (right in RTL, left in LTR) */}
+                    <div className="flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-xl flex items-center justify-center bg-[#f47424]/5 border border-[#f47424]/20 transition-all duration-300 group-hover:bg-[#f47424]/10 group-hover:scale-105">
                       <a.icon className="w-7 h-7 md:w-8 md:h-8 text-[#f47424]" strokeWidth={1.8} />
                     </div>
-                    {/* Text on right */}
-                    <div className="order-1 flex-1 text-right min-w-0">
+                    {/* Text */}
+                    <div className="flex-1 text-start min-w-0">
                       <h3 className="text-white font-bold text-[1.05rem] md:text-[1.15rem] mb-1.5 tracking-tight leading-tight">{a.label}</h3>
                       <p className="text-gray-400 text-[0.8rem] md:text-[0.85rem] leading-[1.6]">{a.desc}</p>
                     </div>
@@ -379,17 +381,19 @@ export default function HomePage() {
             <div className="hidden md:flex gap-2">
               <button
                 data-testid="gallery-prev"
-                onClick={() => scrollGallery(1)}
+                onClick={() => scrollGallery(isRtl ? 1 : -1)}
                 className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:border-[#f47424] hover:text-[#f47424] transition-colors"
+                aria-label="Previous"
               >
-                <ChevronRight size={20} />
+                {isRtl ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
               </button>
               <button
                 data-testid="gallery-next"
-                onClick={() => scrollGallery(-1)}
+                onClick={() => scrollGallery(isRtl ? -1 : 1)}
                 className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:border-[#f47424] hover:text-[#f47424] transition-colors"
+                aria-label="Next"
               >
-                <ChevronLeft size={20} />
+                {isRtl ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
               </button>
             </div>
           </div>

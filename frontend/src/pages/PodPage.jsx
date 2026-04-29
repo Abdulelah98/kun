@@ -22,7 +22,7 @@ export default function PodPage() {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img src={header.hero_image || POD_IMAGE} alt={header.title} className="w-full h-full object-cover" />
-          <div className={`absolute inset-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-black/80 via-black/50 to-transparent`} />
+          <div className={`absolute inset-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-black/85 via-black/55 to-transparent`} />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 md:py-44">
           <div className="max-w-xl">
