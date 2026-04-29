@@ -362,6 +362,7 @@ export default function SpacesPage() {
  <div className="pointer-events-none absolute -bottom-20 -right-20 w-56 h-56 rounded-full bg-[#f47424]/10 blur-3xl" />
 
  {/* Price badge */}
+ {sharedDesks.show_price !== false && (
  <div
  data-testid="shared-desks-price-badge"
  className="inline-flex items-center self-start gap-2 bg-[#f47424] text-white px-4 py-2 rounded-lg shadow-lg shadow-[#f47424]/30 mb-6"
@@ -370,6 +371,7 @@ export default function SpacesPage() {
  <span className="text-xl md:text-2xl font-black leading-none">{t("spaces.shared_desks_price")} {t("spaces.price_currency")}</span>
  <span className="text-xs font-semibold opacity-90">{t("spaces.price_per_month")}</span>
  </div>
+ )}
 
  <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-2">{t("spaces.what_you_get_eyebrow")}</p>
  <h3 className="text-xl md:text-2xl font-bold mb-5">{t("spaces.what_you_get_title")}</h3>
@@ -422,6 +424,7 @@ export default function SpacesPage() {
  <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
  {/* Price + Heading */}
  <div className="lg:col-span-1">
+ {offices.some((o) => o.show_price !== false) && (
  <div
  data-testid="offices-price-badge"
  className="inline-flex items-center gap-2 bg-[#f47424] text-white px-5 py-3 rounded-lg shadow-lg shadow-[#f47424]/30 mb-6"
@@ -430,6 +433,7 @@ export default function SpacesPage() {
  <span className="text-2xl md:text-3xl font-black leading-none">{t("spaces.private_offices_price")} {t("spaces.price_currency")}</span>
  <span className="text-xs font-semibold opacity-90">{t("spaces.price_per_month")}</span>
  </div>
+ )}
  <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f47424] mb-2">{t("spaces.what_you_get_eyebrow")}</p>
  <h3 className="text-xl md:text-2xl font-bold leading-tight">{t("spaces.what_you_get_title")}</h3>
  </div>
@@ -533,7 +537,7 @@ export default function SpacesPage() {
  <div className="flex flex-wrap gap-3 text-sm text-gray-500 mb-2">
  <span className="flex items-center gap-1"><Users size={14} /> {room.capacity} {t("common.persons")}</span>
  </div>
- {room.price ? (
+ {room.price && room.show_price !== false ? (
  <div className="inline-flex items-baseline gap-1 text-[#f47424] font-bold text-base mb-2">
  <span>{room.price}</span>
  <span className="text-xs font-semibold opacity-90">{pick(room, "currency") || (isRtl ? "ريال/ساعة" : "SAR/hour")}</span>

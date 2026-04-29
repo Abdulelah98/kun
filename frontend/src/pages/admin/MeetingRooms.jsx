@@ -25,6 +25,7 @@ const EMPTY = {
   price: 0,
   currency: "ريال/ساعة",
   currency_en: "SAR/hour",
+  show_price: true,
   image: "",
   images: [],
   description: "",
@@ -177,6 +178,10 @@ export default function MeetingRooms() {
                   onChange={(v) => setForm({ ...form, booked_slots: v })}
                   roomId={editing?.id}
                 />
+              </div>
+              <div className="flex items-center gap-3">
+                <Switch checked={form.show_price !== false} onCheckedChange={(v) => setForm({ ...form, show_price: v })} />
+                <Label className="text-white/80">إظهار السعر للزائر</Label>
               </div>
               <div className="flex items-center gap-3">
                 <Switch checked={form.active} onCheckedChange={(v) => setForm({ ...form, active: v })} />

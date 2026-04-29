@@ -80,6 +80,10 @@ export default function SharedDesks() {
         </section>
 
         <div className="flex items-center gap-3">
+          <Switch checked={form.show_price !== false} onCheckedChange={(v) => setF("show_price", v)} />
+          <Label className="text-white/80">إظهار السعر للزائر</Label>
+        </div>
+        <div className="flex items-center gap-3">
           <Switch checked={form.active} onCheckedChange={(v) => setF("active", v)} />
           <Label className="text-white/80">نشط (معروض)</Label>
         </div>

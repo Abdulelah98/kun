@@ -25,6 +25,7 @@ const EMPTY = {
   price: 0,
   currency: "ريال/شهر",
   currency_en: "SAR/month",
+  show_price: true,
   available: true,
   reserved_until: "",
   image: "",
@@ -187,6 +188,10 @@ export default function Offices() {
               <div className="md:col-span-2">
                 <Label className="text-white/70">صور إضافية</Label>
                 <div className="mt-2"><MediaPicker value={Array.isArray(form.images) ? form.images : []} onChange={(v) => setForm({ ...form, images: v })} multiple label="أضف صور" /></div>
+              </div>
+              <div className="flex items-center gap-3">
+                <Switch checked={form.show_price !== false} onCheckedChange={(v) => setForm({ ...form, show_price: v })} />
+                <Label className="text-white/80">إظهار السعر للزائر</Label>
               </div>
               <div className="flex items-center gap-3">
                 <Switch checked={form.available} onCheckedChange={(v) => setForm({ ...form, available: v })} />
