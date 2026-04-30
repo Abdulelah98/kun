@@ -23,7 +23,7 @@ export const TRANSLATIONS = {
  "home.bg.why": "لماذا كن",
  "home.bg.audience": "عملاؤنا",
  "home.bg.gallery": "مساحاتنا",
- "home.bg.contact": "تواصل",
+ "home.bg.contact": "تواصل معنا",
 
  // Footer
  "footer.quick_links": "روابط سريعة",
@@ -196,7 +196,7 @@ export const TRANSLATIONS = {
  "home.bg.why": "Why KUN",
  "home.bg.audience": "Clients",
  "home.bg.gallery": "Spaces",
- "home.bg.contact": "Contact",
+ "home.bg.contact": "Contact us",
 
  // Footer
  "footer.quick_links": "Quick Links",
