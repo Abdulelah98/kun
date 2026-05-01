@@ -101,7 +101,7 @@ export default function ContactPage() {
                       placeholder={t("contact.placeholder_name")}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="bg-gray-50 border-gray-200 h-12 text-start"
+                      className="bg-gray-50 border-gray-200 h-12 text-start text-gray-900"
                     />
                   </div>
                   <div>
@@ -111,7 +111,7 @@ export default function ContactPage() {
                       placeholder="05xxxxxxxx"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="bg-gray-50 border-gray-200 h-12 text-start"
+                      className="bg-gray-50 border-gray-200 h-12 text-start text-gray-900"
                     />
                   </div>
                 </div>
@@ -124,7 +124,7 @@ export default function ContactPage() {
                       placeholder={t("contact.placeholder_email")}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="bg-gray-50 border-gray-200 h-12 text-start"
+                      className="bg-gray-50 border-gray-200 h-12 text-start text-gray-900"
                     />
                   </div>
                   <div>
@@ -134,7 +134,7 @@ export default function ContactPage() {
                       onValueChange={(val) => setFormData({ ...formData, service_type: val })}
                       dir={dir}
                     >
-                      <SelectTrigger data-testid="contact-service-select" className="bg-gray-50 border-gray-200 h-12">
+                      <SelectTrigger data-testid="contact-service-select" className="bg-gray-50 border-gray-200 h-12 text-gray-900">
                         <SelectValue placeholder={t("contact.placeholder_service")} />
                       </SelectTrigger>
                       <SelectContent>
@@ -154,7 +154,7 @@ export default function ContactPage() {
                     placeholder={t("contact.placeholder_message")}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="bg-gray-50 border-gray-200 min-h-[120px] text-start"
+                    className="bg-gray-50 border-gray-200 min-h-[120px] text-start text-gray-900"
                   />
                 </div>
                 <Button
