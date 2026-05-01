@@ -41,6 +41,20 @@ function ScrollToTop() {
   return null;
 }
 
+function DocumentTitle() {
+  const { pathname } = useLocation();
+  const { lang } = useLanguage();
+  useEffect(() => {
+    const isAdmin = pathname.startsWith("/admin");
+    if (lang === "ar") {
+      document.title = isAdmin ? "كن — لوحة التحكم" : "كن | مساحات عمل احترافية";
+    } else {
+      document.title = isAdmin ? "KUN — Admin Panel" : "KUN | Premium workspaces";
+    }
+  }, [pathname, lang]);
+  return null;
+}
+
 function LocalizedToaster() {
   const { dir } = useLanguage();
   return <Toaster position="top-center" dir={dir} />;
@@ -64,6 +78,7 @@ function App() {
         <BrandingProvider>
           <AuthProvider>
             <LanguageProvider>
+              <DocumentTitle />
               <SettingsProvider>
               <ContentProvider>
                 <ScrollToTop />
