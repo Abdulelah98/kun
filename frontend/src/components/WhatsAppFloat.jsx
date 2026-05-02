@@ -28,8 +28,8 @@ export default function WhatsAppFloat() {
         bg-[#25D366] hover:bg-[#1fb957]
         shadow-[0_8px_24px_rgba(37,211,102,0.4)]
         hover:shadow-[0_12px_32px_rgba(37,211,102,0.55)]
-        transition-[width,background-color,box-shadow] duration-500 ease-in-out
-        w-14 hover:w-[260px]
+        transition-[max-width,background-color,box-shadow] duration-500 ease-in-out
+        w-auto max-w-14 hover:max-w-xs
         overflow-hidden
         whitespace-nowrap
       "
@@ -67,10 +67,10 @@ export default function WhatsAppFloat() {
       <span
         className="
           text-white font-semibold text-sm
-          pe-5 ps-1
-          opacity-0 translate-x-1
-          group-hover:opacity-100 group-hover:translate-x-0
-          transition-[opacity,transform] duration-300 delay-150
+          pe-5 ps-2
+          opacity-0
+          group-hover:opacity-100
+          transition-opacity duration-300 delay-150
         "
       >
         {label}
