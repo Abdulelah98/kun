@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Toaster } from "sonner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import WhatsAppFloat from "@/components/WhatsAppFloat";
 import HomePage from "@/pages/HomePage";
 import ServicesPage from "@/pages/ServicesPage";
 import SpacesPage from "@/pages/SpacesPage";
@@ -67,6 +68,7 @@ function PublicLayout({ children }) {
       <Navbar />
       {children}
       <Footer />
+      <WhatsAppFloat />
     </div>
   );
 }
